@@ -1,0 +1,330 @@
+            +--------------------+
+            |    CSE 421/521     |
+            | PROJECT 1: THREADS |
+            |   DESIGN DOCUMENT  |
+            +--------------------+
+
+---- GROUP ----
+
+>> Fill in the names and email addresses of your group members.
+
+TODO: Enter the actual names and UB email addresses of all group members.
+
+---- PRELIMINARIES ----
+
+>> If you have any preliminary comments on your submission, notes for the
+>> TAs, or extra credit, please give them here.
+
+This is the Phase 1 Alarm Clock design document.  Only the Alarm Clock
+section is completed here.  Priority Scheduling and Advanced Scheduler
+remain TODO for their respective phases; no implementation or test
+completion is claimed for those phases.  The complete project design
+document must also be submitted separately as a PDF through UBLearns by
+October 8, 2026, at 11:59 p.m., as specified in the course assignment.
+
+TODO: Group members must review these answers and enter their identities
+before submitting the design document.  This document describes the
+implementation; it does not report test results.
+
+>> Please cite any offline or online sources you consulted while
+>> preparing your submission, other than the Pintos documentation, course
+>> text, lecture notes, and course staff.
+
+OpenAI Codex assisted implementation and documentation.  The group must
+review the resulting code and explanations.  TODO: Add any other sources
+actually consulted by group members; do not list sources not consulted.
+
+                 ALARM CLOCK
+                 ===========
+
+---- DATA STRUCTURES ----
+
+>> A1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+The following declarations are added in devices/timer.c:
+
+struct sleep_waiter
+  {
+    uint64_t wake_tick;
+    struct semaphore wake;
+    struct list_elem elem;
+  };
+
+Purpose of struct sleep_waiter: One pending sleep, stored on its caller's
+stack until the timer signals completion.
+
+Purpose of wake_tick: Absolute earliest wakeup tick; unsigned addition
+avoids signed deadline overflow for a large positive sleep duration.
+
+Purpose of wake: A semaphore initialized to zero, used to block the
+caller and retain a wakeup delivered before it blocks.
+
+Purpose of elem: Links this pending sleep into the ordered sleepers list.
+
+static struct list sleepers;
+
+Purpose of sleepers: Pending sleeps ordered by increasing wake_tick,
+shared by timer_sleep() and the timer interrupt handler.
+
+No fields are added to struct thread.  Each timer_sleep() call owns its
+local waiter, so no heap allocation or permanent per-thread alarm data
+is required.  The existing global ticks declaration is unchanged.
+
+---- ALGORITHMS ----
+
+>> A2: Briefly describe what happens in a call to timer_sleep(),
+>> including the effects of the timer interrupt handler.
+
+timer_sleep() requires interrupts enabled and a caller outside interrupt
+context.  It returns immediately for a zero or negative duration.
+Otherwise, it initializes a stack-local waiter's semaphore to zero.
+
+It briefly disables interrupts, reads ticks, calculates the absolute
+deadline as (uint64_t) ticks + (uint64_t) sleep_ticks, and inserts the
+waiter into sleepers in ascending deadline order.  The strict comparison
+preserves insertion order among equal deadlines.  It then restores the
+previous interrupt level and calls sema_down().  The thread blocks if
+the timer has not already signaled its semaphore.  It does not poll the
+clock or repeatedly call thread_yield().
+
+On each timer interrupt, the handler increments ticks and calls the
+existing thread_tick().  It then examines the front of sleepers.  While
+the front deadline is at or before the current tick, it removes that
+record and calls sema_up() on its semaphore.  If a thread is blocked on
+that semaphore, it becomes ready; actual execution depends on normal
+scheduling.  The handler stops when the list is empty or its earliest
+remaining deadline is in the future.  All sleeps due at that tick are
+signaled, including simultaneous deadlines.
+
+>> A3: What steps are taken to minimize the amount of time spent in
+>> the timer interrupt handler?
+
+The queue is kept sorted when a thread registers its sleep, so the
+interrupt handler does not scan sleepers whose deadlines are later.
+It does no allocation, sorting, or blocking.  Removing the front list
+element is constant time.  Each private semaphore has at most one
+waiting thread.
+
+The added alarm work per interrupt is O(k + 1), where k is the number
+of due sleepers removed during that interrupt.  An interrupt with no
+due sleepers performs only O(1) alarm work.  Insertion costs O(n) in
+thread context for n queued sleepers; this is a deliberate tradeoff to
+keep the frequently executed interrupt path short.
+
+---- SYNCHRONIZATION ----
+
+>> A4: How are race conditions avoided when multiple threads call
+>> timer_sleep() simultaneously?
+
+Each caller initializes its own waiter and semaphore before publishing
+the waiter to the shared queue.  In this uniprocessor Pintos kernel,
+disabling interrupts around reading ticks and inserting into sleepers
+prevents both a timer interrupt and timer-driven scheduling from
+interleaving those shared-state operations.  The code does not yield or
+block inside that critical section.
+
+After restoring interrupts, the caller waits using sema_down().  The
+semaphore implements blocking and wakeup synchronization; interrupt
+disabling is not used to make the caller wait for time to pass.  The
+short interrupt-disabled section specifically protects data also used
+by the interrupt handler, which cannot acquire a sleeping lock.
+
+>> A5: How are race conditions avoided when a timer interrupt occurs
+>> during a call to timer_sleep()?
+
+The semaphore is initialized before the waiter is added to sleepers.
+Deadline calculation and insertion occur with interrupts disabled, so
+the handler cannot observe a partially initialized or partially linked
+record, and ticks cannot change between the snapshot and insertion.
+
+An interrupt can occur after interrupts are restored but before the
+caller reaches sema_down().  This does not lose the wakeup: sema_up()
+increments the semaphore's value, and the later sema_down() consumes
+that value without blocking.  If the caller reaches sema_down() first,
+the existing semaphore implementation atomically checks its value and
+blocks the caller; a later sema_up() unblocks it.
+
+The handler removes the waiter from sleepers before signaling it.
+The stack-local record remains valid while timer_sleep() is executing,
+including while the caller is blocked.  When the caller can finally
+return and release its stack storage, its record is no longer linked
+into the shared queue.  The handler does not access the record after
+signaling it.
+
+---- RATIONALE ----
+
+>> A6: Why did you choose this design?  In what ways is it superior to
+>> another design you considered?
+
+The ordered queue and per-sleep semaphore provide blocking without busy
+waiting, a simple lifetime rule, and protection against early signals.
+They reuse Pintos list and synchronization primitives and do not expand
+struct thread or require heap allocation.  Unsigned deadline addition
+also avoids undefined signed arithmetic when a positive duration is
+very large.
+
+An alternative is an unordered sleep list scanned on every timer tick.
+It makes insertion O(1), but pays O(n) interrupt work even when no sleep
+is due.  The selected design pays O(n) when registering a sleep and
+O(k + 1) during an interrupt, which is preferable for an interrupt that
+runs regularly while most deadlines are still in the future.
+
+The tradeoffs are one small waiter on each sleeping caller's limited
+kernel stack and an O(n) insertion performed with interrupts disabled.
+A large number of sleepers can therefore increase registration latency.
+For this project, the simple list avoids the extra code and maintenance
+of a heap while keeping the interrupt path small.  A heap could reduce
+insertion cost if the workload required much larger sleep queues.
+
+             PRIORITY SCHEDULING
+             ===================
+
+This section is TODO for Phase 2; Phase 1 does not implement priority
+scheduling or priority donation.
+
+---- DATA STRUCTURES ----
+
+>> B1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+TODO: Complete for Phase 2.
+
+>> B2: Explain the data structure used to track priority donation.
+>> Use ASCII art to diagram a nested donation.  (Alternately, submit a
+>> .png file.)
+
+TODO: Complete for Phase 2.
+
+---- ALGORITHMS ----
+
+>> B3: How do you ensure that the highest priority thread waiting for
+>> a lock, semaphore, or condition variable wakes up first?
+
+TODO: Complete for Phase 2.
+
+>> B4: Describe the sequence of events when a call to lock_acquire()
+>> causes a priority donation.  How is nested donation handled?
+
+TODO: Complete for Phase 2.
+
+>> B5: Describe the sequence of events when lock_release() is called
+>> on a lock that a higher-priority thread is waiting for.
+
+TODO: Complete for Phase 2.
+
+---- SYNCHRONIZATION ----
+
+>> B6: Describe a potential race in thread_set_priority() and explain
+>> how your implementation avoids it.  Can you use a lock to avoid
+>> this race?
+
+TODO: Complete for Phase 2.
+
+---- RATIONALE ----
+
+>> B7: Why did you choose this design?  In what ways is it superior to
+>> another design you considered?
+
+TODO: Complete for Phase 2.
+
+              ADVANCED SCHEDULER
+              ==================
+
+This section is TODO for Phase 3; Phase 1 does not implement MLFQS.
+
+---- DATA STRUCTURES ----
+
+>> C1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+TODO: Complete for Phase 3.
+
+---- ALGORITHMS ----
+
+>> C2: Suppose threads A, B, and C have nice values 0, 1, and 2.  Each
+>> has a recent_cpu value of 0.  Fill in the table below showing the
+>> scheduling decision and the priority and recent_cpu values for each
+>> thread after each given number of timer ticks:
+
+timer  recent_cpu    priority   thread
+ticks   A   B   C   A   B   C   to run
+-----  --  --  --  --  --  --   ------
+ 0
+ 4
+ 8
+12
+16
+20
+24
+28
+32
+36
+
+TODO: Complete for Phase 3.
+
+>> C3: Did any ambiguities in the scheduler specification make values
+>> in the table uncertain?  If so, what rule did you use to resolve
+>> them?  Does this match the behavior of your scheduler?
+
+TODO: Complete for Phase 3.
+
+>> C4: How is the way you divided the cost of scheduling between code
+>> inside and outside interrupt context likely to affect performance?
+
+TODO: Complete for Phase 3.
+
+---- RATIONALE ----
+
+>> C5: Briefly critique your design, pointing out advantages and
+>> disadvantages in your design choices.  If you were to have extra
+>> time to work on this part of the project, how might you choose to
+>> refine or improve your design?
+
+TODO: Complete for Phase 3.
+
+>> C6: The assignment explains arithmetic for fixed-point math in
+>> detail, but it leaves it open to you to implement it.  Why did you
+>> decide to implement it the way you did?  If you created an
+>> abstraction layer for fixed-point math, that is, an abstract data
+>> type and/or a set of functions or macros to manipulate fixed-point
+>> numbers, why did you do so?  If not, why not?
+
+TODO: Complete for Phase 3.
+
+               SURVEY QUESTIONS
+               ================
+
+Answering these questions is optional, but it will help us improve the
+course in future quarters.  Feel free to tell us anything you
+want--these questions are just to spur your thoughts.  You may also
+choose to respond anonymously in the course evaluations at the end of
+the quarter.
+
+>> In your opinion, was this assignment, or any one of the three problems
+>> in it, too easy or too hard?  Did it take too long or too little time?
+
+Optional: Group members may provide their own feedback.
+
+>> Did you find that working on a particular part of the assignment gave
+>> you greater insight into some aspect of OS design?
+
+Optional: Group members may provide their own feedback.
+
+>> Is there some particular fact or hint we should give students in
+>> future quarters to help them solve the problems?  Conversely, did you
+>> find any of our guidance to be misleading?
+
+Optional: Group members may provide their own feedback.
+
+>> Do you have any suggestions for the TAs to more effectively assist
+>> students, either for future quarters or the remaining projects?
+
+Optional: Group members may provide their own feedback.
+
+>> Any other comments?
+
+Optional: Group members may provide their own feedback.

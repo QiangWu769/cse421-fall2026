@@ -1,0 +1,9 @@
+.DS_Store
+._*
+**/build/
+*.o
+*.d
+bochsout.txt
+.env
+.env.*
+!.env.example
