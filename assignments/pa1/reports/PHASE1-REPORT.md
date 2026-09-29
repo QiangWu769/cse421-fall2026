@@ -1,26 +1,28 @@
-# Phase 1 完成与验证记录
+# Phase 1 Implementation and Verification Report
 
-日期：2026-09-25。
+Verification date: September 25, 2026.
 
-## 实现
+**Status: Phase 1 completed. The full Design Document PDF, Phase 2, and Phase 3 are not started.**
 
-`src/devices/timer.c` 使用按唤醒时间排序的等待队列和每次睡眠独立的信号量。等待线程通过 `sema_down()` 阻塞；定时器中断移除全部到期记录并调用 `sema_up()`。
+## Implementation
 
-- 消除了 `timer_sleep()` 中的轮询和反复 `thread_yield()`。
-- 零、负参数直接返回。
-- 相同到期时间的记录在同次中断内全部唤醒。
-- 信号量保留提前到达的唤醒，避免登记与阻塞之间丢失通知。
-- 中断保护只覆盖共享队列访问，等待本身由信号量完成。
-- 无符号 64 位截止时间避免超大正延时的有符号加法溢出。
-- 没有扩大 `struct thread`，没有堆分配，也没有修改课程测试或后续调度功能。
+`src/devices/timer.c` uses a queue ordered by wake-up time and a separate semaphore for each sleep request. A sleeping thread blocks in `sema_down()`. The timer interrupt removes all expired entries and calls `sema_up()` to wake them.
 
-`src/threads/DESIGNDOC` 已完成 Alarm Clock A1-A6，记录了数据结构、算法、同步和设计取舍。组员姓名与邮箱仍须填写；Phase 2/3 部分明确标为后续任务。
+- Removed polling and repeated calls to `thread_yield()` from `timer_sleep()`.
+- Zero and negative durations return immediately.
+- Sleepers with the same deadline are all signaled during the same timer interrupt.
+- The semaphore retains an early signal, avoiding a lost wake-up between queue registration and blocking.
+- Interrupts are disabled only while accessing shared queue state; the semaphore performs the actual wait.
+- An unsigned 64-bit deadline avoids signed addition overflow for very large positive durations.
+- No fields were added to `struct thread`, no heap allocation was introduced, and no course tests or later scheduling components were changed.
 
-## 课程测试
+The Alarm Clock A1-A6 notes in `src/threads/DESIGNDOC` describe the Phase 1 data structures, algorithm, synchronization, and design choices. These are Phase 1 implementation notes, not a completed or started full Design Document PDF deliverable. Group identities and the other design sections remain to be filled in when that deliverable is started.
 
-清理旧构建后，在课程 Docker 环境中重新编译，并使用默认 Bochs 配置运行：
+## Course tests
 
-| 测试 | 结果 |
+After cleaning the previous build, the implementation was rebuilt in the course Docker environment and tested with the default Bochs configuration:
+
+| Test | Result |
 |---|---|
 | alarm-single | PASS |
 | alarm-multiple | PASS |
@@ -28,26 +30,26 @@
 | alarm-zero | PASS |
 | alarm-negative | PASS |
 
-编译未出现来自本次修改的警告。原始框架仍有 init.c、debug.c、string.c 等处的既有编译警告。
+No compiler warnings originated from the Phase 1 changes. Existing framework warnings in files such as init.c, debug.c, and string.c remained.
 
-## 额外验证
+## Additional checks
 
-在独立临时源码副本中增加行为检查，未将其加入提交源码：
+Behavioral checks were added to an independent temporary source copy and were not included in the submission:
 
-- 从另一个线程观察睡眠线程，确认其状态是 `THREAD_BLOCKED`，并确认到期后正常返回。
-- 使用 `INT64_MAX` 正延时，确认不会发生截止时间溢出造成的提前返回。
-- 8 个线程各执行 100 次单 tick 睡眠，共 800 次，全部完成且没有提前返回。
-- 代码独立审查覆盖了局部等待记录生命周期、丢唤醒、中断上下文和同截止时间唤醒。
+- Observed a sleeping thread from another thread and verified `THREAD_BLOCKED`, followed by a normal return at or after its deadline.
+- Tested an `INT64_MAX` positive duration and confirmed it did not return early because of deadline overflow.
+- Ran eight threads with 100 one-tick sleeps each: all 800 sleeps completed without an early return.
+- Independently reviewed the lifetime of stack-local wait records, lost wake-ups, interrupt context, and simultaneous deadlines.
 
-上述额外行为检查通过。课程测试的退出统计也显示睡眠期间 CPU 可以进入 idle 状态：alarm-single 为 250 idle ticks，alarm-multiple 为 550 idle ticks。
+These additional checks passed. The course-test exit statistics also showed that the CPU could become idle during sleep: 250 idle ticks for alarm-single and 550 idle ticks for alarm-multiple.
 
-## 提交范围
+## Submission archive
 
-`pa1-phase1.tar.gz` 包含完整且已清理的 `src/` 源码树，供 Autolab Phase 1 使用。它不包含 Docker 镜像、临时额外测试或构建输出。
+`pa1-phase1.tar.gz` contains the complete, cleaned `src/` tree for Autolab Phase 1. It excludes Docker images, temporary behavioral tests, and build output.
 
-已核对包内 625 个普通文件与当前源码逐字节一致，并从最终压缩包解压到独立临时目录后重新编译成功。课程环境附带的 Bochs 源码下载包保留在 `src/misc/` 中。
+The 625 regular files in the archive were checked byte-for-byte against the source tree, and the final archive was extracted into a separate directory and successfully rebuilt. The Bochs source download supplied by the course environment remains in `src/misc/`.
 
-- 压缩包大小：5,490,858 字节。
-- SHA-256：`e914a0456dc7b8c7c34f822bc7971870b49a5dbb0c7c6c030187273d890b6dad`。
+- Archive size: 5,490,858 bytes.
+- SHA-256: `e914a0456dc7b8c7c34f822bc7971870b49a5dbb0c7c6c030187273d890b6dad`.
 
-当前完成的是 Phase 1 实现与本地验证；没有上传到 Autolab，没有服务器评分结果，也没有完成 Phase 2/3 或另交的完整设计文档 PDF。
+Phase 1 implementation and local verification are complete. Course-platform submission and server grading are unconfirmed. The other three deliverables are not started.

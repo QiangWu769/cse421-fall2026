@@ -1,57 +1,65 @@
-# Project 1：Pintos Threads
+# Project 1: Pintos Threads
 
-课程：CSE 421/521 Operating Systems，Fall 2026。各阶段日期见根目录 [DEADLINES.md](../../DEADLINES.md)。
+CSE 421/521 Operating Systems, Fall 2026. See [DEADLINES.md](../../DEADLINES.md) for the complete schedule.
 
-## Phase 1 当前成果
+| Deliverable | Status |
+|---|---|
+| Phase 1: Alarm Clock | **Completed** - implementation and local verification |
+| Full Design Document PDF | **Not started** |
+| Phase 2: Priority Scheduler | **Not started** |
+| Phase 3: MLFQ Scheduler | **Not started** |
 
-- [完整源码](pintos/src/)：`timer_sleep()` 已改为通过信号量阻塞，定时器中断唤醒到期线程。
-- [提交包](submissions/phase1/pa1-phase1.tar.gz)：包含清理后的完整 `src/`；五项测试通过，压缩包重新解压编译成功。
-- [SHA-256 校验值](submissions/phase1/SHA256SUMS)。
-- [测试与实现报告](reports/PHASE1-REPORT.md)：记录 2026-09-25 的本地验证结果。
-- [设计记录](pintos/src/threads/DESIGNDOC)：Alarm Clock A1-A6 已填，组员姓名/邮箱待补充，后续阶段和完整设计 PDF 尚待完成。
+Course-platform submission and grading are tracked separately. No Autolab submission or server score has been confirmed.
 
-GitHub 存储不等同于课程平台提交。Phase 1 需要由一名组员上传到 Autolab，并确认最终评分。当前课程平台提交状态待确认。
+## Completed Phase 1 work
 
-## 在新的电脑或克隆目录中开发
+- [Full source tree](pintos/src/): `timer_sleep()` blocks using a semaphore; the timer interrupt wakes expired sleepers.
+- [Submission archive](submissions/phase1/pa1-phase1.tar.gz): the complete, cleaned `src/` tree. All five Phase 1 tests passed, and the extracted archive was rebuilt successfully.
+- [SHA-256 checksum](submissions/phase1/SHA256SUMS).
+- [Implementation and verification report](reports/PHASE1-REPORT.md): records the local checks performed on September 25, 2026.
+- [Phase 1 implementation notes](pintos/src/threads/DESIGNDOC): Alarm Clock A1-A6 describe the completed code. These notes accompany Phase 1; the separate full Design Document PDF remains **Not started**.
 
-先安装并启动 Docker Desktop。课程原始 [Dockerfile](environment/Dockerfile) 与 [Fall 2026 安装指南](environment/Docker_Setup_Guide.pdf) 保存在 `environment/`。
+One group member must submit the final archive to Autolab Phase 1 and check the grading feedback. Uploading files to GitHub does not submit them to the course platform.
 
-在仓库根目录运行：
+## Develop from a new clone
+
+Install and start Docker Desktop. The original course [Dockerfile](environment/Dockerfile) and [Fall 2026 setup guide](environment/Docker_Setup_Guide.pdf) are in `environment/`.
+
+From the repository root:
 
 ```bash
 ./scripts/build-env.sh
 ./scripts/enter-pintos.sh
 ```
 
-脚本指定 `linux/amd64`，支持在 Apple Silicon 上运行课程镜像。代码目录绑定到容器 `/home/pintos`，本地编辑会直接反映到容器。
+The scripts select `linux/amd64`, including on Apple Silicon. The local Pintos directory is mounted at `/home/pintos`, so local edits are visible inside the container.
 
-运行 Phase 1 五项测试：
+Run the five Phase 1 tests:
 
 ```bash
 ./scripts/test-phase1.sh
 ```
 
-修改代码或设计记录后，先测试，再重新打包：
+After changing the code or implementation notes, run the tests and rebuild the archive:
 
 ```bash
 ./scripts/package-phase1.sh
 ```
 
-压缩包写入 `assignments/pa1/submissions/phase1/pa1-phase1.tar.gz`，同时更新校验值。脚本本身不会上传到 Autolab。
+The archive is written to `assignments/pa1/submissions/phase1/pa1-phase1.tar.gz`, and its checksum is updated. The script does not upload anything to Autolab.
 
-如果本机已有完全匹配课程 Dockerfile 的镜像，可以通过 `PINTOS_IMAGE` 指定其名字或 ID，而不重新构建。例如在原开发机已验证的镜像：
+If an existing local image exactly matches the course Dockerfile, select its name or ID with `PINTOS_IMAGE`. For example, the original development machine used:
 
 ```bash
 PINTOS_IMAGE=sha256:fd28c381bdb9f830d5d45eafa3d2878eae302ba08296a3152f110688c495e68d ./scripts/enter-pintos.sh
 ```
 
-课程 Dockerfile 原样保留，首次构建需要联网下载依赖。Pintos 的源代码版本固定为 `9f013d0930202eea99c21083b71098a0df64be0d`。
+The course Dockerfile is preserved unchanged. Building it for the first time requires network access to download dependencies. The Pintos source revision is `9f013d0930202eea99c21083b71098a0df64be0d`.
 
-## 各阶段工作范围
+## Work not started
 
-- Phase 1：Alarm Clock，消除 `timer_sleep()` 的忙等待，通过五项测试。
-- Phase 2：Priority Scheduler、锁的多重/嵌套优先级捐赠，以及 `alarm-priority` 测试。
-- Phase 3：MLFQ / 4.4BSD 调度器，使用 `-mlfqs` 选择。
-- 设计文档：按 [课程模板](pintos/doc/threads.tmpl) 完善全部设计，10 月 8 日单独交 PDF 到 UBLearns。
+- **Full Design Document PDF:** complete the [course template](pintos/doc/threads.tmpl), including the adopted or planned designs for every component, and submit the PDF to UBLearns by October 8 at 23:59.
+- **Phase 2:** priority scheduling, multiple and nested priority donation for locks, and the `alarm-priority` test.
+- **Phase 3:** the MLFQ / 4.4BSD scheduler selected with `-mlfqs`.
 
-`pintos/LICENSE` 与 `pintos/AUTHORS` 保留原始项目授权及作者信息。
+The original project license and author information are retained in `pintos/LICENSE` and `pintos/AUTHORS`.

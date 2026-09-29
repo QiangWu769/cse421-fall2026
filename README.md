@@ -1,62 +1,65 @@
-# CSE 421/521 · Fall 2026
+# CSE 421/521 - Fall 2026
 
-课程作业、源码、提交包与截止时间记录。当前收录 **Project 1：Pintos Threads**。课程平台的提交和评分需要单独确认；将文件上传到 GitHub 不代表已提交作业。
+Course assignments, source code, submission archives, and deadlines. This repository currently contains **Project 1: Pintos Threads**.
 
-## 截止时间
+**Only Phase 1 is completed, covering implementation and local verification. The formal Design Document, Phase 2, and Phase 3 are all not started.** Autolab submission is unconfirmed; saving work on GitHub does not submit it to the course platform.
 
-以下均为 **2026 年 23:59**。原始截图未注明时区，本仓库暂按 Buffalo 的 **America/New_York** 整理；课程公告、老师通知及平台显示的最新要求优先。
+## Deadlines and status
 
-| 交付项 | 截止日期 | 分值 | 提交平台 | 当前状态 |
+All deadlines below are in **2026 at 23:59**. The provided screenshots do not specify a time zone. This repository uses Buffalo's **America/New_York** as a local assumption; subsequent course announcements and official platform instructions take precedence.
+
+| Deliverable | Deadline | Points | Platform | Status |
 |---|---|---:|---|---|
-| Phase 1：Alarm Clock | 9 月 30 日 | 14 | [Autolab](https://autolab.cse.buffalo.edu/) | 代码与本地验证完成，平台提交待确认 |
-| 完整设计文档 PDF | 10 月 8 日 | 12 | UBLearns | Alarm Clock A1–A6 已填；身份信息及完整 PDF 待完成 |
-| Phase 2：Priority Scheduler | 10 月 14 日 | 42 | [Autolab](https://autolab.cse.buffalo.edu/) | 待实现 |
-| Phase 3：MLFQ Scheduler | 10 月 27 日 | 37 | [Autolab](https://autolab.cse.buffalo.edu/) | 待实现 |
+| Phase 1: Alarm Clock | September 30, 23:59 | 14 | [Autolab](https://autolab.cse.buffalo.edu/) | Completed (implementation and local verification); submission unconfirmed |
+| Formal Design Document | October 8, 23:59 | 12 | UBLearns, PDF | Not started |
+| Phase 2: Priority Scheduler | October 14, 23:59 | 42 | [Autolab](https://autolab.cse.buffalo.edu/) | Not started |
+| Phase 3: MLFQ Scheduler | October 27, 23:59 | 37 | [Autolab](https://autolab.cse.buffalo.edu/) | Not started |
 
-实现共 **93 分**，设计文档 **12 分**，总计 **105 分**。`alarm-priority` 的 4 分属于 Phase 2，因此各阶段分值为 14、42、37。
+Implementation is worth **93 points**, plus **12 points** for the formal design document, for a total of **105 points**. The 4-point `alarm-priority` test belongs to Phase 2, giving phase totals of 14, 42, and 37.
 
-完整要求见 [DEADLINES.md](DEADLINES.md)；结构化日期见 [deadlines.json](deadlines.json)。其他本学期项目和考试日期尚未提供。
+See [DEADLINES.md](DEADLINES.md) for requirements and checklists, and [deadlines.json](deadlines.json) for structured dates. Dates for other semester projects and exams have not been provided.
 
-## 当前进度
+## Phase 1 progress
 
-截至 2026-09-29，已保存 9 月 25 日完成的 Phase 1 工作：
+The following work was completed and locally verified on **2026-09-25**:
 
-- `timer_sleep()` 使用有序等待队列和信号量阻塞，消除了忙等待。
-- 五项 Phase 1 课程测试通过；额外的 `THREAD_BLOCKED` 状态、`INT64_MAX` 延时和 800 次并发短睡眠检查也通过。
-- 已生成完整源码提交包，并从包中重新解压、编译验证。
-- [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC) 的 Alarm Clock A1–A6 已填写。组员姓名与邮箱、后续设计内容和另交的完整 PDF 尚待完成。
-- **是否已上传 Autolab、服务器评分是多少，仍待组员确认。** 本地验证记录见 [Phase 1 报告](assignments/pa1/reports/PHASE1-REPORT.md)。
+- `timer_sleep()` blocks using an ordered sleep queue and a semaphore, without busy waiting.
+- All five Phase 1 course tests passed. Additional checks passed for actual `THREAD_BLOCKED` state, an `INT64_MAX` delay, and 800 concurrent short sleeps.
+- The complete source archive was generated, extracted into a separate directory, and compiled successfully.
+- Alarm Clock A1-A6 notes are included in the source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC). These are Phase 1 implementation notes, not progress on the separate formal Design Document deliverable. Group identities still need to be entered.
 
-## 使用入口
+**Autolab submission is unconfirmed, and no server score is recorded.** See the [Phase 1 report](assignments/pa1/reports/PHASE1-REPORT.md) for the local verification record.
 
-1. 开发、编译和测试：阅读 [PA1 使用说明](assignments/pa1/README.md)，课程环境文件在 [environment/](assignments/pa1/environment/)。
-2. Phase 1 提交：使用 [pa1-phase1.tar.gz](assignments/pa1/submissions/phase1/pa1-phase1.tar.gz)，在 Autolab 对应 Phase 页面核对小组后，由一名成员上传并检查反馈。若修改源码或 DESIGNDOC，须重新打包最新版本。
-3. 规划后续工作：查看 [截止时间与待办](DEADLINES.md)、[GitHub milestones](https://github.com/QiangWu769/cse421-fall2026/milestones) 和 [issues](https://github.com/QiangWu769/cse421-fall2026/issues)。
+## Start here
 
-## GitHub 跟进
+1. **Develop and test:** read the [PA1 guide](assignments/pa1/README.md). Course environment files are in [environment/](assignments/pa1/environment/).
+2. **Submit Phase 1:** use [pa1-phase1.tar.gz](assignments/pa1/submissions/phase1/pa1-phase1.tar.gz). Confirm group membership on the corresponding Autolab phase page, have one member upload the archive, and review the grading feedback. Rebuild the archive if source files or accompanying notes change.
+3. **Plan remaining work:** use [DEADLINES.md](DEADLINES.md) and the GitHub tracking links below. The formal Design Document, Phase 2, and Phase 3 remain **Not started**.
 
-| 项目 | 截止日期 | 待办 |
+## GitHub tracking
+
+| Deliverable | Milestone | Issue |
 |---|---|---|
-| PA1 Phase 1 - Alarm Clock | [里程碑 1](https://github.com/QiangWu769/cse421-fall2026/milestone/1) | [待办 #1](https://github.com/QiangWu769/cse421-fall2026/issues/1) |
-| PA1 - Design Document | [里程碑 2](https://github.com/QiangWu769/cse421-fall2026/milestone/2) | [待办 #2](https://github.com/QiangWu769/cse421-fall2026/issues/2) |
-| PA1 Phase 2 - Priority Scheduler | [里程碑 3](https://github.com/QiangWu769/cse421-fall2026/milestone/3) | [待办 #3](https://github.com/QiangWu769/cse421-fall2026/issues/3) |
-| PA1 Phase 3 - MLFQ Scheduler | [里程碑 4](https://github.com/QiangWu769/cse421-fall2026/milestone/4) | [待办 #4](https://github.com/QiangWu769/cse421-fall2026/issues/4) |
+| Phase 1: Alarm Clock | [Milestone 1](https://github.com/QiangWu769/cse421-fall2026/milestone/1) | [Issue #1](https://github.com/QiangWu769/cse421-fall2026/issues/1) |
+| Formal Design Document | [Milestone 2](https://github.com/QiangWu769/cse421-fall2026/milestone/2) | [Issue #2](https://github.com/QiangWu769/cse421-fall2026/issues/2) |
+| Phase 2: Priority Scheduler | [Milestone 3](https://github.com/QiangWu769/cse421-fall2026/milestone/3) | [Issue #3](https://github.com/QiangWu769/cse421-fall2026/issues/3) |
+| Phase 3: MLFQ Scheduler | [Milestone 4](https://github.com/QiangWu769/cse421-fall2026/milestone/4) | [Issue #4](https://github.com/QiangWu769/cse421-fall2026/issues/4) |
 
-里程碑用于显示截止日期；精确截止时间为上表的 23:59，采用 America/New_York。
+Milestones display the due dates. The exact local deadline is 23:59 on each date above, using the stated America/New_York assumption.
 
-## 目录
+## Repository layout
 
 ```text
 assignments/pa1/
-├── README.md                         # PA1 开发与提交说明
-├── pintos/                           # 完整 Pintos 工程
-├── environment/                      # 课程 Dockerfile 与环境指南
-├── reports/PHASE1-REPORT.md           # 实现与本地验证记录
+├── README.md                         # PA1 development and submission guide
+├── pintos/                           # Complete Pintos project
+├── environment/                      # Course Dockerfile and setup guide
+├── reports/PHASE1-REPORT.md           # Implementation and local verification
 └── submissions/phase1/
-    └── pa1-phase1.tar.gz              # Phase 1 源码提交包
-scripts/                              # 仓库辅助脚本
-deadlines.json                        # 结构化截止时间
-DEADLINES.md                          # 分阶段要求和待办
+    └── pa1-phase1.tar.gz              # Phase 1 source archive
+scripts/                              # Repository helper scripts
+deadlines.json                        # Structured deadlines
+DEADLINES.md                          # Requirements and checklists
 ```
 
-代码中的 `DESIGNDOC` 保留了实现及文档的协助来源记录。小组成员应审阅代码和设计说明，并补齐实际身份信息。
+The source `DESIGNDOC` records assistance used for implementation and accompanying notes. Group members should review the code and notes and supply their actual identities.

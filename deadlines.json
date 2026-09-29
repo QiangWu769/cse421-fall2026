@@ -12,9 +12,11 @@
       "due_utc": "2026-10-01T03:59:00Z",
       "points": 14,
       "platform": "Autolab",
-      "status": "implemented; submission unconfirmed",
+      "status": "completed",
       "milestone_url": "https://github.com/QiangWu769/cse421-fall2026/milestone/1",
-      "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/1"
+      "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/1",
+      "submission_status": "unconfirmed",
+      "completion_scope": "Implementation, local verification, and submission archive preparation only."
     },
     {
       "id": "pa1-design",
@@ -23,9 +25,10 @@
       "due_utc": "2026-10-09T03:59:00Z",
       "points": 12,
       "platform": "UBLearns",
-      "status": "Alarm Clock notes drafted; full PDF pending",
+      "status": "not_started",
       "milestone_url": "https://github.com/QiangWu769/cse421-fall2026/milestone/2",
-      "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/2"
+      "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/2",
+      "submission_status": "not_submitted"
     },
     {
       "id": "pa1-phase2",
@@ -34,9 +37,10 @@
       "due_utc": "2026-10-15T03:59:00Z",
       "points": 42,
       "platform": "Autolab",
-      "status": "pending",
+      "status": "not_started",
       "milestone_url": "https://github.com/QiangWu769/cse421-fall2026/milestone/3",
-      "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/3"
+      "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/3",
+      "submission_status": "not_submitted"
     },
     {
       "id": "pa1-phase3",
@@ -45,9 +49,10 @@
       "due_utc": "2026-10-28T03:59:00Z",
       "points": 37,
       "platform": "Autolab",
-      "status": "pending",
+      "status": "not_started",
       "milestone_url": "https://github.com/QiangWu769/cse421-fall2026/milestone/4",
-      "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/4"
+      "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/4",
+      "submission_status": "not_submitted"
     }
   ]
 }
