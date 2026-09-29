@@ -1,0 +1,45 @@
+{
+  "course": "CSE 421/521 - Operating Systems",
+  "term": "Fall 2026",
+  "timezone": "America/New_York",
+  "timezone_note": "Course screenshots specify 23:59 without a timezone; this repository assumes Buffalo local time. Course announcements take precedence.",
+  "source": "User-provided Project 1 assignment and submission screenshots",
+  "deadlines": [
+    {
+      "id": "pa1-phase1",
+      "title": "PA1 Phase 1 - Alarm Clock",
+      "due_local": "2026-09-30T23:59:00-04:00",
+      "due_utc": "2026-10-01T03:59:00Z",
+      "points": 14,
+      "platform": "Autolab",
+      "status": "implemented; submission unconfirmed"
+    },
+    {
+      "id": "pa1-design",
+      "title": "PA1 - Design Document",
+      "due_local": "2026-10-08T23:59:00-04:00",
+      "due_utc": "2026-10-09T03:59:00Z",
+      "points": 12,
+      "platform": "UBLearns",
+      "status": "Alarm Clock notes drafted; full PDF pending"
+    },
+    {
+      "id": "pa1-phase2",
+      "title": "PA1 Phase 2 - Priority Scheduler",
+      "due_local": "2026-10-14T23:59:00-04:00",
+      "due_utc": "2026-10-15T03:59:00Z",
+      "points": 42,
+      "platform": "Autolab",
+      "status": "pending"
+    },
+    {
+      "id": "pa1-phase3",
+      "title": "PA1 Phase 3 - MLFQ Scheduler",
+      "due_local": "2026-10-27T23:59:00-04:00",
+      "due_utc": "2026-10-28T03:59:00Z",
+      "points": 37,
+      "platform": "Autolab",
+      "status": "pending"
+    }
+  ]
+}
