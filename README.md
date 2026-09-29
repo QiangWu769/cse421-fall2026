@@ -33,6 +33,17 @@
 2. Phase 1 提交：使用 [pa1-phase1.tar.gz](assignments/pa1/submissions/phase1/pa1-phase1.tar.gz)，在 Autolab 对应 Phase 页面核对小组后，由一名成员上传并检查反馈。若修改源码或 DESIGNDOC，须重新打包最新版本。
 3. 规划后续工作：查看 [截止时间与待办](DEADLINES.md)、[GitHub milestones](https://github.com/QiangWu769/cse421-fall2026/milestones) 和 [issues](https://github.com/QiangWu769/cse421-fall2026/issues)。
 
+## GitHub 跟进
+
+| 项目 | 截止日期 | 待办 |
+|---|---|---|
+| PA1 Phase 1 - Alarm Clock | [里程碑 1](https://github.com/QiangWu769/cse421-fall2026/milestone/1) | [待办 #1](https://github.com/QiangWu769/cse421-fall2026/issues/1) |
+| PA1 - Design Document | [里程碑 2](https://github.com/QiangWu769/cse421-fall2026/milestone/2) | [待办 #2](https://github.com/QiangWu769/cse421-fall2026/issues/2) |
+| PA1 Phase 2 - Priority Scheduler | [里程碑 3](https://github.com/QiangWu769/cse421-fall2026/milestone/3) | [待办 #3](https://github.com/QiangWu769/cse421-fall2026/issues/3) |
+| PA1 Phase 3 - MLFQ Scheduler | [里程碑 4](https://github.com/QiangWu769/cse421-fall2026/milestone/4) | [待办 #4](https://github.com/QiangWu769/cse421-fall2026/issues/4) |
+
+里程碑用于显示截止日期；精确截止时间为上表的 23:59，采用 America/New_York。
+
 ## 目录
 
 ```text
