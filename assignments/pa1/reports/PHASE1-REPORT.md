@@ -47,9 +47,9 @@ These additional checks passed. The course-test exit statistics also showed that
 
 `pa1-phase1.tar.gz` contains the complete, cleaned `src/` tree for Autolab Phase 1. It excludes Docker images, temporary behavioral tests, and build output.
 
-The 625 regular files in the archive were checked byte-for-byte against the source tree, and the final archive was extracted into a separate directory and successfully rebuilt. The Bochs source download supplied by the course environment remains in `src/misc/`.
+The 625 regular files in the archive were checked byte-for-byte against the source tree, and the original archive was extracted into a separate directory and successfully rebuilt. The archive was subsequently repackaged after a documentation-only edit; all other files remain byte-for-byte unchanged. The Bochs source download supplied by the course environment remains in `src/misc/`.
 
-- Archive size: 5,490,858 bytes.
-- SHA-256: `e914a0456dc7b8c7c34f822bc7971870b49a5dbb0c7c6c030187273d890b6dad`.
+- Archive size: 5,489,772 bytes.
+- SHA-256: `8cbcea31511b539bfac005ae69823b0f1517cfed826c70f1625e0e361fa07164`.
 
 Phase 1 implementation and local verification are complete. Course-platform submission and server grading are unconfirmed. The other three deliverables are not started.
