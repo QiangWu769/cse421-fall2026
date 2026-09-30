@@ -49,7 +49,7 @@ These additional checks passed. The course-test exit statistics also showed that
 
 The 625 regular files in the archive were checked byte-for-byte against the source tree, and the original archive was extracted into a separate directory and successfully rebuilt. The archive was subsequently repackaged after a documentation-only edit; all other files remain byte-for-byte unchanged. The Bochs source download supplied by the course environment remains in `src/misc/`.
 
-- Archive size: 5,489,772 bytes.
-- SHA-256: `8cbcea31511b539bfac005ae69823b0f1517cfed826c70f1625e0e361fa07164`.
+- Archive size: 5,488,376 bytes.
+- SHA-256: `6b6beb0900269d529ed50ea8bfdd6d9d0e239d3cc27739baae4750c6891d20c4`.
 
 Phase 1 implementation and local verification are complete. Course-platform submission and server grading are unconfirmed. The other three deliverables are not started.
