@@ -2,16 +2,16 @@
 
 Course assignments, source code, submission archives, and deadlines. This repository currently contains **Project 1: Pintos Threads**.
 
-**Only Phase 1 is completed, covering implementation and local verification. The formal Design Document, Phase 2, and Phase 3 are all not started.** Autolab submission is unconfirmed; saving work on GitHub does not submit it to the course platform.
+**Phase 1 is completed and graded: 100/100 on Autolab (14/14 rubric points, five tests passed). The formal Design Document is in progress. Phase 2 and Phase 3 implementations are not started.**
 
 ## Deadlines and status
 
-All deadlines below are in **2026 at 23:59**. The provided screenshots do not specify a time zone. This repository uses Buffalo's **America/New_York** as a local assumption; subsequent course announcements and official platform instructions take precedence.
+All deadlines below are in **2026 at 23:59**. The Phase 1 Autolab screenshot confirms EDT (UTC-04:00). Remaining deadlines use Buffalo's **America/New_York** local time; official course announcements take precedence.
 
 | Deliverable | Deadline | Points | Platform | Status |
 |---|---|---:|---|---|
-| Phase 1: Alarm Clock | September 30, 23:59 | 14 | [Autolab](https://autolab.cse.buffalo.edu/) | Completed (implementation and local verification); submission unconfirmed |
-| Formal Design Document | October 8, 23:59 | 12 | UBLearns, PDF | Not started |
+| Phase 1: Alarm Clock | September 30, 23:59 | 14 | [Autolab](https://autolab.cse.buffalo.edu/) | Submitted and graded: 100/100 |
+| Formal Design Document | October 8, 23:59 | 12 | UBLearns, PDF | In progress |
 | Phase 2: Priority Scheduler | October 14, 23:59 | 42 | [Autolab](https://autolab.cse.buffalo.edu/) | Not started |
 | Phase 3: MLFQ Scheduler | October 27, 23:59 | 37 | [Autolab](https://autolab.cse.buffalo.edu/) | Not started |
 
@@ -26,15 +26,15 @@ The following work was completed and locally verified on **2026-09-25**:
 - `timer_sleep()` blocks using an ordered sleep queue and a semaphore, without busy waiting.
 - All five Phase 1 course tests passed. Additional checks passed for actual `THREAD_BLOCKED` state, an `INT64_MAX` delay, and 800 concurrent short sleeps.
 - The complete source archive was generated, extracted into a separate directory, and compiled successfully.
-- Alarm Clock A1-A6 notes are included in the source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC). These are Phase 1 implementation notes, not progress on the separate formal Design Document deliverable. Group identities still need to be entered.
+- Alarm Clock A1-A6 notes are included in the source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC). Group identities are filled in. The draft now also includes planned declarations for B1 and C1.
 
-**Autolab submission is unconfirmed, and no server score is recorded.** See the [Phase 1 report](assignments/pa1/reports/PHASE1-REPORT.md) for the local verification record.
+**The user-provided Autolab screenshot confirms 100/100, all five tests passed, and 14/14 rubric points.** See the [Phase 1 report](assignments/pa1/reports/PHASE1-REPORT.md) for the local verification record.
 
 ## Start here
 
 1. **Develop and test:** read the [PA1 guide](assignments/pa1/README.md). Course environment files are in [environment/](assignments/pa1/environment/).
-2. **Submit Phase 1:** use [pa1-phase1.tar.gz](assignments/pa1/submissions/phase1/pa1-phase1.tar.gz). Confirm group membership on the corresponding Autolab phase page, have one member upload the archive, and review the grading feedback. Rebuild the archive if source files or accompanying notes change.
-3. **Plan remaining work:** use [DEADLINES.md](DEADLINES.md) and the GitHub tracking links below. The formal Design Document, Phase 2, and Phase 3 remain **Not started**.
+2. **Review the design:** read [IMPLEMENTATION-PLAN.txt](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) and the draft [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC). The existing Phase 1 archive is retained as the earlier submission package.
+3. **Plan remaining work:** use [DEADLINES.md](DEADLINES.md) and the GitHub tracking links below. The design document is **In progress**; Phase 2 and Phase 3 implementations remain **Not started**.
 
 ## GitHub tracking
 
@@ -54,7 +54,8 @@ assignments/pa1/
 ├── README.md                         # PA1 development and submission guide
 ├── pintos/                           # Complete Pintos project
 ├── environment/                      # Course Dockerfile and setup guide
-├── reports/PHASE1-REPORT.md           # Implementation and local verification
+├── design/IMPLEMENTATION-PLAN.txt    # Planned scheduler designs
+├── reports/PHASE1-REPORT.md           # Implementation and verification
 └── submissions/phase1/
     └── pa1-phase1.tar.gz              # Phase 1 source archive
 scripts/                              # Repository helper scripts
@@ -62,4 +63,4 @@ deadlines.json                        # Structured deadlines
 DEADLINES.md                          # Requirements and checklists
 ```
 
-The source `DESIGNDOC` records assistance used for implementation and accompanying notes. Group members should review the code and notes and supply their actual identities.
+The source `DESIGNDOC` contains the Alarm Clock answers and planned B1/C1 declarations. The complete PDF remains to be prepared and submitted to UBLearns.

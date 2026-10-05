@@ -2,7 +2,7 @@
   "course": "CSE 421/521 - Operating Systems",
   "term": "Fall 2026",
   "timezone": "America/New_York",
-  "timezone_note": "Course screenshots specify 23:59 without a timezone; this repository assumes Buffalo local time. Course announcements take precedence.",
+  "timezone_note": "The Phase 1 Autolab screenshot confirms EDT (UTC-04:00). Remaining deadlines are recorded in Buffalo local time; course announcements take precedence.",
   "source": "User-provided Project 1 assignment and submission screenshots",
   "deadlines": [
     {
@@ -15,8 +15,13 @@
       "status": "completed",
       "milestone_url": "https://github.com/QiangWu769/cse421-fall2026/milestone/1",
       "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/1",
-      "submission_status": "unconfirmed",
-      "completion_scope": "Implementation, local verification, and submission archive preparation only."
+      "submission_status": "submitted_and_graded",
+      "completion_scope": "Implementation, local verification, and Autolab grading confirmed by the user-provided result screenshot.",
+      "autograder_score_percent": 100,
+      "rubric_points_earned": 14,
+      "rubric_points_max": 14,
+      "tests_passed": 5,
+      "tests_total": 5
     },
     {
       "id": "pa1-design",
@@ -25,7 +30,7 @@
       "due_utc": "2026-10-09T03:59:00Z",
       "points": 12,
       "platform": "UBLearns",
-      "status": "not_started",
+      "status": "in_progress",
       "milestone_url": "https://github.com/QiangWu769/cse421-fall2026/milestone/2",
       "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/2",
       "submission_status": "not_submitted"

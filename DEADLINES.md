@@ -1,15 +1,15 @@
 # Deadlines and Submission Checklists
 
-Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission instructions. Last organized: **2026-09-29**.
+Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission instructions. Last organized: **2026-10-05**.
 
-**Time zone:** the original screenshots do not specify one. This repository uses Buffalo's **America/New_York** as a local assumption. Every deadline below is in 2026 at **23:59**. Official course announcements and platform instructions take precedence; update this file and [deadlines.json](deadlines.json) if the course publishes changes.
+**Time zone:** the Phase 1 Autolab screenshot confirms EDT (UTC-04:00). Remaining deadlines use Buffalo's **America/New_York** local time. Every deadline below is in 2026 at **23:59**. Official course announcements and platform instructions take precedence; update this file and [deadlines.json](deadlines.json) if the course publishes changes.
 
 ## Overview
 
 | Deliverable | Deadline | Points | Format and platform | Status |
 |---|---|---:|---|---|
-| Phase 1: Alarm Clock | 2026-09-30 23:59 | 14 | Complete source tree in `.tar.gz`, Autolab | Completed (implementation and local verification); submission unconfirmed |
-| Formal Design Document | 2026-10-08 23:59 | 12 | PDF, UBLearns; retain `src/threads/DESIGNDOC` in the source tree | Not started |
+| Phase 1: Alarm Clock | 2026-09-30 23:59 | 14 | Complete source tree in `.tar.gz`, Autolab | Submitted and graded: 100/100 |
+| Formal Design Document | 2026-10-08 23:59 | 12 | PDF, UBLearns; retain `src/threads/DESIGNDOC` in the source tree | In progress |
 | Phase 2: Priority Scheduler | 2026-10-14 23:59 | 42 | Complete source tree in `.tar.gz`, Autolab | Not started |
 | Phase 3: MLFQ Scheduler | 2026-10-27 23:59 | 37 | Complete source tree in `.tar.gz`, Autolab | Not started |
 
@@ -21,7 +21,7 @@ The assignment also lists component totals of 18 points for Alarm Clock and 38 f
 
 **Due September 30 at 23:59 | 14 points | Autolab**
 
-**Status: Completed (implementation and local verification). Submission unconfirmed.**
+**Status: Submitted and graded. Autolab 100/100; five tests passed; 14/14 rubric points.**
 
 Track: [Milestone 1](https://github.com/QiangWu769/cse421-fall2026/milestone/1) | [Issue #1](https://github.com/QiangWu769/cse421-fall2026/issues/1).
 
@@ -53,13 +53,14 @@ Implementation and verification record:
 - [x] Pass the five Phase 1 course tests on 2026-09-25.
 - [x] Verify actual `THREAD_BLOCKED` state, an `INT64_MAX` delay, and 800 short sleeps across eight threads.
 - [x] Generate the complete source archive, extract the final archive, and compile it successfully.
-- [x] Include Alarm Clock A1-A6 implementation notes with the Phase 1 source. These notes do not mark the formal Design Document deliverable as started.
+- [x] Include Alarm Clock A1-A6 implementation notes with the Phase 1 source. These answers have now been reviewed for the formal design draft.
 
 Submission follow-up:
 
-- [ ] Enter actual group names and email addresses and review the code and accompanying notes together.
-- [ ] Confirm that all group members have accepted membership on the Autolab Phase 1 page.
-- [ ] Confirm whether the final archive has been submitted. Record the platform submission time and grading feedback; no submission or server score is currently confirmed.
+- [x] Enter actual group names and email addresses.
+- [ ] Review the design together before the PDF submission.
+- [x] Complete the Phase 1 group submission.
+- [x] Confirm grading from the user-provided screenshot: 100/100, five tests passed, 14/14 points. The screenshot does not show the exact submission time.
 
 Archive: [pa1-phase1.tar.gz](assignments/pa1/submissions/phase1/pa1-phase1.tar.gz). Verification details: [PHASE1-REPORT.md](assignments/pa1/reports/PHASE1-REPORT.md). If files change, test again and produce an archive containing the latest version.
 
@@ -67,7 +68,7 @@ Archive: [pa1-phase1.tar.gz](assignments/pa1/submissions/phase1/pa1-phase1.tar.g
 
 **Due October 8 at 23:59 | 12 points | PDF submitted to UBLearns**
 
-**Status: Not started.**
+**Status: In progress.**
 
 Track: [Milestone 2](https://github.com/QiangWu769/cse421-fall2026/milestone/2) | [Issue #2](https://github.com/QiangWu769/cse421-fall2026/issues/2).
 
@@ -75,13 +76,13 @@ Prepare the formal document using the course `threads.tmpl` template and retain 
 
 This deadline precedes the Phase 2 and Phase 3 implementation deadlines. The formal document must therefore describe the planned designs for components whose code is not yet complete; it cannot wait until all later implementations are finished.
 
-The existing Alarm Clock A1-A6 text is documentation bundled with the completed Phase 1 implementation. It is reference material for preparing the formal document, and does not change this deliverable's **Not started** status.
+The Alarm Clock A1-A6 text has been checked against the code. The [October 5 plan](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) defines the proposed scheduler designs, and B1/C1 declarations are added to the draft.
 
-- [ ] Begin the complete formal document and enter every group member's actual name and UB email address.
-- [ ] Review and incorporate the Alarm Clock design, checking it against the submitted implementation.
+- [x] Begin the formal draft and enter every group member's name and UB email address.
+- [x] Review the Alarm Clock design against the completed implementation.
 - [ ] Complete Priority Scheduling questions B1-B7, including multiple and nested priority donation.
 - [ ] Complete Advanced Scheduler questions C1-C6, including the scheduling example table and fixed-point arithmetic design.
-- [ ] Review source and assistance disclosures and add any other sources actually consulted.
+- [ ] Check the references against the sources actually consulted.
 - [ ] Produce the complete PDF and check its content and layout.
 - [ ] Submit the PDF to UBLearns and retain confirmation.
 
