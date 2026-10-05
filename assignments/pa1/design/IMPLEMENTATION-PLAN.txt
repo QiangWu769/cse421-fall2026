@@ -1,0 +1,269 @@
+CSE 421/521 - PROJECT 1 DESIGN PLAN
+October 5, 2026
+
+Group
+Qiang Wu <qwu26@buffalo.edu>
+Mohammad Sahir <msahir@buffalo.edu>
+Siraat Mustafa <siraatmu@buffalo.edu>
+
+CURRENT WORK
+
+Alarm Clock is implemented. The user-provided Autolab result shows
+five tests passed, 14/14 rubric points, and a normalized score of 100/100.
+Priority Scheduling and MLFQS are planned below; their code is not yet
+implemented. The formal design document is in progress.
+
+TODAY'S REVIEW OF ALARM CLOCK (A1-A6)
+
+A1: timer.c defines sleep_waiter with wake_tick, wake, and elem, plus
+    the sleepers list. The declarations and descriptions match the code.
+A2: nonpositive durations return. A positive sleep registers its deadline
+    with interrupts disabled, restores interrupts, and waits in sema_down.
+    The timer removes and signals every due request.
+A3: insertion is O(n); an interrupt processes only due requests and one
+    stopping check. It does not scan the remaining future requests.
+A4: each caller has a separate stack-local request. The small shared-list
+    update is protected from the timer and timer-driven context switches.
+A5: the semaphore retains an early signal. Removing the record before
+    signaling keeps the stack-owned record out of the list before return.
+A6: the sorted queue moves scanning work to registration; the semaphore
+    supplies blocking and avoids a new heap allocation or thread field.
+
+The A answers in src/threads/DESIGNDOC agree with these checks. Kernel
+code and the existing Phase 1 submission archive are unchanged today.
+
+PHASE 2 DESIGN DECISIONS
+
+1. Thread and lock state
+
+Keep thread.priority as the effective priority used by the scheduler.
+Add these members to struct thread:
+
+    int base_priority;
+    struct lock *waiting_lock;
+    struct list held_locks;
+    struct list_elem lock_wait_elem;
+
+Add these members to struct lock:
+
+    struct list contenders;
+    struct list_elem held_elem;
+
+Add a thread pointer to the condition variable's semaphore_elem:
+
+    struct thread *thread;
+
+The existing semaphore.waiters list still holds blocked threads using
+thread.elem. A separate lock.contenders list records acquisition attempts
+using lock_wait_elem. Keep an attempt registered until its thread actually
+acquires the lock, including the interval after it has been unblocked.
+This avoids losing a donation when a woken contender has not run yet.
+Each lock belongs to its holder's held_locks list through held_elem.
+A thread can wait for only one lock at a time, so one lock_wait_elem is
+sufficient. No heap allocation is needed for donation records.
+
+2. Selecting runnable threads and synchronization waiters
+
+Keep a single ready_list. Append newly ready and yielding threads at its
+tail. At dispatch, scan for the first thread with the greatest CURRENT
+priority. Replace the selected candidate only for a strictly greater
+priority. This preserves arrival order among equal priorities.
+
+Use the same rule when sema_up selects a blocked semaphore waiter and
+when cond_signal selects a condition waiter. A priority change must be
+visible at selection time; a saved priority or insertion-time sort is
+not sufficient by itself. Selection is O(n), append is O(1).
+
+Read condition waiters through semaphore_elem.thread. The private
+semaphore's waiters list may still be empty if cond_signal runs after
+the monitor lock is released but before cond_wait reaches sema_down.
+Initialize the thread pointer before publishing the condition waiter.
+Condition-list access remains protected by the caller's monitor lock.
+
+3. Computing and propagating donation
+
+In priority mode, a thread's effective priority is the maximum of its
+base_priority and the effective priorities of contenders for all locks
+it currently holds. Donations combine by maximum, not by addition.
+
+When a contender is registered, recompute the holder. If that holder
+is waiting on another lock, continue to its holder. Follow at most eight
+holder links and stop at a null holder or a repeated thread. Use the
+same recomputation rule when relevant priorities decrease, rather than
+only propagating increases.
+
+Nested example (base priorities H=50, M=30, L=10):
+
+    H waits for lock A, held by M
+    M waits for lock B, held by L
+
+    H (50) --lock A--> M (50) --lock B--> L (50)
+
+If L releases B, its effective priority is recomputed from its base
+and any remaining held locks. M still receives H's donation through A.
+Releasing one lock must not discard donations belonging to other locks.
+
+4. Acquiring and releasing a lock
+
+Acquisition, in a protected synchronization operation:
+- If the lock is unavailable, set waiting_lock and register the attempt
+  in lock.contenders before donation propagation and blocking.
+- Call sema_down while preserving the atomic registration/ownership
+  transition. Sleeping still uses Pintos's semaphore, not polling.
+- After success, remove this contender, clear waiting_lock, assign the
+  holder, and link the lock into held_locks.
+- Recompute the new holder from any remaining contenders, including
+  contenders already unblocked but not yet successful.
+
+Release:
+- Remove the lock from held_locks and clear its holder.
+- Recompute the releasing thread's priority from its remaining locks.
+- Increase the lock semaphore and unblock its highest-priority waiter.
+- Finish all bookkeeping before checking whether the CPU should yield.
+
+lock_try_acquire performs the same successful ownership bookkeeping.
+An unsuccessful try does not register a contender or donate.
+
+5. Priority setters and preemption
+
+thread_set_priority changes base_priority, recomputes effective priority,
+and yields if a ready thread now has a higher priority. An outstanding
+donation may keep the effective priority above the new base value.
+thread_get_priority returns effective priority.
+
+Protect scheduler and donation metadata within short existing-style
+synchronization critical sections. An ordinary extra lock is unsuitable
+for protecting the scheduler's own atomic priority update: acquiring it
+could block and introduce a new donation dependency. Actual waiting
+continues to use semaphores and locks.
+
+Do not yield in the middle of updating metadata. Keep thread_unblock
+atomic in thread context; callers check preemption after completing
+their operation. Audit thread_create, sema_up, lock_release, the priority
+setter, and devices/intq.c's direct unblock path. sema_up must increment
+its value before a normal-context yield is possible. During an interrupt,
+request intr_yield_on_return instead of calling thread_yield. A ready
+thread must displace idle even when both priorities are PRI_MIN.
+
+6. Phase 2 verification after implementation
+
+Run the twelve priority tests plus alarm-priority. Also check a donated
+holder blocked on a separate semaphore, changing base priority while
+receiving donations, equal-priority FIFO, and a condition signal delivered
+before the private semaphore wait begins. These are future checks;
+Phase 2 has no test results yet.
+
+PHASE 3 DESIGN DECISIONS
+
+1. State and arithmetic
+
+Add nice and recent_cpu to each thread. Keep load_avg global. Reuse
+all_list to visit running, ready, and blocked threads. Reuse the Phase 2
+ready_list selection rule; the official FAQ permits a single queue when
+its scheduling behavior matches the specified priority queues.
+
+Use signed 17.14 fixed-point values stored in int32_t, with scale 1<<14.
+Put named arithmetic helpers in threads/fixed-point.h. Use int64_t for
+intermediate fixed-point multiplication and division. Keep fractional
+values until the required conversion; do not use floating point.
+
+The initial thread starts with nice=0 and recent_cpu=0. Later ordinary
+threads inherit both values from their creator. Initialize their computed
+priority before they become ready. Handle idle explicitly: keep its
+priority at PRI_MIN and exclude it from CPU and ready-thread accounting.
+Identify idle before unblocking it during startup. Initialize main without
+calling thread_current() before its thread state is ready. Take the parent
+state snapshot and initialize a new thread before publishing it to all_list.
+
+2. Formulas and tick order
+
+    priority = PRI_MAX - recent_cpu / 4 - 2 * nice
+    load_avg = (59/60) * load_avg + (1/60) * ready_threads
+    recent_cpu = (2 * load_avg) / (2 * load_avg + 1) * recent_cpu + nice
+
+Evaluate priority in fixed point, convert the complete result toward
+zero, and clamp it to PRI_MIN..PRI_MAX. For results in the valid positive
+range, truncation is the required downward rounding. Do not truncate
+recent_cpu/4 before subtracting it. Keep negative recent_cpu values.
+Compute the recent_cpu coefficient before multiplying by recent_cpu.
+
+Plan this order inside each timer interrupt:
+- Increment the global tick count.
+- Account one recent_cpu unit to the running non-idle thread.
+- Wake alarm requests due at this tick; complete their queue operations.
+- On a TIMER_FREQ boundary, count ready threads (ready_list plus the
+  running non-idle thread), update load_avg, then recompute recent_cpu
+  for every non-idle thread, including blocked threads.
+- On a four-tick boundary, recompute every non-idle thread's priority.
+- Apply the time-slice/preemption check and defer any context switch
+  until interrupt return.
+
+At ticks divisible by both intervals, the priority calculation therefore
+uses the new load_avg and recent_cpu. Counting after wakeups includes
+threads whose alarm expires at that boundary. Split accounting from
+periodic updates so the existing thread_tick-before-wakeup ordering does
+not accidentally count sleepers as still blocked. Kernel threads cannot
+run between these updates.
+
+3. Interfaces and equal-priority order
+
+In MLFQS mode, ignore thread_create's explicit priority and calls to
+thread_set_priority. thread_get_priority returns the computed priority.
+Bypass donation while retaining ordinary lock and semaphore behavior.
+
+thread_set_nice updates nice, immediately recalculates priority, and
+checks preemption. thread_get_nice returns the stored value.
+thread_get_recent_cpu and thread_get_load_avg return their value times
+100, rounded to the nearest integer with correct handling of negatives.
+Read shared values atomically against the timer's updates.
+
+Append to the ready list on unblock/yield and pick its first current
+maximum. With equal priorities, an expired four-tick time slice moves
+the current thread behind existing peers. Use this same convention in
+the C2 table: rows describe values AFTER the listed tick's accounting
+and priority update, immediately before dispatching the next thread.
+Assume A, B, C are initially ready in that order. Document this choice
+in C3 rather than leaving tie decisions implicit.
+
+4. Cost and later checks
+
+An ordinary tick does constant-time CPU accounting plus dispatch/wakeup
+checks. A four-tick update visits all threads; a one-second update does
+so once more. Ready selection is O(r) for r ready threads. Wakeups add
+the Alarm Clock's O(k+1) work. Do not describe the complete interrupt
+as O(1) while these scans remain.
+
+The single list avoids moving threads between buckets after every
+priority change, at the cost of linear dispatch. Sixty-four FIFO queues
+are a possible later optimization if scan cost matters.
+
+After implementation, run the nine MLFQS tests and rerun earlier tests
+in their appropriate scheduler mode. Check inherited state, idle
+exclusion, blocked-thread updates, boundary ticks, and signed arithmetic.
+No Phase 3 results are claimed today.
+
+FILES EXPECTED TO CHANGE DURING IMPLEMENTATION
+
+threads/thread.h: planned thread fields and shared helper declarations.
+threads/thread.c: ready selection, priority updates, state initialization,
+                  tick accounting, MLFQS APIs, and preemption checks.
+threads/synch.h: lock contender/ownership links.
+threads/synch.c: donation bookkeeping and priority-aware wakeups.
+devices/timer.c: separate accounting, alarm wakeups, periodic updates.
+devices/intq.c: audit direct unblocking/preemption after waiter cleanup.
+threads/fixed-point.h: planned arithmetic helper header.
+
+NEXT WRITING STEPS
+
+October 6: turn the Phase 2 decisions into B2-B7 answers and review B1.
+October 7: complete C2-C6, recompute the table, and review C1.
+October 8: group review, synchronize DESIGNDOC, export and inspect the
+           complete English PDF, then submit to UBLearns by 23:59 EDT.
+The C2 table and the final PDF are not produced in today's scope.
+
+REFERENCES CHECKED
+
+Course assignment and submission screenshots supplied in this chat.
+Local Pintos documentation: threads.tmpl, threads.texi, 44bsd.texi.
+https://www.scs.stanford.edu/10wi-cs140/pintos/pintos_2.html
+https://www.scs.stanford.edu/10wi-cs140/pintos/pintos_7.html

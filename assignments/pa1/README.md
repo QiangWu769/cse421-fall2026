@@ -4,12 +4,12 @@ CSE 421/521 Operating Systems, Fall 2026. See [DEADLINES.md](../../DEADLINES.md)
 
 | Deliverable | Status |
 |---|---|
-| Phase 1: Alarm Clock | **Completed** - implementation and local verification |
-| Full Design Document PDF | **Not started** |
+| Phase 1: Alarm Clock | **Completed** - Autolab 100/100; 14/14 points |
+| Full Design Document PDF | **In progress** |
 | Phase 2: Priority Scheduler | **Not started** |
 | Phase 3: MLFQ Scheduler | **Not started** |
 
-Course-platform submission and grading are tracked separately. No Autolab submission or server score has been confirmed.
+The user-provided Autolab result confirms five Phase 1 tests passed and a score of 100/100. The design PDF has not been submitted.
 
 ## Completed Phase 1 work
 
@@ -17,9 +17,9 @@ Course-platform submission and grading are tracked separately. No Autolab submis
 - [Submission archive](submissions/phase1/pa1-phase1.tar.gz): the complete, cleaned `src/` tree. All five Phase 1 tests passed, and the extracted archive was rebuilt successfully.
 - [SHA-256 checksum](submissions/phase1/SHA256SUMS).
 - [Implementation and verification report](reports/PHASE1-REPORT.md): records the local checks performed on September 25, 2026.
-- [Phase 1 implementation notes](pintos/src/threads/DESIGNDOC): Alarm Clock A1-A6 describe the completed code. These notes accompany Phase 1; the separate full Design Document PDF remains **Not started**.
+- [Phase 1 implementation notes](pintos/src/threads/DESIGNDOC): Alarm Clock A1-A6 describe the completed code. The draft now includes the planned B1/C1 declarations for the full design document.
 
-One group member must submit the final archive to Autolab Phase 1 and check the grading feedback. Uploading files to GitHub does not submit them to the course platform.
+The Phase 1 archive is retained as the earlier submission package. The working DESIGNDOC continues separately for the October 8 design deadline.
 
 ## Develop from a new clone
 
@@ -56,9 +56,9 @@ PINTOS_IMAGE=sha256:fd28c381bdb9f830d5d45eafa3d2878eae302ba08296a3152f110688c495
 
 The course Dockerfile is preserved unchanged. Building it for the first time requires network access to download dependencies. The Pintos source revision is `9f013d0930202eea99c21083b71098a0df64be0d`.
 
-## Work not started
+## Remaining work
 
-- **Full Design Document PDF:** complete the [course template](pintos/doc/threads.tmpl), including the adopted or planned designs for every component, and submit the PDF to UBLearns by October 8 at 23:59.
+- **Full Design Document PDF (in progress):** use the [October 5 design plan](design/IMPLEMENTATION-PLAN.txt) to complete the [course template](pintos/doc/threads.tmpl), including the adopted or planned designs for every component, and submit the PDF to UBLearns by October 8 at 23:59.
 - **Phase 2:** priority scheduling, multiple and nested priority donation for locks, and the `alarm-priority` test.
 - **Phase 3:** the MLFQ / 4.4BSD scheduler selected with `-mlfqs`.
 

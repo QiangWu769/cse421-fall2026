@@ -2,7 +2,7 @@
 
 Verification date: September 25, 2026.
 
-**Status: Phase 1 completed. The full Design Document PDF, Phase 2, and Phase 3 are not started.**
+**Status: Phase 1 completed and graded on Autolab (100/100). The full Design Document PDF is in progress; Phase 2 and Phase 3 implementations are not started.**
 
 ## Implementation
 
@@ -16,7 +16,7 @@ Verification date: September 25, 2026.
 - An unsigned 64-bit deadline avoids signed addition overflow for very large positive durations.
 - No fields were added to `struct thread`, no heap allocation was introduced, and no course tests or later scheduling components were changed.
 
-The Alarm Clock A1-A6 notes in `src/threads/DESIGNDOC` describe the Phase 1 data structures, algorithm, synchronization, and design choices. These are Phase 1 implementation notes, not a completed or started full Design Document PDF deliverable. Group identities and the other design sections remain to be filled in when that deliverable is started.
+The Alarm Clock A1-A6 notes in `src/threads/DESIGNDOC` describe the Phase 1 data structures, algorithm, synchronization, and design choices. The full design draft was started on October 5: group identities are filled in, the Alarm Clock answers are reviewed, and planned declarations are added for B1/C1.
 
 ## Course tests
 
@@ -52,4 +52,4 @@ The 625 regular files in the archive were checked byte-for-byte against the sour
 - Archive size: 5,488,376 bytes.
 - SHA-256: `6b6beb0900269d529ed50ea8bfdd6d9d0e239d3cc27739baae4750c6891d20c4`.
 
-Phase 1 implementation and local verification are complete. Course-platform submission and server grading are unconfirmed. The other three deliverables are not started.
+The user-provided Autolab result confirms five tests passed, 14/14 Alarm Clock rubric points, and a normalized score of 100/100. The grading screenshot does not show the exact submission time. The existing archive is retained unchanged while the working design document continues separately.
