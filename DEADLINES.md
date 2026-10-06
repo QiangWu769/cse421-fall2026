@@ -83,7 +83,7 @@ The [complete English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf) covers all 
 - [x] Complete Priority Scheduling questions B1-B7, including multiple and nested priority donation.
 - [x] Complete Advanced Scheduler questions C1-C6, including the scheduling example table and fixed-point arithmetic design.
 - [x] Include checked technical references.
-- [x] Produce the complete nine-page PDF and inspect every rendered page.
+- [x] Produce the complete eight-page PDF and inspect every rendered page.
 - [ ] Review the document together with all group members.
 - [ ] Submit the PDF to UBLearns and retain confirmation.
 
