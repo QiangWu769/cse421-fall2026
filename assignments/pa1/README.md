@@ -58,7 +58,7 @@ The course Dockerfile is preserved unchanged. Building it for the first time req
 
 ## Remaining work
 
-- **Full Design Document PDF (prepared):** review the [eight-page English PDF](design/PA1-DESIGNDOC.pdf) and its editable [DESIGNDOC](pintos/src/threads/DESIGNDOC). It includes every required answer, the donation diagram, and the C2 table. Submit the PDF to UBLearns by October 8 at 23:59. The [implementation plan](design/IMPLEMENTATION-PLAN.txt) explains the proposed later code changes.
+- **Full Design Document PDF (prepared):** review the [nine-page English PDF](design/PA1-DESIGNDOC.pdf) and its editable [DESIGNDOC](pintos/src/threads/DESIGNDOC). It includes every required answer, three sketch-style diagrams, and the C2 table. The editable figure assets are in [design/figures/](design/figures/). Submit the PDF to UBLearns by October 8 at 23:59. The [implementation plan](design/IMPLEMENTATION-PLAN.txt) explains the proposed later code changes.
 - **Phase 2:** priority scheduling, multiple and nested priority donation for locks, and the `alarm-priority` test.
 - **Phase 3:** the MLFQ / 4.4BSD scheduler selected with `-mlfqs`.
 

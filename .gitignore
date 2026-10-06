@@ -10,3 +10,7 @@ bochsout.txt
 
 # Local document rendering and review files.
 /tmp/
+
+# Python helper caches.
+__pycache__/
+*.py[cod]

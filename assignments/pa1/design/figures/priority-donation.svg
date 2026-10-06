@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="514" height="200" preserveAspectRatio="xMinYMin meet" viewBox="0 0 514 200" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="514" height="200"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-200)" style="clip-path: url(#clip)">
+		<g transform="">
+			<text x="156.330078125" y="185" style="font-family: SketchLabel; font-size: 12px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,370) scale(1,-1)">Donation follows the lock-wait chain</text>
+			<rect x="15.5" y="78.5" width="137.0" height="90.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(96%,97%,98%); fill-rule: evenodd;"/>
+			<path d="M 15 78 L 38 78.48745 L 61 77.544464 L 84 77.398718 L 107 78.686302 L 130 77.385717 L 153 78 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 153 78 L 152.890638 93.166667 L 152.829883 108.333333 L 152.975085 123.5 L 153.562057 138.666667 L 152.982656 153.833333 L 153 169 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 153 169 L 130 168.390115 L 107 169.081014 L 84 168.798014 L 61 169.424249 L 38 168.88061 L 15 169 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 15 169 L 15.07786 153.833333 L 14.919091 138.666667 L 15.544306 123.5 L 14.634644 108.333333 L 15.15257 93.166667 L 15 78 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<text x="79.9676513671875" y="142.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,285) scale(1,-1)">H</text>
+			<text x="63.220458984375" y="127.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,255) scale(1,-1)">base: 50</text>
+			<text x="51.2926025390625" y="112.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(65%,26%,26%); stroke:none;" transform="translate(0,225) scale(1,-1)">effective: 50</text>
+			<text x="56.2913818359375" y="97.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,195) scale(1,-1)">waits for A</text>
+			<path d="M 47 107 L 59.166667 107.557313 L 71.333333 107.69214 L 83.5 107.544271 L 95.666667 107.367403 L 107.833333 107.192103 L 120 107 " style="stroke: rgb(65%,26%,26%); stroke-linecap: butt; stroke-width: 0.7; fill: none; fill-rule: evenodd;"/>
+			<rect x="188.5" y="78.5" width="137.0" height="90.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(96%,97%,98%); fill-rule: evenodd;"/>
+			<path d="M 188 78 L 211 77.353365 L 234 78.361825 L 257 78.172462 L 280 77.57104 L 303 77.82911 L 326 78 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 326 78 L 325.673691 93.166667 L 326.697558 108.333333 L 326.363699 123.5 L 325.572074 138.666667 L 325.702022 153.833333 L 326 169 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 326 169 L 303 168.815779 L 280 168.737677 L 257 168.775897 L 234 169.371287 L 211 169.003482 L 188 169 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 188 169 L 187.730841 153.833333 L 187.35282 138.666667 L 187.670696 123.5 L 187.735961 108.333333 L 187.320915 93.166667 L 188 78 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<text x="252.365234375" y="142.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,285) scale(1,-1)">M</text>
+			<text x="236.220458984375" y="127.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,255) scale(1,-1)">base: 30</text>
+			<text x="224.2926025390625" y="112.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(65%,26%,26%); stroke:none;" transform="translate(0,225) scale(1,-1)">effective: 50</text>
+			<text x="208.4041748046875" y="97.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,195) scale(1,-1)">holds A; waits for B</text>
+			<path d="M 220 107 L 232.166667 106.835122 L 244.333333 107.670244 L 256.5 107.055363 L 268.666667 107.280672 L 280.833333 107.084399 L 293 107 " style="stroke: rgb(65%,26%,26%); stroke-linecap: butt; stroke-width: 0.7; fill: none; fill-rule: evenodd;"/>
+			<rect x="361.5" y="78.5" width="137.0" height="90.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(96%,97%,98%); fill-rule: evenodd;"/>
+			<path d="M 361 78 L 384 78.129266 L 407 77.688301 L 430 77.870267 L 453 77.760416 L 476 77.623799 L 499 78 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 499 78 L 499.470862 93.166667 L 498.318878 108.333333 L 498.66801 123.5 L 499.233443 138.666667 L 499.52916 153.833333 L 499 169 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 499 169 L 476 168.760282 L 453 169.551442 L 430 168.551391 L 407 169.412988 L 384 168.731424 L 361 169 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 361 169 L 361.202369 153.833333 L 360.989615 138.666667 L 361.244294 123.5 L 360.303012 108.333333 L 360.430955 93.166667 L 361 78 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<text x="427.1083984375" y="142.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,285) scale(1,-1)">L</text>
+			<text x="410.061279296875" y="127.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,255) scale(1,-1)">base: 10</text>
+			<text x="397.2926025390625" y="112.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(65%,26%,26%); stroke:none;" transform="translate(0,225) scale(1,-1)">effective: 50</text>
+			<text x="412.25048828125" y="97.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,195) scale(1,-1)">holds B</text>
+			<path d="M 393 107 L 405.166667 107.401384 L 417.333333 106.486516 L 429.5 107.352519 L 441.666667 106.994408 L 453.833333 107.698629 L 466 107 " style="stroke: rgb(65%,26%,26%); stroke-linecap: butt; stroke-width: 0.7; fill: none; fill-rule: evenodd;"/>
+			<path d="M 153 126 L 158.833333 126.226407 L 164.666667 126.650282 L 170.5 125.360127 L 176.333333 126.588733 L 182.166667 125.76208 L 188 126 " style="stroke: rgb(65%,26%,26%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 188 126 L 186.925964 126.456092 L 186.081038 127.425226 L 184.705785 127.206809 L 183.852025 128.156159 L 182.68134 128.395828 L 181.608377 128.854323 " style="stroke: rgb(65%,26%,26%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 188 126 L 186.845297 125.724544 L 185.809442 125.182953 L 184.696333 124.814357 L 183.820304 123.914872 L 182.449996 124.122216 L 181.608377 123.145677 " style="stroke: rgb(65%,26%,26%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 326 126 L 331.833333 125.604753 L 337.666667 125.610217 L 343.5 126.08787 L 349.333333 125.334237 L 355.166667 125.432185 L 361 126 " style="stroke: rgb(65%,26%,26%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 361 126 L 360.213545 127.100066 L 359.040354 127.334122 L 357.549279 126.856348 L 356.499578 127.366933 L 355.62119 128.261136 L 354.608377 128.854323 " style="stroke: rgb(65%,26%,26%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<path d="M 361 126 L 359.931426 125.531677 L 359.127917 124.469799 L 357.637859 124.945297 L 356.465419 124.709559 L 355.650517 123.673194 L 354.608377 123.145677 " style="stroke: rgb(65%,26%,26%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<text x="158.46484375" y="142" style="font-family: SketchLabel; font-size: 8px;fill: rgb(65%,26%,26%); stroke:none;" transform="translate(0,284) scale(1,-1)">lock A</text>
+			<text x="331.869140625" y="142" style="font-family: SketchLabel; font-size: 8px;fill: rgb(65%,26%,26%); stroke:none;" transform="translate(0,284) scale(1,-1)">lock B</text>
+			<text x="180.787841796875" y="54" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,108) scale(1,-1)">Base priorities stay unchanged.</text>
+			<text x="113.79101562499997" y="25" style="font-family: SketchLabel; font-size: 9px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,50) scale(1,-1)">After L releases B: L returns to 10; M keeps 50 while H waits for A.</text>
+		</g>
+	</g>
+</svg>

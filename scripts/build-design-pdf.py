@@ -12,11 +12,13 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from design_figures import build_figures
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'assignments/pa1/pintos/src/threads/DESIGNDOC'
 OUTPUT = ROOT / 'assignments/pa1/design/PA1-DESIGNDOC.pdf'
 TEXT = SOURCE.read_text()
+FIGURES = build_figures(ROOT / 'assignments/pa1/design/figures')
 NAVY = colors.HexColor('#25384b')
 GRAY = colors.HexColor('#555555')
 styles = {
@@ -25,7 +27,8 @@ styles = {
     'course': ParagraphStyle('course', fontName='Helvetica', fontSize=10,
                              leading=13, textColor=GRAY, spaceAfter=9),
     'section': ParagraphStyle('section', fontName='Times-Bold', fontSize=16,
-                              leading=19, textColor=NAVY, spaceAfter=12),
+                              leading=19, textColor=NAVY, spaceBefore=16,
+                              spaceAfter=12, keepWithNext=True),
     'label': ParagraphStyle('label', fontName='Times-Bold', fontSize=11.5,
                             leading=15, textColor=NAVY, spaceBefore=9,
                             spaceAfter=4, keepWithNext=True),
@@ -64,11 +67,15 @@ class NumberedCanvas(canvas.Canvas):
 def para(text, style='body'):
     return Paragraph(escape(text), styles[style])
 
-def answer_flow(text):
+def answer_flow(text, omit_diagram=False):
     flow = []
     blocks = re.split(r'\n\s*\n', text.strip())
     for block in blocks:
         if not block.strip():
+            continue
+        if omit_diagram and '--->' in block:
+            if flow and isinstance(flow[-1], Paragraph):
+                flow.pop()
             continue
         field_lines = block.splitlines()
         if field_lines and all(re.match(r'^[A-Za-z_]\w*: ', line) for line in field_lines):
@@ -164,8 +171,6 @@ story.append(Spacer(1, 13))
 
 core_count = 0
 for index, (marker, title, keys) in enumerate(sections):
-    if index:
-        story.append(PageBreak())
     story.append(para(title, 'section'))
     start = re.search(r'^\s*' + re.escape(marker) + r'\s*$', TEXT, re.M).end()
     next_markers = ['PRIORITY SCHEDULING', 'ADVANCED SCHEDULER', 'SURVEY QUESTIONS']
@@ -185,10 +190,14 @@ for index, (marker, title, keys) in enumerate(sections):
         answer = section[match.end():finish]
         answer = re.sub(r'^---- [A-Z ]+ ----[ \t]*$', '', answer, flags=re.M).strip()
         assert answer, key
-        flows = answer_flow(answer)
+        flows = answer_flow(answer, omit_diagram=(key == 'B2'))
         story.append(KeepTogether([para(f'{key}. {labels[key]}', 'label'),
                                    para(question, 'question'), flows[0]]))
         story.extend(flows[1:])
+        if key in FIGURES:
+            drawing, caption = FIGURES[key]
+            story.append(KeepTogether([Spacer(1, 8), drawing,
+                                       para(caption, 'small'), Spacer(1, 10)]))
         core_count += 1
 assert core_count == 19
 
