@@ -7,3 +7,6 @@ bochsout.txt
 .env
 .env.*
 !.env.example
+
+# Local document rendering and review files.
+/tmp/

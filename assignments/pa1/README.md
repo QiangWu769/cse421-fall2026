@@ -5,7 +5,7 @@ CSE 421/521 Operating Systems, Fall 2026. See [DEADLINES.md](../../DEADLINES.md)
 | Deliverable | Status |
 |---|---|
 | Phase 1: Alarm Clock | **Completed** - Autolab 100/100; 14/14 points |
-| Full Design Document PDF | **In progress** |
+| Full Design Document PDF | **Prepared** - awaiting group review and UBLearns submission |
 | Phase 2: Priority Scheduler | **Not started** |
 | Phase 3: MLFQ Scheduler | **Not started** |
 
@@ -17,7 +17,7 @@ The user-provided Autolab result confirms five Phase 1 tests passed and a score 
 - [Submission archive](submissions/phase1/pa1-phase1.tar.gz): the complete, cleaned `src/` tree. All five Phase 1 tests passed, and the extracted archive was rebuilt successfully.
 - [SHA-256 checksum](submissions/phase1/SHA256SUMS).
 - [Implementation and verification report](reports/PHASE1-REPORT.md): records the local checks performed on September 25, 2026.
-- [Phase 1 implementation notes](pintos/src/threads/DESIGNDOC): Alarm Clock A1-A6 describe the completed code. The draft now includes the planned B1/C1 declarations for the full design document.
+- [Phase 1 implementation notes](pintos/src/threads/DESIGNDOC): Alarm Clock A1-A6 describe the completed code. The editable document now covers all 19 required questions.
 
 The Phase 1 archive is retained as the earlier submission package. The working DESIGNDOC continues separately for the October 8 design deadline.
 
@@ -58,7 +58,7 @@ The course Dockerfile is preserved unchanged. Building it for the first time req
 
 ## Remaining work
 
-- **Full Design Document PDF (in progress):** use the [October 5 design plan](design/IMPLEMENTATION-PLAN.txt) to complete the [course template](pintos/doc/threads.tmpl), including the adopted or planned designs for every component, and submit the PDF to UBLearns by October 8 at 23:59.
+- **Full Design Document PDF (prepared):** review the [nine-page English PDF](design/PA1-DESIGNDOC.pdf) and its editable [DESIGNDOC](pintos/src/threads/DESIGNDOC). It includes every required answer, the donation diagram, and the C2 table. Submit the PDF to UBLearns by October 8 at 23:59. The [implementation plan](design/IMPLEMENTATION-PLAN.txt) explains the proposed later code changes.
 - **Phase 2:** priority scheduling, multiple and nested priority donation for locks, and the `alarm-priority` test.
 - **Phase 3:** the MLFQ / 4.4BSD scheduler selected with `-mlfqs`.
 
