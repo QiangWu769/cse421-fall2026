@@ -130,7 +130,7 @@ interrupts disabled, which gets more expensive as the list grows.
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
 
-Planned additions to struct thread in threads/thread.h:
+Additions to struct thread in threads/thread.h:
 
 int base_priority;
 struct lock *waiting_lock;
@@ -138,44 +138,40 @@ struct list held_locks;
 struct list_elem lock_wait_elem;
 
 base_priority: The priority requested by the thread before donation.
-waiting_lock: The lock this thread is trying to acquire, or NULL.
-held_locks: Locks currently owned by this thread.
-lock_wait_elem: Links an unfinished acquisition into the lock's contenders.
+waiting_lock: The lock the thread is trying to acquire, or NULL.
+held_locks: Locks owned by the thread.
+lock_wait_elem: Links a pending acquisition into the lock's contenders.
 
-The existing priority member will hold the effective scheduling priority.
-Add a forward declaration of struct lock in thread.h.
+The existing priority field holds the effective priority. thread.h also
+needs a forward declaration of struct lock.
 
-Planned additions to struct lock in threads/synch.h:
+Additions to struct lock in threads/synch.h:
 
 struct list contenders;
 struct list_elem held_elem;
 
-contenders: Threads whose acquisition attempts have not yet succeeded.
-held_elem: Links this lock into its holder's held_locks list.
+contenders: Threads whose lock acquisitions have not succeeded yet.
+held_elem: Links the lock into its holder's held_locks list.
 
-Planned addition to semaphore_elem in threads/synch.c:
+Addition to semaphore_elem in threads/synch.c:
 
 struct thread *thread;
 
-thread: Identifies a condition waiter before its private semaphore blocks.
+thread: Identifies the condition waiter, including before it blocks.
 
-The existing ready_list and semaphore waiters lists will be reused.
-These declarations belong to the planned implementation.
+The ready list and semaphore wait lists keep their existing list links.
 
 >> B2: Explain the data structure used to track priority donation.
 >> Use ASCII art to diagram a nested donation.  (Alternately, submit a
 >> .png file.)
 
-Each thread will keep its base priority separately from its effective
-priority. held_locks identifies the locks from which it can receive
-donations. Each lock's contenders list holds threads whose acquisition
-attempts have not yet succeeded, linked through lock_wait_elem.
-waiting_lock connects a waiting thread to the next lock in the chain.
+held_locks groups donations by the lock being requested. Each lock has
+a contenders list, and each contender's waiting_lock points to that lock.
+Together with lock.holder, these links describe the donation chain.
 
-A contender will remain registered after it is unblocked and until it
-actually obtains the lock. The semaphore wait list alone cannot represent
-that interval. A new holder will therefore see donations from every
-remaining acquisition attempt.
+A contender stays on this list until it acquires the lock. This matters
+because sema_up() can make it ready before it has actually taken the lock;
+it still needs to donate during that interval.
 
 For H, M, and L with base priorities 50, 30, and 10:
 
@@ -184,82 +180,64 @@ For H, M, and L with base priorities 50, 30, and 10:
                          waits for B -------> holds B
     effective 50         effective 50         effective 50
 
-The effective priority is the maximum of the base priority and the
-current effective priorities of contenders for all held locks. Donation
-will follow waiting_lock and holder links through at most eight holders.
-A null holder or repeated thread stops the traversal.
+A holder's effective priority is the maximum of its base priority and
+the effective priorities of contenders for all its held locks. Donation
+follows waiting_lock -> holder, stopping after eight holders, a null
+holder, or a repeated thread.
 
 ---- ALGORITHMS ----
 
 >> B3: How do you ensure that the highest priority thread waiting for
 >> a lock, semaphore, or condition variable wakes up first?
 
-We will append ready threads and semaphore waiters in arrival order.
-When selecting a thread, we will scan the list using its current effective
-priority and keep the first maximum. A strictly greater priority replaces
-the candidate; an equal priority does not. Equal-priority threads therefore
-keep FIFO order, and a yielding thread joins the ready list at the tail.
+Ready threads and semaphore waiters are appended at the tail. Selection
+uses the first maximum of their current effective priorities. This keeps
+equal-priority threads in FIFO order and handles a donation received
+while a thread is already waiting.
 
-sema_up() will select the highest-priority blocked waiter, remove it from
-the wait list, unblock it, and increment the semaphore value before any
-ordinary context switch. The lock's semaphore uses the same selection.
-After the surrounding operation finishes its metadata updates, a higher
-priority ready thread will cause a yield. An interrupt handler will request
-intr_yield_on_return() instead of yielding inside the handler.
-thread_create() will also check preemption after making a new thread ready.
-Idle will yield to any ready thread, even one with priority zero. Ordinary
-thread_unblock() will keep its atomic contract; its callers will check
-preemption once their metadata updates are complete.
+sema_up() selects, removes, and unblocks the highest-priority waiter, then
+increments the semaphore before allowing preemption. Locks use this same semaphore
+rule. cond_signal() selects through the saved thread pointer. Looking
+inside its private semaphore is unsafe because the signal can arrive
+before sema_down(). An early signal stays in the semaphore; a blocked
+waiter becomes ready. cond_wait() reacquires the monitor lock on return.
 
-cond_signal() will scan condition waiters through their saved thread
-pointers and use the same current-priority rule. This also works when a
-signal arrives before the waiter's sema_down(), while its private
-semaphore still has an empty wait list. sema_up() signals that waiter's
-private semaphore; a blocked waiter becomes ready, while an early signal
-is retained until its next sema_down(). The waiter must reacquire the monitor lock before
-cond_wait() returns.
+A higher-priority ready thread triggers a yield after the caller finishes
+its state changes. thread_create() performs the same check for a new
+thread. Idle gives way to any ready thread, including priority zero.
+thread_unblock() keeps its atomic contract in thread context, so its
+caller checks preemption after finishing. Interrupt handlers request
+intr_yield_on_return() instead of switching inside the handler.
 
 >> B4: Describe the sequence of events when a call to lock_acquire()
 >> causes a priority donation.  How is nested donation handled?
 
-If the lock is unavailable, lock_acquire() will set the caller's
-waiting_lock and link its acquisition attempt into the lock's contenders.
-It will recompute the holder's effective priority from the holder's base
-priority and all contenders for its held locks.
+If the lock is busy, lock_acquire() sets waiting_lock, registers the
+caller in contenders, and recomputes the holder's effective priority.
+If that holder is waiting for another lock, the update continues along
+the holder chain, up to eight holders. sema_down() then blocks the caller
+until it can take the semaphore.
 
-If the holder is waiting for another lock, the recomputation will continue
-to that lock's holder. This propagates a high-priority donation through a
-nested chain, up to the eight-holder limit. The caller will then wait on
-the lock semaphore. These waiting steps use sema_down() and thread_block(),
-not a loop that repeatedly yields.
-
-After the caller successfully takes the semaphore, it will remove its
-contender entry if it registered one and clear waiting_lock. It will
-assign the new holder and add the lock to held_locks, including on an
-uncontended acquisition. It will recompute its effective priority from
-any remaining contenders. A successful lock_try_acquire() will use the
-same ownership bookkeeping; a failed try will not register or donate. The registration, ownership, and priority changes
-will use the existing synchronization primitives' short atomic sections,
-with blocking delegated to the semaphore.
+After success, the caller removes its contender entry if it registered
+one, clears waiting_lock, and becomes the holder. The lock is added to
+held_locks, and the new holder's priority is recomputed from remaining
+contenders. Ownership bookkeeping also applies to an uncontended acquire
+and a successful lock_try_acquire(). A failed try registers no wait or
+donation. The list and priority changes occur within the synchronization
+primitives' short atomic sections.
 
 >> B5: Describe the sequence of events when lock_release() is called
 >> on a lock that a higher-priority thread is waiting for.
 
-lock_release() will remove the lock from the current thread's held_locks
-and clear the lock's holder. It will recompute the releasing thread's
-effective priority using its base priority and contenders for its remaining
-locks. This removes donations for this lock while preserving others.
+The releasing thread removes the lock from held_locks and clears its
+holder. It recomputes its effective priority from base_priority and the
+contenders for its remaining locks. Donations for the released lock are
+removed; donations for other locks still count.
 
-It will then release the semaphore, selecting its highest-priority blocked
-waiter. Contender records remain until their threads actually acquire the
-lock. A new holder will inherit donations from remaining contenders,
-including a contender already made ready but not yet successful.
-
-All release bookkeeping and the semaphore increment will finish before a
-normal-context preemption check. If a ready thread has a higher priority,
-the releasing thread will yield immediately. Releasing a lock makes its
-waiter ready; dispatch still chooses the highest-priority ready thread,
-which can be another thread.
+sema_up() then unblocks the highest-priority waiter and releases the
+semaphore. The next holder recomputes its priority from the remaining
+contenders when acquisition succeeds. Once release bookkeeping is
+complete, the caller yields if a higher-priority thread is ready.
 
 ---- SYNCHRONIZATION ----
 
@@ -267,42 +245,36 @@ which can be another thread.
 >> how your implementation avoids it.  Can you use a lock to avoid
 >> this race?
 
-A race could occur if thread_set_priority() reads the old donation state,
-then is preempted before storing the effective priority. Another thread
-could add a higher donation while the setter is suspended. Writing the old
-calculated value after resuming would discard that donation.
+Suppose thread_set_priority() reads the donation list and is preempted
+before writing its result. Another thread adds a higher donation. When
+the setter resumes, its stale result could overwrite the new priority.
 
-We will protect the base-priority change, donation scan, effective-priority
-write, and ready-priority comparison in one short atomic update. The setter
-will change base_priority and retain any larger active donation. Any yield
-will happen after the metadata update is complete. thread_get_priority()
-will return the effective value.
+The base-priority change, donation scan, effective-priority write, and
+ready-priority comparison belong in one short atomic update. An active
+donation can keep the effective priority above the new base value. Any
+yield follows the completed update; thread_get_priority() returns the
+effective value.
 
-An extra sleeping lock is unsuitable for this scheduler update. Acquiring
-it could block and introduce a donation dependency into the mechanism
-that maintains donations, and interrupt handlers cannot acquire it.
-Short interrupt exclusion protects this internal state on Pintos's single
-CPU. Semaphores and locks still provide the actual blocking and waiting.
+A sleeping lock would create another scheduling and donation dependency
+inside the mechanism being updated, and an interrupt handler cannot
+acquire it. Short interrupt exclusion protects this internal state on
+Pintos's single CPU. Actual waits still use semaphores and locks.
 
 ---- RATIONALE ----
 
 >> B7: Why did you choose this design?  In what ways is it superior to
 >> another design you considered?
 
-Grouping donation sources by held lock makes releasing one lock clear:
-its donations disappear while the other locks still contribute. Keeping
-an acquisition in contenders until success also covers the gap between
-wakeup and ownership, without allocating a separate donation object.
+Tracking contenders by lock makes it easy to remove just the donations
+associated with a released lock. Selecting by current priority also
+avoids moving a thread whenever a donation changes its position in a
+ready or waiting queue.
 
-Selecting from current priorities avoids keeping every ready and waiting
-list sorted after each donation. A sorted-list alternative could reduce
-selection cost, but would need to update a thread's position whenever its
-effective priority changes, including while blocked on another semaphore.
-
-The cost of our plan is linear selection and scans of held locks and their
-contenders. It also adds list links to threads and locks. This is a simple
-starting point for the project; priority buckets or cached lock maxima
-could reduce those scans later, at the cost of more update paths.
+An ordered queue would make selection cheaper, but every priority change
+would require fixing the thread's position, even when it is blocked on
+another semaphore. Our list-based design has fewer update paths. Its
+cost is linear selection, scans of held locks and contenders, and a few
+extra list links per thread and lock.
 
               ADVANCED SCHEDULER
               ==================
@@ -313,35 +285,39 @@ could reduce those scans later, at the cost of more update paths.
 >> `struct' member, global or static variable, `typedef', or
 >> enumeration.  Identify the purpose of each in 25 words or less.
 
-Planned declarations in threads/fixed-point.h:
+In threads/fixed-point.h:
 
 typedef int32_t fixed_t;
 #define FP_SHIFT 14
 #define FP_SCALE (1 << FP_SHIFT)
 
-fixed_t: Stores a signed 17.14 fixed-point number.
+fixed_t: A signed 17.14 fixed-point value.
 FP_SHIFT: The number of fractional bits.
 FP_SCALE: The scale factor for integer and fixed-point conversions.
 
-Planned additions to struct thread in threads/thread.h:
+Additions to struct thread in threads/thread.h:
 
 int nice;
 fixed_t recent_cpu;
 
-nice: The thread's scheduling preference, inherited from its creator.
-recent_cpu: The thread's recent CPU usage, including its fractional part.
+nice: The thread's niceness value, inherited from its creator.
+recent_cpu: Recent CPU usage, including the fractional part.
 
-Planned global in threads/thread.c:
+In threads/thread.c:
 
 static fixed_t load_avg;
 
-load_avg: The system-wide moving average of runnable non-idle threads.
+load_avg: The moving average of runnable non-idle threads.
 
-The existing priority member, ready_list, all_list, and thread_mlfqs
-will be reused. A single ready list will select the first current maximum
-priority, preserving FIFO order among equal priorities. Fixed-point
-helpers will use int64_t intermediate products and dividends.
-These declarations belong to the planned implementation.
+priority, ready_list, all_list, and thread_mlfqs are reused. Selection
+reads current priorities from the single ready list. Fixed-point
+multiplication and division use int64_t intermediate values.
+
+The initial thread starts with nice=0 and recent_cpu=0. New ordinary
+threads inherit both values before being added to all_list. Idle is
+identified before it becomes ready and excluded from CPU and load
+accounting. load_avg starts at zero, and idle keeps PRI_MIN priority.
+MLFQS ignores manually supplied priorities and bypasses donation. Changing nice recalculates priority and checks preemption.
 
 ---- ALGORITHMS ----
 
@@ -368,53 +344,41 @@ ticks   A   B   C   A   B   C   to run
 >> in the table uncertain?  If so, what rule did you use to resolve
 >> them?  Does this match the behavior of your scheduler?
 
-The table assumes that A, B, and C are initially ready in that order,
-that they remain runnable, and that each time slice lasts four ticks.
-A row shows recent_cpu and priorities after accounting for the listed
-ticks and recalculating priorities, then identifies the thread selected
-for the next slice. At tick zero, it shows the initial selection.
+A, B, and C start ready in that order and remain runnable. Each row
+shows values after the listed tick's accounting and priority update.
+The final column gives the thread selected for the next four-tick slice.
 
-An equal-priority choice depends on ready-list order. Our plan appends
-an expired-slice thread behind its existing peers and selects the first
-current maximum. For example, B precedes A at tick 8, and C precedes both
-at tick 24. A can keep running if it still has strictly higher priority,
-as at tick 4.
-
-This is the rule the implementation will use. The table is a calculation
-of the proposed policy, not output from an implemented MLFQS scheduler.
-No one-second load_avg or recent_cpu decay occurs within these 36 ticks
-with TIMER_FREQ equal to 100.
+At slice expiry, the running thread joins the ready-list tail. The first
+maximum priority wins. Thus B precedes A at tick 8, and C precedes both
+at tick 24. A is selected again at tick 4 because its priority is still
+higher. These conventions are also the rules for the planned scheduler.
+With TIMER_FREQ=100, no one-second update occurs in this table.
 
 >> C4: How is the way you divided the cost of scheduling between code
 >> inside and outside interrupt context likely to affect performance?
 
-Each timer tick will charge one recent_cpu unit to the running non-idle
-thread. Alarm wakeups will follow. At a one-second boundary, load_avg will
-be updated first, followed by recent_cpu for every non-idle thread,
-including blocked threads. At each global four-tick boundary, all non-idle
-priorities will be recalculated. A tick that matches both intervals will
-use the new load_avg and recent_cpu in its priority calculation.
-
-The calculations will use:
+Every tick adds one recent_cpu unit to the running non-idle thread,
+then wakes due sleepers. Every TIMER_FREQ ticks, load_avg is updated
+before recent_cpu is recomputed for all non-idle threads, including
+blocked threads. Every fourth global tick updates their priorities.
+When both boundaries coincide, the priority formula uses the new values.
 
     priority = PRI_MAX - recent_cpu / 4 - 2 * nice
     load_avg = (59/60) * load_avg + (1/60) * ready_threads
     recent_cpu = (2*load_avg)/(2*load_avg+1) * recent_cpu + nice
 
-The ready-thread count will be taken after alarm wakeups, so it includes
-threads whose deadlines have arrived at that boundary, plus the running
-non-idle thread. All these operations will finish before an interrupt
-return can schedule an ordinary thread. The current thread_tick() and
-timer handler will be separated into accounting and periodic updates to
-produce this order.
+ready_threads counts the ready list plus the running non-idle thread,
+after alarm wakeups. The updates finish before interrupt return. This
+requires splitting thread_tick() into accounting and periodic updates,
+with the latter called after the alarm wake loop. After the updates, the
+handler compares the current and ready priorities and requests
+intr_yield_on_return() when needed.
 
-The per-thread periodic scans cost O(n) for n threads. Ready selection
-costs O(r) for r ready threads, and the alarm adds O(k+1) for k due
-requests. Keeping all-thread scans at the specified boundaries avoids
-doing them every tick, but those boundary interrupts are still longer.
-Thread creation and thread_set_nice() will calculate the affected thread's
-priority outside interrupt context; their shared-state changes will use
-short atomic sections.
+Periodic updates cost O(n) for n threads. Dispatch costs O(r) for r ready
+threads, and waking k sleepers adds O(k+1). All-thread scans occur only
+at the specified boundaries. Thread creation and thread_set_nice()
+calculate one thread's priority outside interrupt context, with short
+atomic sections for shared state.
 
 ---- RATIONALE ----
 
@@ -423,28 +387,16 @@ short atomic sections.
 >> time to work on this part of the project, how might you choose to
 >> refine or improve your design?
 
-Reusing the ready list gives both scheduling policies the same selection
-rule. We will read priorities at dispatch rather than rely on a list that
-was sorted before the last periodic update. This also lets blocked threads
-receive updated recent_cpu and priority without moving between queues.
+One ready list keeps selection simple and works with both schedulers.
+Reading priorities at dispatch avoids an ordering that becomes stale
+after a periodic update. Blocked threads receive updated values without
+being moved between queues.
 
-The tradeoff is O(r) dispatch and O(n) periodic scans. Sixty-four FIFO ready
-queues could make dispatch cheaper, but changed priorities would require
-moving ready threads while preserving the chosen tie order. If the thread
-count made scans expensive, that would be the first optimization to
-consider. The simple list is our initial design.
-
-Initialization will set the first thread's nice and recent_cpu to zero.
-Later ordinary threads will inherit both values before they are published
-in all_list. Idle will be recognized before it becomes ready and excluded
-from these calculations. In MLFQS mode, the explicit creation priority and
-thread_set_priority() will be ignored, and donation will be bypassed.
-thread_set_nice() will recalculate immediately and check preemption.
-
-After implementation, the nine MLFQS tests will check load, fairness,
-niceness, recent CPU accounting, and blocked-thread behavior. Additional
-review will cover idle startup, inherited state, negative arithmetic,
-and ticks matching both update boundaries.
+The main costs are O(r) dispatch and O(n) periodic scans. With more time,
+we would consider 64 FIFO ready queues to reduce dispatch cost. That
+would require moving ready threads after priority changes and preserving
+the same tie order. For this project, the single list is the simpler
+starting point.
 
 >> C6: The assignment explains arithmetic for fixed-point math in
 >> detail, but it leaves it open to you to implement it.  Why did you
@@ -453,30 +405,27 @@ and ticks matching both update boundaries.
 >> type and/or a set of functions or macros to manipulate fixed-point
 >> numbers, why did you do so?  If not, why not?
 
-We will use a signed 17.14 fixed-point type with scale F = 1 << 14.
-Named helpers in threads/fixed-point.h will handle conversion and
-arithmetic, keeping scale corrections out of the scheduler formulas.
-A header of small inline functions is sufficient; no separate source
-file or build-rule change is needed.
+We plan to put small inline helpers in threads/fixed-point.h using
+signed 17.14 values and F = 1 << 14. Naming the operations keeps the
+scale conversions in one place and makes the scheduler formulas easier
+to check.
 
-An integer n becomes n * F. Adding an integer uses x + n * F. Two
+An integer n becomes n * F, and adding it to x uses x + n * F. Two
 fixed-point values multiply as ((int64_t) x * y) / F and divide as
-((int64_t) x * F) / y. The wide intermediate avoids overflow during
-scaling. Multiplication and division by F will be used instead of signed
-bit shifts, whose behavior is awkward for negative operands.
+((int64_t) x * F) / y. The wide intermediate prevents scaling overflow.
+Multiplication and division by F also handle negative operands without
+relying on signed shifts.
 
-We will keep stored fractions intact, including a negative recent_cpu.
-The priority formula will be evaluated in fixed point, then the complete
-result converted toward zero and clamped to 0..63. For a valid positive
-priority, this conversion rounds down. The recent_cpu/4 term will not be
-converted early. The coefficient for the one-second recent_cpu update
-will be calculated before multiplying by recent_cpu.
+Stored values keep their fractions, including negative recent_cpu.
+Priority is calculated in fixed point, then converted toward zero and
+clamped to 0..63. For a valid positive priority, this rounds down. The
+recent_cpu/4 term is not truncated early. In the one-second update, the
+coefficient is calculated before multiplying it by recent_cpu.
 
-The recent CPU and load getters will multiply by 100 using a wide
-intermediate, then round to nearest. For scaled x, that conversion uses
-(x + F/2)/F when nonnegative and (x - F/2)/F when negative, with integer
-division toward zero. These distinct helpers will make truncation and
-rounding explicit at their call sites.
+The load and recent CPU getters multiply by 100 in a wide intermediate
+and round to nearest. For scaled x, use (x + F/2)/F when x is nonnegative
+and (x - F/2)/F when negative, with division toward zero. Separate helpers
+for truncation and rounding make that distinction explicit.
 
                SURVEY QUESTIONS
                ================

@@ -132,16 +132,16 @@ def answer_flow(text):
 
 sections = [
     ('ALARM CLOCK', 'Alarm Clock', ['A' + str(i) for i in range(1, 7)]),
-    ('PRIORITY SCHEDULING', 'Priority Scheduling', ['B' + str(i) for i in range(1, 8)]),
-    ('ADVANCED SCHEDULER', 'Advanced Scheduler', ['C' + str(i) for i in range(1, 7)]),
+    ('PRIORITY SCHEDULING', 'Priority Scheduling - Proposed Design', ['B' + str(i) for i in range(1, 8)]),
+    ('ADVANCED SCHEDULER', 'Advanced Scheduler - Proposed Design', ['C' + str(i) for i in range(1, 7)]),
 ]
 labels = {
     'A1': 'Data structures', 'A2': 'Sleep and wakeup', 'A3': 'Interrupt cost',
     'A4': 'Concurrent sleep calls', 'A5': 'Timer races', 'A6': 'Design choice',
-    'B1': 'Planned data structures', 'B2': 'Donation tracking',
+    'B1': 'Data structures', 'B2': 'Donation tracking',
     'B3': 'Priority selection and preemption', 'B4': 'Lock acquisition',
     'B5': 'Lock release', 'B6': 'Priority-update race', 'B7': 'Design choice',
-    'C1': 'Planned data structures', 'C2': 'Scheduling example',
+    'C1': 'Data structures', 'C2': 'Scheduling example',
     'C3': 'Table conventions', 'C4': 'Update order and performance',
     'C5': 'Design tradeoffs', 'C6': 'Fixed-point arithmetic',
 }
