@@ -10,66 +10,42 @@
 	</clipPath>
 	<g id="group" transform="scale(1,-1) translate(0,-235)" style="clip-path: url(#clip)">
 		<g transform="">
-			<text x="82.1572265625" y="214" style="font-family: SketchLabel; font-size: 12px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,428) scale(1,-1)">timer_sleep()</text>
-			<text x="351.009765625" y="214" style="font-family: SketchLabel; font-size: 12px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,428) scale(1,-1)">timer interrupt</text>
-			<rect x="20.5" y="158.5" width="199.0" height="46.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(96%,97%,98%); fill-rule: evenodd;"/>
-			<path d="M 20 158 L 53.333333 158.216216 L 86.666667 158.155827 L 120 158.512107 L 153.333333 157.991552 L 186.666667 157.983857 L 220 158 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 220 158 L 220.245822 165.833333 L 219.507045 173.666667 L 220.071576 181.5 L 219.863321 189.333333 L 220.17209 197.166667 L 220 205 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 220 205 L 186.666667 205.525698 L 153.333333 204.382538 L 120 205.66329 L 86.666667 204.60992 L 53.333333 204.8216 L 20 205 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 20 205 L 20.4118 197.166667 L 20.037211 189.333333 L 19.922576 181.5 L 19.740088 173.666667 L 20.197659 165.833333 L 20 158 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<text x="65.5748291015625" y="185.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,371) scale(1,-1)">Enqueue sleep request</text>
-			<text x="68.899658203125" y="170.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,341) scale(1,-1)">Sorted by wake_tick</text>
-			<rect x="20.5" y="78.5" width="199.0" height="46.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(96%,97%,98%); fill-rule: evenodd;"/>
-			<path d="M 20 78 L 53.333333 77.318152 L 86.666667 77.908064 L 120 78.531982 L 153.333333 77.571122 L 186.666667 78.008542 L 220 78 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 220 78 L 219.460704 85.833333 L 219.937808 93.666667 L 220.455788 101.5 L 220.268599 109.333333 L 220.130226 117.166667 L 220 125 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 220 125 L 186.666667 125.020323 L 153.333333 125.425607 L 120 125.050823 L 86.666667 124.697888 L 53.333333 124.781181 L 20 125 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 20 125 L 20.12267 117.166667 L 19.390429 109.333333 L 19.733176 101.5 L 19.538846 93.666667 L 19.568748 85.833333 L 20 78 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<text x="76.49267578125" y="105.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,211) scale(1,-1)">sema_down(wake)</text>
-			<text x="96.169921875" y="90.5" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(19%,36%,52%); stroke:none;" transform="translate(0,181) scale(1,-1)">BLOCKED</text>
-			<rect x="20.5" y="10.5" width="199.0" height="34.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(96%,97%,98%); fill-rule: evenodd;"/>
-			<path d="M 20 10 L 53.333333 9.544305 L 86.666667 10.680076 L 120 9.701495 L 153.333333 10.493415 L 186.666667 10.129992 L 220 10 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 220 10 L 219.76775 15.833333 L 220.049563 21.666667 L 219.722703 27.5 L 219.938136 33.333333 L 220.238649 39.166667 L 220 45 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 220 45 L 186.666667 45.571575 L 153.333333 45.103779 L 120 45.347835 L 86.666667 45.062395 L 53.333333 45.483311 L 20 45 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 20 45 L 20.264584 39.166667 L 20.534303 33.333333 L 20.684024 27.5 L 20.60353 21.666667 L 19.332835 15.833333 L 20 10 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<text x="102.4581298828125" y="24.0" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(19%,36%,52%); stroke:none;" transform="translate(0,48) scale(1,-1)">READY</text>
-			<rect x="294.5" y="170.5" width="199.0" height="34.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(96%,97%,98%); fill-rule: evenodd;"/>
-			<path d="M 294 170 L 327.333333 170.067512 L 360.666667 170.389211 L 394 169.628297 L 427.333333 169.873784 L 460.666667 169.313164 L 494 170 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 494 170 L 493.439897 175.833333 L 493.977838 181.666667 L 494.433434 187.5 L 494.467863 193.333333 L 494.597762 199.166667 L 494 205 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 494 205 L 460.666667 205.400332 L 427.333333 204.820324 L 394 205.58503 L 360.666667 205.414202 L 327.333333 205.190439 L 294 205 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 294 205 L 293.925544 199.166667 L 294.677197 193.333333 L 293.478323 187.5 L 294.513582 181.666667 L 293.722476 175.833333 L 294 170 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<text x="376.922119140625" y="184.0" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,368) scale(1,-1)">ticks++</text>
-			<rect x="294.5" y="105.5" width="199.0" height="42.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(96%,97%,98%); fill-rule: evenodd;"/>
-			<path d="M 294 105 L 327.333333 105.280103 L 360.666667 104.645763 L 394 105.050094 L 427.333333 105.489421 L 460.666667 104.9155 L 494 105 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 494 105 L 494.394857 112.166667 L 493.533974 119.333333 L 493.744735 126.5 L 494.275689 133.666667 L 494.439425 140.833333 L 494 148 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 494 148 L 460.666667 147.334174 L 427.333333 147.784584 L 394 147.755953 L 360.666667 148.505214 L 327.333333 148.391236 L 294 148 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 294 148 L 293.977625 140.833333 L 293.651351 133.666667 L 294.43936 126.5 L 294.289261 119.333333 L 293.504967 112.166667 L 294 105 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<text x="343.2200927734375" y="123.0" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,246) scale(1,-1)">Remove due sleepers</text>
-			<rect x="294.5" y="45.5" width="199.0" height="34.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(96%,97%,98%); fill-rule: evenodd;"/>
-			<path d="M 294 45 L 327.333333 45.188212 L 360.666667 44.812528 L 394 45.513292 L 427.333333 45.143367 L 460.666667 44.321481 L 494 45 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 494 45 L 494.639176 50.833333 L 493.766059 56.666667 L 494.017012 62.5 L 493.346769 68.333333 L 494.325288 74.166667 L 494 80 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 494 80 L 460.666667 79.462695 L 427.333333 80.37069 L 394 79.44547 L 360.666667 79.995651 L 327.333333 79.567801 L 294 80 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 294 80 L 294.371414 74.166667 L 294.536985 68.333333 L 293.689958 62.5 L 293.374297 56.666667 L 294.187804 50.833333 L 294 45 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<text x="357.1397705078125" y="59.0" style="font-family: SketchLabel; font-size: 10.5px;fill: rgb(16%,19%,25%); stroke:none;" transform="translate(0,118) scale(1,-1)">sema_up(wake)</text>
-			<path d="M 120 158 L 119.449653 152.5 L 120.543007 147 L 119.973451 141.5 L 119.997296 136 L 120.642444 130.5 L 120 125 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 120 125 L 120.364672 126.114862 L 121.265643 126.990227 L 120.959317 128.404738 L 121.610392 129.3917 L 121.96149 130.512623 L 122.854323 131.391623 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 120 125 L 119.185338 125.913909 L 118.704078 126.976705 L 118.98692 128.380729 L 117.564067 129.023036 L 117.655439 130.341554 L 117.145677 131.391623 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 120 78 L 119.758822 72.5 L 119.963367 67 L 120.414097 61.5 L 120.588362 56 L 119.447115 50.5 L 120 45 " style="stroke: rgb(19%,36%,52%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd; stroke-dasharray: 3, 3;"/>
-			<path d="M 120 45 L 119.973545 46.289528 L 120.896463 47.155092 L 120.884314 48.438232 L 121.984238 49.22475 L 122.931519 50.079435 L 122.854323 51.391623 " style="stroke: rgb(19%,36%,52%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 120 45 L 119.084998 45.869099 L 119.052894 47.132477 L 118.749861 48.274865 L 118.001717 49.218478 L 117.793224 50.403085 L 117.145677 51.391623 " style="stroke: rgb(19%,36%,52%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<text x="130" y="57" style="font-family: SketchLabel; font-size: 8.5px;fill: rgb(19%,36%,52%); stroke:none;" transform="translate(0,114) scale(1,-1)">on signal</text>
-			<path d="M 394 170 L 394.288453 166.333333 L 393.45817 162.666667 L 393.65598 159 L 393.704263 155.333333 L 394.051542 151.666667 L 394 148 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 394 148 L 394.023205 149.267351 L 395.247735 149.998224 L 395.287526 151.258168 L 395.52309 152.430687 L 395.863993 153.556162 L 396.854323 154.391623 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 394 148 L 393.139545 148.893459 L 392.578962 149.920832 L 392.302489 151.075081 L 392.427725 152.408722 L 391.233533 153.153143 L 391.145677 154.391623 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 394 105 L 394.67679 100.833333 L 394.155779 96.666667 L 394.549771 92.5 L 394.697165 88.333333 L 393.919868 84.166667 L 394 80 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 394 80 L 394.931423 80.861766 L 394.999492 82.109082 L 394.804861 83.473713 L 396.196008 84.13018 L 395.819099 85.576211 L 396.854323 86.391623 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 394 80 L 394.045751 81.298145 L 393.163607 82.181918 L 392.63088 83.221731 L 391.566657 84.024193 L 391.957979 85.47666 L 391.145677 86.391623 " style="stroke: rgb(16%,19%,25%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 220 177 L 232.570981 169.018385 L 244.585963 160.213892 L 257.023977 152.035485 L 269.123946 143.356773 L 281.998731 135.824789 L 294 127 " style="stroke: rgb(19%,36%,52%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd; stroke-dasharray: 3, 3;"/>
-			<path d="M 294 127 L 293.558381 128.099285 L 293.206678 129.254516 L 292.680279 130.30105 L 291.49852 130.939821 L 290.700156 131.817139 L 290.301986 132.943458 " style="stroke: rgb(19%,36%,52%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 294 127 L 292.888478 127.415206 L 291.646606 127.089782 L 290.673276 128.290183 L 289.35958 127.556658 L 288.246751 127.964444 L 287.105958 128.213337 " style="stroke: rgb(19%,36%,52%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<text x="230.737548828125" y="184" style="font-family: SketchLabel; font-size: 8.5px;fill: rgb(19%,36%,52%); stroke:none;" transform="translate(0,368) scale(1,-1)">shared list</text>
-			<path d="M 294 62 L 281.649716 56.202505 L 269.358159 50.280845 L 256.984044 44.533736 L 244.575808 38.858768 L 232.392674 32.70787 L 220 27 " style="stroke: rgb(19%,36%,52%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 220 27 L 221.16672 27.010257 L 222.340234 26.708815 L 223.493499 27.336412 L 224.653446 27.657418 L 225.827262 27.342115 L 226.998338 27.15254 " style="stroke: rgb(19%,36%,52%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
-			<path d="M 220 27 L 220.602454 28.020305 L 221.205095 29.040448 L 221.885017 29.994301 L 223.31117 30.308038 L 223.980227 31.271211 L 224.557542 32.313079 " style="stroke: rgb(19%,36%,52%); stroke-linecap: butt; stroke-width: 1.05; fill: none; fill-rule: evenodd;"/>
+			<text x="84.996" y="214" style="font-family: Helvetica; font-size: 12px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,428) scale(1,-1)">timer_sleep()</text>
+			<text x="356.992" y="214" style="font-family: Helvetica; font-size: 12px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,428) scale(1,-1)">timer interrupt</text>
+			<rect x="20" y="158" width="200" height="47" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8; fill: none; fill-rule: evenodd;"/>
+			<text x="66.00899999999999" y="185.5" style="font-family: Helvetica; font-size: 10.5px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,371) scale(1,-1)">Enqueue sleep request</text>
+			<text x="73.023" y="170.5" style="font-family: Helvetica; font-size: 10.5px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,341) scale(1,-1)">Sorted by wake_tick</text>
+			<rect x="20" y="78" width="200" height="47" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8; fill: none; fill-rule: evenodd;"/>
+			<text x="75.94725" y="105.5" style="font-family: Helvetica; font-size: 10.5px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,211) scale(1,-1)">sema_down(wake)</text>
+			<text x="94.91025" y="90.5" style="font-family: Helvetica; font-size: 10.5px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,181) scale(1,-1)">BLOCKED</text>
+			<rect x="20" y="10" width="200" height="35" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8; fill: none; fill-rule: evenodd;"/>
+			<text x="101.91375" y="24.0" style="font-family: Helvetica; font-size: 10.5px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,48) scale(1,-1)">READY</text>
+			<rect x="294" y="170" width="200" height="35" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8; fill: none; fill-rule: evenodd;"/>
+			<text x="377.368" y="184.0" style="font-family: Helvetica; font-size: 10.5px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,368) scale(1,-1)">ticks++</text>
+			<rect x="294" y="105" width="200" height="43" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8; fill: none; fill-rule: evenodd;"/>
+			<text x="342.9385" y="123.0" style="font-family: Helvetica; font-size: 10.5px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,246) scale(1,-1)">Remove due sleepers</text>
+			<rect x="294" y="45" width="200" height="35" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8; fill: none; fill-rule: evenodd;"/>
+			<text x="356.65675" y="59.0" style="font-family: Helvetica; font-size: 10.5px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,118) scale(1,-1)">sema_up(wake)</text>
+			<path d="M 120,158 L 120,125 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 120,125 L 122.854323,131.391623 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 120,125 L 117.145677,131.391623 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 120,78 L 120,45 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8; stroke-dasharray: 3, 3;"/>
+			<path d="M 120,45 L 122.854323,51.391623 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 120,45 L 117.145677,51.391623 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<text x="130" y="57" style="font-family: Helvetica; font-size: 8.5px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,114) scale(1,-1)">on signal</text>
+			<path d="M 394,170 L 394,148 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 394,148 L 396.854323,154.391623 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 394,148 L 391.145677,154.391623 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 394,105 L 394,80 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 394,80 L 396.854323,86.391623 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 394,80 L 391.145677,86.391623 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 220,177 L 294,127 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8; stroke-dasharray: 3, 3;"/>
+			<path d="M 294,127 L 290.301986,132.943458 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 294,127 L 287.105958,128.213337 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<text x="232.63275" y="184" style="font-family: Helvetica; font-size: 8.5px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,368) scale(1,-1)">shared list</text>
+			<path d="M 294,62 L 220,27 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 220,27 L 226.998338,27.15254 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<path d="M 220,27 L 224.557542,32.313079 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0.8;"/>
 		</g>
 	</g>
 </svg>
