@@ -63,4 +63,4 @@ deadlines.json                        # Structured deadlines
 DEADLINES.md                          # Requirements and checklists
 ```
 
-The source `DESIGNDOC` contains all 19 required answers. The eight-page English PDF includes the nested donation diagram and the verified C2 scheduling table. It still needs group review and submission to UBLearns. To regenerate it after editing, run `python3 scripts/build-design-pdf.py` in an environment with ReportLab installed.
+The source `DESIGNDOC` contains all 19 required answers. The nine-page English PDF includes three sketch-style vector figures for sleep/wakeup, nested donation, and MLFQS update order, plus the verified C2 scheduling table. It still needs group review and submission to UBLearns. To regenerate it after editing, run `python3 scripts/build-design-pdf.py` in an environment with ReportLab installed.
