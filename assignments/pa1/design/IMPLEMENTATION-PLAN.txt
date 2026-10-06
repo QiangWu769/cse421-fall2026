@@ -11,7 +11,8 @@ CURRENT WORK
 Alarm Clock is implemented. The user-provided Autolab result shows
 five tests passed, 14/14 rubric points, and a normalized score of 100/100.
 Priority Scheduling and MLFQS are planned below; their code is not yet
-implemented. The formal design document is in progress.
+implemented. The complete nine-page English design PDF is prepared for group review
+and UBLearns submission. All 19 required questions have answers.
 
 TODAY'S REVIEW OF ALARM CLOCK (A1-A6)
 
@@ -253,13 +254,14 @@ devices/timer.c: separate accounting, alarm wakeups, periodic updates.
 devices/intq.c: audit direct unblocking/preemption after waiter cleanup.
 threads/fixed-point.h: planned arithmetic helper header.
 
-NEXT WRITING STEPS
+DOCUMENT STATUS AND NEXT STEPS
 
-October 6: turn the Phase 2 decisions into B2-B7 answers and review B1.
-October 7: complete C2-C6, recompute the table, and review C1.
-October 8: group review, synchronize DESIGNDOC, export and inspect the
-           complete English PDF, then submit to UBLearns by 23:59 EDT.
-The C2 table and the final PDF are not produced in today's scope.
+October 5: A1-A6 reviewed; B1-B7 and C1-C6 completed; the C2 table
+           independently checked; all nine PDF pages rendered and inspected.
+Remaining: group review and PDF submission to UBLearns by October 8,
+           2026, at 23:59 EDT. The PDF has not been submitted.
+Implementation: Phase 2 and Phase 3 remain planned, with no code changes
+                or test results for those phases.
 
 REFERENCES CHECKED
 

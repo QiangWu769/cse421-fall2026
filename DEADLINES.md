@@ -9,7 +9,7 @@ Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission 
 | Deliverable | Deadline | Points | Format and platform | Status |
 |---|---|---:|---|---|
 | Phase 1: Alarm Clock | 2026-09-30 23:59 | 14 | Complete source tree in `.tar.gz`, Autolab | Submitted and graded: 100/100 |
-| Formal Design Document | 2026-10-08 23:59 | 12 | PDF, UBLearns; retain `src/threads/DESIGNDOC` in the source tree | In progress |
+| Formal Design Document | 2026-10-08 23:59 | 12 | PDF, UBLearns; retain `src/threads/DESIGNDOC` in the source tree | PDF prepared; not submitted |
 | Phase 2: Priority Scheduler | 2026-10-14 23:59 | 42 | Complete source tree in `.tar.gz`, Autolab | Not started |
 | Phase 3: MLFQ Scheduler | 2026-10-27 23:59 | 37 | Complete source tree in `.tar.gz`, Autolab | Not started |
 
@@ -68,7 +68,7 @@ Archive: [pa1-phase1.tar.gz](assignments/pa1/submissions/phase1/pa1-phase1.tar.g
 
 **Due October 8 at 23:59 | 12 points | PDF submitted to UBLearns**
 
-**Status: In progress.**
+**Status: Complete English PDF prepared; awaiting group review and UBLearns submission.**
 
 Track: [Milestone 2](https://github.com/QiangWu769/cse421-fall2026/milestone/2) | [Issue #2](https://github.com/QiangWu769/cse421-fall2026/issues/2).
 
@@ -76,14 +76,15 @@ Prepare the formal document using the course `threads.tmpl` template and retain 
 
 This deadline precedes the Phase 2 and Phase 3 implementation deadlines. The formal document must therefore describe the planned designs for components whose code is not yet complete; it cannot wait until all later implementations are finished.
 
-The Alarm Clock A1-A6 text has been checked against the code. The [October 5 plan](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) defines the proposed scheduler designs, and B1/C1 declarations are added to the draft.
+The [complete English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf) covers all 19 required questions. The Alarm Clock answers have been checked against the code; the later scheduler designs are proposals. The nested donation diagram and the C2 scheduling table have been reviewed. The [implementation plan](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) records the intended changes.
 
 - [x] Begin the formal draft and enter every group member's name and UB email address.
 - [x] Review the Alarm Clock design against the completed implementation.
-- [ ] Complete Priority Scheduling questions B1-B7, including multiple and nested priority donation.
-- [ ] Complete Advanced Scheduler questions C1-C6, including the scheduling example table and fixed-point arithmetic design.
-- [ ] Check the references against the sources actually consulted.
-- [ ] Produce the complete PDF and check its content and layout.
+- [x] Complete Priority Scheduling questions B1-B7, including multiple and nested priority donation.
+- [x] Complete Advanced Scheduler questions C1-C6, including the scheduling example table and fixed-point arithmetic design.
+- [x] Include checked technical references.
+- [x] Produce the complete nine-page PDF and inspect every rendered page.
+- [ ] Review the document together with all group members.
 - [ ] Submit the PDF to UBLearns and retain confirmation.
 
 Saving source notes on GitHub or including `DESIGNDOC` in a source archive does not replace the separate PDF submission to UBLearns.

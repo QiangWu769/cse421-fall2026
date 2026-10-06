@@ -30,10 +30,13 @@
       "due_utc": "2026-10-09T03:59:00Z",
       "points": 12,
       "platform": "UBLearns",
-      "status": "in_progress",
+      "status": "prepared",
       "milestone_url": "https://github.com/QiangWu769/cse421-fall2026/milestone/2",
       "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/2",
-      "submission_status": "not_submitted"
+      "submission_status": "not_submitted",
+      "pdf_path": "assignments/pa1/design/PA1-DESIGNDOC.pdf",
+      "prepared_date": "2026-10-05",
+      "pages": 9
     },
     {
       "id": "pa1-phase2",

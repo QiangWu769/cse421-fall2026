@@ -2,7 +2,7 @@
 
 Verification date: September 25, 2026.
 
-**Status: Phase 1 completed and graded on Autolab (100/100). The full Design Document PDF is in progress; Phase 2 and Phase 3 implementations are not started.**
+**Status: Phase 1 completed and graded on Autolab (100/100). The full Design Document PDF is prepared but not submitted; Phase 2 and Phase 3 implementations are not started.**
 
 ## Implementation
 
@@ -16,7 +16,7 @@ Verification date: September 25, 2026.
 - An unsigned 64-bit deadline avoids signed addition overflow for very large positive durations.
 - No fields were added to `struct thread`, no heap allocation was introduced, and no course tests or later scheduling components were changed.
 
-The Alarm Clock A1-A6 notes in `src/threads/DESIGNDOC` describe the Phase 1 data structures, algorithm, synchronization, and design choices. The full design draft was started on October 5: group identities are filled in, the Alarm Clock answers are reviewed, and planned declarations are added for B1/C1.
+The Alarm Clock A1-A6 notes in `src/threads/DESIGNDOC` describe the Phase 1 data structures, algorithm, synchronization, and design choices. The complete English design document was prepared on October 5. Group identities are filled in, the Alarm Clock answers are reviewed, and all later questions describe planned implementations.
 
 ## Course tests
 
