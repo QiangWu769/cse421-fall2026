@@ -189,20 +189,17 @@ for index, (marker, title, keys) in enumerate(sections):
         story.extend(flows[1:])
         if key in FIGURES:
             drawing, caption = FIGURES[key]
-            story.append(KeepTogether([Spacer(1, 8), drawing,
-                                       para(caption, 'small'), Spacer(1, 10)]))
+            before, after = 8, 10
+            if key == 'C4':
+                drawing.scale(.84, .84)
+                drawing.width *= .84
+                drawing.height *= .84
+                drawing.hAlign = 'CENTER'
+                before, after = 3, 0
+            story.append(KeepTogether([Spacer(1, before), drawing,
+                                       para(caption, 'small'), Spacer(1, after)]))
         core_count += 1
 assert core_count == 19
-
-# Keep the original optional survey questions without inventing group feedback.
-survey = TEXT.split('SURVEY QUESTIONS', 1)[1]
-questions = re.findall(r'^>>[^\n]*\n(?:>>[^\n]*\n)*', survey, re.M)
-assert len(questions) == 5
-story.append(Spacer(1, 10))
-story.append(para('Optional survey questions', 'label'))
-for q in questions:
-    question = ' '.join(line[3:].strip() for line in q.splitlines())
-    story.append(para(question, 'small'))
 
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 doc = SimpleDocTemplate(str(OUTPUT), pagesize=letter, rightMargin=49,
