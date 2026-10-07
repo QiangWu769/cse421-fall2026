@@ -159,14 +159,7 @@ group = TEXT.split('---- GROUP ----', 1)[1].split('---- PRELIMINARIES ----', 1)[
 for line in group.splitlines():
     if line.strip() and not line.startswith('>>'):
         story.append(para(line.strip(), 'small'))
-story += [Spacer(1, 8), para('Alarm Clock is implemented. Priority Scheduling and Advanced Scheduler are planned designs.'),
-          para('Technical references: the supplied course assignment and the Pintos Project 1 manual and 4.4BSD Scheduler appendix.', 'small')]
-# Use actual links and readable titles instead of long unbroken reference URLs.
-for title, url in [
-    ('Pintos Project 1 manual', 'https://www.scs.stanford.edu/10wi-cs140/pintos/pintos_2.html'),
-    ('Pintos 4.4BSD Scheduler appendix', 'https://www.scs.stanford.edu/10wi-cs140/pintos/pintos_7.html'),
-]:
-    story.append(Paragraph(f'<link href="{url}" color="#25384b">{title}</link>', styles['small']))
+story += [Spacer(1, 8), para('Alarm Clock is implemented. Priority Scheduling and Advanced Scheduler are planned designs.')]
 story.append(Spacer(1, 13))
 
 core_count = 0
