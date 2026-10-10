@@ -1,6 +1,6 @@
 # Deadlines and Submission Checklists
 
-Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission instructions. Last organized: **2026-10-05**.
+Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission instructions. Last updated: **2026-10-09**.
 
 **Time zone:** the Phase 1 Autolab screenshot confirms EDT (UTC-04:00). Remaining deadlines use Buffalo's **America/New_York** local time. Every deadline below is in 2026 at **23:59**. Official course announcements and platform instructions take precedence; update this file and [deadlines.json](deadlines.json) if the course publishes changes.
 
@@ -9,8 +9,8 @@ Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission 
 | Deliverable | Deadline | Points | Format and platform | Status |
 |---|---|---:|---|---|
 | Phase 1: Alarm Clock | 2026-09-30 23:59 | 14 | Complete source tree in `.tar.gz`, Autolab | Submitted and graded: 100/100 |
-| Formal Design Document | 2026-10-08 23:59 | 12 | PDF, UBLearns; retain `src/threads/DESIGNDOC` in the source tree | PDF prepared; not submitted |
-| Phase 2: Priority Scheduler | 2026-10-14 23:59 | 42 | Complete source tree in `.tar.gz`, Autolab | Not started |
+| Formal Design Document | 2026-10-08 23:59 | 12 | PDF, UBLearns; retain `src/threads/DESIGNDOC` in the source tree | PDF prepared; submission unconfirmed |
+| Phase 2: Priority Scheduler | 2026-10-14 23:59 | 42 | Complete source tree in `.tar.gz`, Autolab | Implemented; locally verified; not submitted |
 | Phase 3: MLFQ Scheduler | 2026-10-27 23:59 | 37 | Complete source tree in `.tar.gz`, Autolab | Not started |
 
 Implementation: 14 + 42 + 37 = **93 points**. Formal design document: **12 points**. Total: **105 points**.
@@ -68,7 +68,7 @@ Archive: [pa1-phase1.tar.gz](assignments/pa1/submissions/phase1/pa1-phase1.tar.g
 
 **Due October 8 at 23:59 | 12 points | PDF submitted to UBLearns**
 
-**Status: Complete English PDF prepared; awaiting group review and UBLearns submission.**
+**Status: Complete eight-page English PDF prepared. UBLearns submission is unconfirmed.**
 
 Track: [Milestone 2](https://github.com/QiangWu769/cse421-fall2026/milestone/2) | [Issue #2](https://github.com/QiangWu769/cse421-fall2026/issues/2).
 
@@ -76,16 +76,16 @@ Prepare the formal document using the course `threads.tmpl` template and retain 
 
 This deadline precedes the Phase 2 and Phase 3 implementation deadlines. The formal document must therefore describe the planned designs for components whose code is not yet complete; it cannot wait until all later implementations are finished.
 
-The [complete English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf) covers all 19 required questions. The Alarm Clock answers have been checked against the code; the later scheduler designs are proposals. The nested donation diagram and the C2 scheduling table have been reviewed. The [implementation plan](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) records the intended changes.
+The [complete English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf) covers all 19 required questions. It is the earlier proposal, prepared before the Phase 2 code was implemented, and has not been regenerated for the October 9 changes. The Alarm Clock answers, nested donation diagram, and C2 scheduling table were reviewed. The source `DESIGNDOC` and [implementation plan](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) track the current implementation and remaining Phase 3 plan.
 
 - [x] Begin the formal draft and enter every group member's name and UB email address.
 - [x] Review the Alarm Clock design against the completed implementation.
 - [x] Complete Priority Scheduling questions B1-B7, including multiple and nested priority donation.
 - [x] Complete Advanced Scheduler questions C1-C6, including the scheduling example table and fixed-point arithmetic design.
 - [x] Include checked technical references.
-- [x] Produce the complete nine-page PDF and inspect every rendered page.
-- [ ] Review the document together with all group members.
-- [ ] Submit the PDF to UBLearns and retain confirmation.
+- [x] Produce the complete eight-page PDF and inspect every rendered page.
+- [ ] Confirm group review of the document.
+- [ ] Record UBLearns submission confirmation; actual submission status is currently unknown.
 
 Saving source notes on GitHub or including `DESIGNDOC` in a source archive does not replace the separate PDF submission to UBLearns.
 
@@ -93,7 +93,7 @@ Saving source notes on GitHub or including `DESIGNDOC` in a source archive does 
 
 **Due October 14 at 23:59 | 42 points | Autolab**
 
-**Status: Not started.**
+**Status: Implemented and locally verified on October 9. All 13 Phase 2 tests, five Phase 1 regressions, and six supplemental edge cases passed. Not submitted to or graded by Autolab.**
 
 Track: [Milestone 3](https://github.com/QiangWu769/cse421-fall2026/milestone/3) | [Issue #3](https://github.com/QiangWu769/cse421-fall2026/issues/3).
 
@@ -122,12 +122,15 @@ Requirements:
 | `priority-donate-sema` | 3 |
 | `priority-donate-lower` | 3 |
 
-- [ ] Implement priority scheduling and priority-aware synchronization wait queues.
-- [ ] Implement multiple and nested lock donation and its removal.
-- [ ] Pass all 13 tests above and run Phase 1 regression tests.
-- [ ] Keep the source `DESIGNDOC` consistent with the final implementation.
-- [ ] Clean build outputs, archive the complete source tree, and verify that the archive builds.
+- [x] Implement priority scheduling and priority-aware synchronization wait queues.
+- [x] Implement multiple and nested lock donation and its removal.
+- [x] Pass all 13 tests above and all five Phase 1 regression tests on real Bochs.
+- [x] Pass six supplemental cases in a disposable source copy: early condition signal, runnable lock contender/retake, semaphore FIFO, condition waiter donation after enqueue, direct interrupt-queue wakeup, and priority-zero wakeup from idle.
+- [x] Keep the source `DESIGNDOC` consistent with the final Phase 2 implementation.
+- [x] Clean and archive the complete source tree, verify all 625 source files against the working tree, rebuild from the extracted archive, and pass all 18 course and regression tests again.
 - [ ] Confirm group membership for the corresponding Autolab phase, upload, and review grading feedback.
+
+See [PHASE2-REPORT.md](assignments/pa1/reports/PHASE2-REPORT.md) for the individual local results. Local success covers the 42-point Phase 2 rubric; it does not establish an Autolab grade. The verified [Phase 2 archive](assignments/pa1/submissions/phase2/pa1-phase2.tar.gz) has a separate [SHA256SUMS](assignments/pa1/submissions/phase2/SHA256SUMS). The original Phase 1 archive is retained unchanged.
 
 ## Phase 3: MLFQ Scheduler
 

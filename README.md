@@ -2,7 +2,7 @@
 
 Course assignments, source code, submission archives, and deadlines. This repository currently contains **Project 1: Pintos Threads**.
 
-**Phase 1 is completed and graded: 100/100 on Autolab (14/14 rubric points, five tests passed). The complete English design PDF is prepared for group review and submission. Phase 2 and Phase 3 implementations are not started.**
+**Phase 1 is graded: 100/100 on Autolab (14/14 rubric points). Phase 2 is implemented and locally verified: all 13 Phase 2 tests, five Phase 1 regression tests, and six supplemental edge cases passed on October 9. Phase 2 has not been submitted to or graded by Autolab. Phase 3 is not started.**
 
 ## Deadlines and status
 
@@ -11,8 +11,8 @@ All deadlines below are in **2026 at 23:59**. The Phase 1 Autolab screenshot con
 | Deliverable | Deadline | Points | Platform | Status |
 |---|---|---:|---|---|
 | Phase 1: Alarm Clock | September 30, 23:59 | 14 | [Autolab](https://autolab.cse.buffalo.edu/) | Submitted and graded: 100/100 |
-| Formal Design Document | October 8, 23:59 | 12 | UBLearns, PDF | PDF prepared; not submitted |
-| Phase 2: Priority Scheduler | October 14, 23:59 | 42 | [Autolab](https://autolab.cse.buffalo.edu/) | Not started |
+| Formal Design Document | October 8, 23:59 | 12 | UBLearns, PDF | PDF prepared; submission unconfirmed |
+| Phase 2: Priority Scheduler | October 14, 23:59 | 42 | [Autolab](https://autolab.cse.buffalo.edu/) | Implemented; locally verified; not submitted |
 | Phase 3: MLFQ Scheduler | October 27, 23:59 | 37 | [Autolab](https://autolab.cse.buffalo.edu/) | Not started |
 
 Implementation is worth **93 points**, plus **12 points** for the formal design document, for a total of **105 points**. The 4-point `alarm-priority` test belongs to Phase 2, giving phase totals of 14, 42, and 37.
@@ -26,15 +26,21 @@ The following work was completed and locally verified on **2026-09-25**:
 - `timer_sleep()` blocks using an ordered sleep queue and a semaphore, without busy waiting.
 - All five Phase 1 course tests passed. Additional checks passed for actual `THREAD_BLOCKED` state, an `INT64_MAX` delay, and 800 concurrent short sleeps.
 - The complete source archive was generated, extracted into a separate directory, and compiled successfully.
-- Alarm Clock A1-A6 notes are included in the source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC). Group identities are filled in. The complete document now covers A1-A6, B1-B7, and C1-C6, with the later implementations described as plans.
+- Alarm Clock A1-A6 notes are included in the source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC). Group identities are filled in. The working document covers all 19 questions and is maintained separately from the retained Phase 1 archive.
 
 **The user-provided Autolab screenshot confirms 100/100, all five tests passed, and 14/14 rubric points.** See the [Phase 1 report](assignments/pa1/reports/PHASE1-REPORT.md) for the local verification record.
+
+## Phase 2 progress
+
+Priority scheduling, immediate preemption, priority-aware synchronization, and multiple/nested lock donation are implemented. The final clean build passed all **18 course tests** covering Phase 2 and Phase 1, using the course image and **Bochs 2.6.11**. Six supplemental edge cases passed in a disposable source copy; course tests were not modified.
+
+The 13 Phase 2 tests cover its **42-point rubric locally**. This is not an Autolab score. The [Phase 2 archive](assignments/pa1/submissions/phase2/pa1-phase2.tar.gz) was extracted into an isolated container, rebuilt, and passed all 18 course and regression tests again. Its 625 source files match the current source tree byte-for-byte. See the [Phase 2 report](assignments/pa1/reports/PHASE2-REPORT.md) for individual results and the checksum.
 
 ## Start here
 
 1. **Develop and test:** read the [PA1 guide](assignments/pa1/README.md). Course environment files are in [environment/](assignments/pa1/environment/).
-2. **Review the design:** read the [complete English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf), its editable [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC), and [IMPLEMENTATION-PLAN.txt](assignments/pa1/design/IMPLEMENTATION-PLAN.txt). The existing Phase 1 archive is retained as the earlier submission package.
-3. **Plan remaining work:** use [DEADLINES.md](DEADLINES.md) and the GitHub tracking links below. The design PDF is **Prepared, not submitted**; Phase 2 and Phase 3 implementations remain **Not started**.
+2. **Review the design:** read the current source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC) and [implementation notes and plan](assignments/pa1/design/IMPLEMENTATION-PLAN.txt). The [eight-page English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf) is the earlier proposal, prepared before Phase 2 implementation; it has not been regenerated for these code changes. Its UBLearns submission status is unconfirmed.
+3. **Finish the Phase 2 submission:** upload the verified archive to the corresponding Autolab phase and retain the grading result. Use [DEADLINES.md](DEADLINES.md) and the GitHub tracking links below. Phase 3 implementation is still **Not started**.
 
 ## GitHub tracking
 
@@ -54,13 +60,14 @@ assignments/pa1/
 ├── README.md                         # PA1 development and submission guide
 ├── pintos/                           # Complete Pintos project
 ├── environment/                      # Course Dockerfile and setup guide
-├── design/                          # Complete design PDF and implementation plan
-├── reports/PHASE1-REPORT.md           # Implementation and verification
-└── submissions/phase1/
-    └── pa1-phase1.tar.gz              # Phase 1 source archive
+├── design/                           # Earlier design PDF and current implementation plan
+├── reports/                          # Phase 1 and Phase 2 verification records
+└── submissions/
+    ├── phase1/pa1-phase1.tar.gz       # Retained Phase 1 source archive
+    └── phase2/pa1-phase2.tar.gz       # Verified Phase 2 source archive
 scripts/                              # Repository helper scripts
 deadlines.json                        # Structured deadlines
 DEADLINES.md                          # Requirements and checklists
 ```
 
-The source `DESIGNDOC` contains all 19 required answers. The eight-page English PDF includes three plain black-and-white vector figures for sleep/wakeup, nested donation, and MLFQS update order, plus the verified C2 scheduling table. It still needs group review and submission to UBLearns. To regenerate it after editing, run `python3 scripts/build-design-pdf.py` in an environment with ReportLab installed.
+The source `DESIGNDOC` contains all 19 required answers. The retained eight-page English PDF includes three plain black-and-white vector figures for sleep/wakeup, nested donation, and MLFQS update order, plus the checked C2 scheduling table. Its later-phase wording describes the proposal as it stood before implementation. UBLearns submission confirmation has not been supplied. To regenerate the PDF after editing, run `python3 scripts/build-design-pdf.py` in an environment with ReportLab installed and review every rendered page.

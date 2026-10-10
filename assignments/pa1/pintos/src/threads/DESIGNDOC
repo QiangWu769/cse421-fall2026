@@ -17,8 +17,8 @@ Siraat Mustafa <siraatmu@buffalo.edu>
 >> If you have any preliminary comments on your submission, notes for the
 >> TAs, or extra credit, please give them here.
 
-Alarm Clock is implemented. Priority Scheduling and Advanced Scheduler
-are planned designs.
+Alarm Clock and Priority Scheduling are implemented. Advanced Scheduler
+is a planned design.
 
 >> Please cite any offline or online sources you consulted while
 >> preparing your submission, other than the Pintos documentation, course
@@ -220,8 +220,8 @@ until it can take the semaphore.
 
 After success, the caller removes its contender entry if it registered
 one, clears waiting_lock, and becomes the holder. The lock is added to
-held_locks, and the new holder's priority is recomputed from remaining
-contenders. Ownership bookkeeping also applies to an uncontended acquire
+held_locks, and the new holder's priority is recomputed from its base
+priority and contenders for all its held locks. Ownership bookkeeping also applies to an uncontended acquire
 and a successful lock_try_acquire(). A failed try registers no wait or
 donation. The list and priority changes occur within the synchronization
 primitives' short atomic sections.
@@ -245,7 +245,7 @@ complete, the caller yields if a higher-priority thread is ready.
 >> how your implementation avoids it.  Can you use a lock to avoid
 >> this race?
 
-Suppose thread_set_priority() reads the donation list and is preempted
+Suppose thread_set_priority() reads the donation state and is preempted
 before writing its result. Another thread adds a higher donation. When
 the setter resumes, its stale result could overwrite the new priority.
 

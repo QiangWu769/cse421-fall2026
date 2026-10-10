@@ -19,6 +19,8 @@ enum thread_status
 typedef int tid_t;
 #define TID_ERROR ((tid_t) -1)          /* Error value for tid_t. */
 
+struct lock;
+
 /* Thread priorities. */
 #define PRI_MIN 0                       /* Lowest priority. */
 #define PRI_DEFAULT 31                  /* Default priority. */
@@ -87,11 +89,15 @@ struct thread
     enum thread_status status;          /* Thread state. */
     char name[16];                      /* Name (for debugging purposes). */
     uint8_t *stack;                     /* Saved stack pointer. */
-    int priority;                       /* Priority. */
+    int priority;                       /* Effective priority. */
     struct list_elem allelem;           /* List element for all threads list. */
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
+    int base_priority;                  /* Priority before donation. */
+    struct lock *waiting_lock;          /* Pending lock acquisition. */
+    struct list held_locks;             /* Locks owned by this thread. */
+    struct list_elem lock_wait_elem;    /* Link in a lock's contenders. */
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
@@ -102,9 +108,9 @@ struct thread
     unsigned magic;                     /* Detects stack overflow. */
   };
 
-/* If false (default), use round-robin scheduler.
+/* If false (default), use priority scheduling.
    If true, use multi-level feedback queue scheduler.
-   Controlled by kernel command-line option "-o mlfqs". */
+   Controlled by kernel command-line option "-mlfqs". */
 extern bool thread_mlfqs;
 
 void thread_init (void);
@@ -132,6 +138,12 @@ void thread_foreach (thread_action_func *, void *);
 
 int thread_get_priority (void);
 void thread_set_priority (int);
+
+bool thread_priority_less (const struct list_elem *,
+                           const struct list_elem *, void *);
+void thread_refresh_priority (struct thread *);
+void thread_propagate_priority (struct thread *);
+void thread_check_preemption (void);
 
 int thread_get_nice (void);
 void thread_set_nice (int);
