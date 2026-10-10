@@ -110,5 +110,6 @@ signal (struct intq *q UNUSED, struct thread **waiter)
     {
       thread_unblock (*waiter);
       *waiter = NULL;
+      thread_check_preemption ();
     }
 }

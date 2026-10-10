@@ -1,0 +1,37 @@
+squish-pty bochs -q
+========================================================================
+                       Bochs x86 Emulator 2.6.11
+              Built from SVN snapshot on January 5, 2020
+                Timestamp: Sun Jan  5 08:36:00 CET 2020========================================================================
+
+00000000000i[      ] BXSHARE is set to '/usr/local/share/bochs'
+00000000000i[      ] reading configuration from bochsrc.txt
+00000000000i[      ] installing nogui module as the Bochs GUI
+00000000000i[      ] using log file bochsout.txt
+PiLo hda1
+Loading.............
+Kernel command line: -q run priority-edge-cases
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  163,000 loops/s.
+Boot complete.
+Executing 'priority-edge-cases':
+(priority-edge-cases) begin
+(priority-edge-cases) early condition signal passed
+(priority-edge-cases) ready lock contender and lock retake passed
+(priority-edge-cases) equal-priority semaphore FIFO passed
+(priority-edge-cases) condition waiter priority donation after enqueue passed
+(priority-edge-cases) intq direct unblock and immediate preemption passed
+(priority-edge-cases) priority-zero wakeup from idle passed
+(priority-edge-cases) PASS
+(priority-edge-cases) end
+Execution of 'priority-edge-cases' complete.
+Timer: 107 ticks
+Thread: 3 idle ticks, 106 kernel ticks, 0 user ticks
+Console: 826 characters output
+Keyboard: 0 keys pressed
+Powering off...========================================================================
+Bochs is exiting with the following message:
+[ACPI  ] ACPI control: soft power off
+========================================================================

@@ -1,5 +1,5 @@
-CSE 421/521 - PROJECT 1 DESIGN PLAN
-October 5, 2026
+CSE 421/521 - PROJECT 1 IMPLEMENTATION NOTES AND DESIGN PLAN
+Prepared October 5, 2026; implementation status updated October 9, 2026
 
 Group
 Qiang Wu <qwu26@buffalo.edu>
@@ -10,11 +10,20 @@ CURRENT WORK
 
 Alarm Clock is implemented. The user-provided Autolab result shows
 five tests passed, 14/14 rubric points, and a normalized score of 100/100.
-Priority Scheduling and MLFQS are planned below; their code is not yet
-implemented. The complete eight-page English design PDF is prepared for group review
-and UBLearns submission. All 19 required questions have answers.
+Priority Scheduling is now implemented. A clean build passed all 13 Phase 2
+tests and five Phase 1 regressions, and six supplemental cases passed in a
+disposable source copy. Phase 2 is not submitted to or graded by Autolab.
+Its archive was extracted and rebuilt in an isolated container; all 18
+course and regression tests passed again. Its 625 source files match the
+working tree byte-for-byte, without build output or the temporary harness.
+MLFQS is still planned and not implemented.
 
-TODAY'S REVIEW OF ALARM CLOCK (A1-A6)
+The existing eight-page English PDF contains all 19 required answers but
+remains the proposal prepared before the Phase 2 code was completed. It
+has not been regenerated for these changes. Its actual UBLearns submission
+status is unconfirmed. The editable DESIGNDOC tracks the current source.
+
+OCTOBER 5 REVIEW OF ALARM CLOCK (A1-A6)
 
 A1: timer.c defines sleep_waiter with wake_tick, wake, and elem, plus
     the sleepers list. The declarations and descriptions match the code.
@@ -30,27 +39,31 @@ A5: the semaphore retains an early signal. Removing the record before
 A6: the sorted queue moves scanning work to registration; the semaphore
     supplies blocking and avoids a new heap allocation or thread field.
 
-The A answers in src/threads/DESIGNDOC agree with these checks. Kernel
-code and the existing Phase 1 submission archive are unchanged today.
+The A answers in src/threads/DESIGNDOC agree with these checks. This review
+did not change the kernel code or the existing Phase 1 submission archive.
+The original Phase 1 archive remains retained as the earlier submission.
 
-PHASE 2 DESIGN DECISIONS
+PHASE 2 IMPLEMENTED DESIGN
+
+The following design is implemented in thread.c/h, synch.c/h, and intq.c.
+The course tests and the Phase 1 timer.c implementation were not changed.
 
 1. Thread and lock state
 
 Keep thread.priority as the effective priority used by the scheduler.
-Add these members to struct thread:
+The following members were added to struct thread:
 
     int base_priority;
     struct lock *waiting_lock;
     struct list held_locks;
     struct list_elem lock_wait_elem;
 
-Add these members to struct lock:
+The following members were added to struct lock:
 
     struct list contenders;
     struct list_elem held_elem;
 
-Add a thread pointer to the condition variable's semaphore_elem:
+A thread pointer was added to the condition variable's semaphore_elem:
 
     struct thread *thread;
 
@@ -146,15 +159,24 @@ its value before a normal-context yield is possible. During an interrupt,
 request intr_yield_on_return instead of calling thread_yield. A ready
 thread must displace idle even when both priorities are PRI_MIN.
 
-6. Phase 2 verification after implementation
+6. Phase 2 verification completed October 9
 
-Run the twelve priority tests plus alarm-priority. Also check a donated
-holder blocked on a separate semaphore, changing base priority while
-receiving donations, equal-priority FIFO, and a condition signal delivered
-before the private semaphore wait begins. These are future checks;
-Phase 2 has no test results yet.
+All twelve priority tests plus alarm-priority passed on Bochs 2.6.11, as
+did all five Phase 1 regressions. These 13 Phase 2 tests cover the 42-point
+rubric locally; no Autolab score is claimed.
 
-PHASE 3 DESIGN DECISIONS
+Six supplemental cases passed in a temporary source copy:
+- A condition is signaled before its private semaphore wait begins.
+- A lock contender remains registered after wakeup and through lock retake.
+- Equal-priority semaphore waiters are selected in FIFO order.
+- A condition waiter receives a donation after joining the condition queue.
+- Interrupt-queue readers/writers preempt only after waiter cleanup.
+- A priority-zero sleeper wakes correctly while idle is running.
+
+The supplemental harness was not added to the production source or the
+official course tests. See ../reports/PHASE2-REPORT.md for the full record.
+
+PHASE 3 DESIGN DECISIONS - NOT YET IMPLEMENTED
 
 1. State and arithmetic
 
@@ -243,15 +265,19 @@ in their appropriate scheduler mode. Check inherited state, idle
 exclusion, blocked-thread updates, boundary ticks, and signed arithmetic.
 No Phase 3 results are claimed today.
 
-FILES EXPECTED TO CHANGE DURING IMPLEMENTATION
+FILES CHANGED FOR PHASE 2
 
-threads/thread.h: planned thread fields and shared helper declarations.
-threads/thread.c: ready selection, priority updates, state initialization,
-                  tick accounting, MLFQS APIs, and preemption checks.
+threads/thread.h: base/effective priority, lock links, helper declarations.
+threads/thread.c: ready selection, donation propagation, and preemption.
 threads/synch.h: lock contender/ownership links.
 threads/synch.c: donation bookkeeping and priority-aware wakeups.
-devices/timer.c: separate accounting, alarm wakeups, periodic updates.
-devices/intq.c: audit direct unblocking/preemption after waiter cleanup.
+devices/intq.c: direct unblock/preemption after waiter cleanup.
+
+FILES EXPECTED TO CHANGE FOR PHASE 3
+
+threads/thread.h and threads/thread.c: scheduler state, initialization,
+tick accounting, periodic calculations, MLFQS APIs, and inherited values.
+devices/timer.c: ordered accounting, alarm wakeups, and periodic updates.
 threads/fixed-point.h: planned arithmetic helper header.
 
 DOCUMENT STATUS AND NEXT STEPS
@@ -260,10 +286,15 @@ October 5: A1-A6 reviewed; B1-B7 and C1-C6 completed; the C2 table
            independently checked; all nine PDF pages rendered and inspected.
 October 7: Optional survey omitted from the PDF; all eight pages rendered
            and inspected after the layout update.
-Remaining: group review and PDF submission to UBLearns by October 8,
-           2026, at 23:59 EDT. The PDF has not been submitted.
-Implementation: Phase 2 and Phase 3 remain planned, with no code changes
-                or test results for those phases.
+October 9: Phase 2 implemented; all 18 course tests and six supplemental
+           cases passed. Source design notes were updated separately
+           from the earlier eight-page PDF. UBLearns submission confirmation
+           has not been supplied; the PDF deadline was October 8 at 23:59 EDT.
+           The extracted Phase 2 archive was rebuilt and passed all 18
+           course and regression tests again, using GCC 7.5.0 and Bochs 2.6.11.
+Remaining: submit the verified Phase 2 archive to Autolab by October 14 at
+           23:59 EDT and record the grade.
+Implementation: Phase 3 remains planned; no Phase 3 test results are claimed.
 
 REFERENCES CHECKED
 

@@ -33,11 +33,12 @@
       "status": "prepared",
       "milestone_url": "https://github.com/QiangWu769/cse421-fall2026/milestone/2",
       "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/2",
-      "submission_status": "not_submitted",
+      "submission_status": "unconfirmed",
       "pdf_path": "assignments/pa1/design/PA1-DESIGNDOC.pdf",
       "prepared_date": "2026-10-05",
       "pages": 8,
-      "figures": 3
+      "figures": 3,
+      "document_note": "The retained eight-page PDF is the proposal prepared before Phase 2 implementation; it has not been regenerated for the October 9 code changes. UBLearns submission confirmation has not been supplied."
     },
     {
       "id": "pa1-phase2",
@@ -46,10 +47,37 @@
       "due_utc": "2026-10-15T03:59:00Z",
       "points": 42,
       "platform": "Autolab",
-      "status": "not_started",
+      "status": "implemented_locally_verified",
       "milestone_url": "https://github.com/QiangWu769/cse421-fall2026/milestone/3",
       "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/3",
-      "submission_status": "not_submitted"
+      "submission_status": "not_submitted",
+      "completion_scope": "Implementation and local verification only; no Autolab submission or grade.",
+      "local_verification": {
+        "date": "2026-10-09",
+        "simulator": "Bochs 2.6.11",
+        "phase2_tests_passed": 13,
+        "phase2_tests_total": 13,
+        "phase2_rubric_points_covered": 42,
+        "phase1_regression_tests_passed": 5,
+        "phase1_regression_tests_total": 5,
+        "supplemental_edge_cases_passed": 6,
+        "supplemental_edge_cases_total": 6,
+        "report_path": "assignments/pa1/reports/PHASE2-REPORT.md"
+      },
+      "archive_path": "assignments/pa1/submissions/phase2/pa1-phase2.tar.gz",
+      "archive_status": "verified",
+      "archive_verification": {
+        "date": "2026-10-09",
+        "size_bytes": 5494793,
+        "regular_files": 625,
+        "sha256": "0471d8fc579f12c8fda694a19d279cc2a9a909d849596c2b85a3bb2be533a7ea",
+        "source_files_match": true,
+        "extracted_rebuild": "passed",
+        "course_and_regression_tests_passed": 18,
+        "course_and_regression_tests_total": 18,
+        "compiler": "GCC 7.5.0",
+        "simulator": "Bochs 2.6.11"
+      }
     },
     {
       "id": "pa1-phase3",

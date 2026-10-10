@@ -1,0 +1,19 @@
+PASS alarm-single
+PASS alarm-multiple
+PASS alarm-simultaneous
+PASS alarm-zero
+PASS alarm-negative
+PASS alarm-priority
+PASS priority-change
+PASS priority-preempt
+PASS priority-fifo
+PASS priority-sema
+PASS priority-condvar
+PASS priority-donate-one
+PASS priority-donate-multiple
+PASS priority-donate-multiple2
+PASS priority-donate-nest
+PASS priority-donate-chain
+PASS priority-donate-sema
+PASS priority-donate-lower
+Extracted archive:18/18 course and regression tests passed.
