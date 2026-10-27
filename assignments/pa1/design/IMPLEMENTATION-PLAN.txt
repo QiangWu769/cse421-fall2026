@@ -19,9 +19,9 @@ Independent arithmetic checks also passed: 31 targeted assertions, 53,930
 helper comparisons against a rational-arithmetic oracle, and 70,050
 scheduler-method comparisons. These do not count as official rubric tests.
 Seven supplemental scheduler groups passed in a disposable source copy.
-The verified Phase 3 archive contains 626 regular files matching the cleaned
-source. An isolated extraction and rebuild passed all 27 official tests again
-using GCC 7.5.0 and Bochs 2.6.11. Phase 3 is not submitted.
+At packaging time, all 626 regular files in the verified Phase 3 archive
+matched the cleaned source. An isolated extraction and rebuild passed all 27
+official tests again using GCC 7.5.0 and Bochs 2.6.11. Phase 3 is not submitted.
 
 The new PA1-DESIGNDOC-FINAL.pdf was prepared on October 27 from the final
 source DESIGNDOC. Its nine pages contain all 19 required answers, three
@@ -29,8 +29,9 @@ plain black-and-white figures, and the C2 table; all components are described
 as implemented. The earlier eight-page PA1-DESIGNDOC.pdf is retained
 unchanged as the historical proposal prepared for the October 8 deadline.
 UBLearns submission is unconfirmed. No separate final-revision PDF deadline
-has been supplied. The source document and verified Phase 3 archive were
-not changed when the separate final PDF was generated.
+has been supplied. The current DESIGNDOC and final PDF received wording-only
+clarifications after archive verification. The tested archive retains its earlier
+document wording; the implementation, archive, and recorded checksum are unchanged.
 
 OCTOBER 5 REVIEW OF ALARM CLOCK (A1-A6)
 
@@ -322,8 +323,10 @@ October 14: The user confirmed Phase 2 submission. Its grade remains
 October 27: Phase 3 implemented; all 27 official tests and the independent
             arithmetic checks passed. Source DESIGNDOC now describes all
             implemented components. A separate nine-page final design PDF
-            was generated from that final DESIGNDOC; the historical eight-page
-            proposal, source document, and verified archive remain unchanged.
+            was generated from that final DESIGNDOC. Later wording-only edits
+            were applied to the current DESIGNDOC and final PDF. The historical
+            eight-page proposal, implementation, and verified archive remain
+            unchanged; the archive retains the earlier document wording.
             The actual submission archive was independently extracted and
             rebuilt; all 27 official tests passed again. Full implementation
             and local/archive verification are complete.

@@ -106,7 +106,7 @@ The verified [Phase 3 archive](../submissions/phase3/pa1-phase3.tar.gz) has its 
 - Size: **5,496,294 bytes**.
 - Contents: **626 regular files** in the complete cleaned `src/` tree.
 - SHA-256: `283560a63b1a8080bd2b5a80f45b75ddcf92a671c4d988d04dff9a45b7ef7b57`.
-- Every archived file matches the cleaned production source byte-for-byte. No build output or supplemental harness is included.
+- At packaging time, every archived file matched the cleaned production source byte-for-byte. No build output or supplemental harness is included.
 - The actual archive was extracted into an isolated course-image container and rebuilt using GCC 7.5.0. All **27 official tests passed again** on Bochs 2.6.11; see the [archive-test summary](phase3/archive-tests.txt). The original full runner log is `tmp/phase3/archive-verification.log`.
 
 The packaging script cleans the complete `src/` tree, rejects leftover build and temporary files, and writes only the Phase 3 submission directory. Earlier Phase 1 and Phase 2 archives are retained unchanged.
@@ -120,4 +120,4 @@ Implementation and local/archive verification are complete. Confirm the Phase 3 
 - **Final design PDF:** the new [nine-page final PDF](../design/PA1-DESIGNDOC-FINAL.pdf) was prepared on October 27 from the completed source `DESIGNDOC`. It contains all 19 required answers, three plain black-and-white figures, and the C2 table, describing all three implemented components. The [earlier eight-page proposal](../design/PA1-DESIGNDOC.pdf) is retained unchanged. UBLearns submission is unconfirmed; the supplied assignment's October 8 PDF deadline is unchanged, and no separate final-revision deadline has been supplied.
 - **Current source design document:** `src/threads/DESIGNDOC` describes all three implemented components, including the final timer-update order and full integer formulas.
 
-The final PDF is a standalone deliverable generated from the existing final source document. Creating it did not change the source `DESIGNDOC`, the earlier PDF, or the verified Phase 3 archive and checksum recorded above.
+The final PDF is generated from the current source `DESIGNDOC`. Both received wording-only clarifications after archive verification. The tested Phase 3 archive retains its earlier document wording; the kernel implementation, earlier PDF, archive, and checksum recorded above are unchanged.

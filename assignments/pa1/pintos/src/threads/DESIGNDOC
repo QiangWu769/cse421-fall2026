@@ -189,10 +189,10 @@ holder, or a repeated thread.
 >> B3: How do you ensure that the highest priority thread waiting for
 >> a lock, semaphore, or condition variable wakes up first?
 
-Ready threads and semaphore waiters are appended at the tail. Selection
-uses the first maximum of their current effective priorities. This keeps
-equal-priority threads in FIFO order and handles a donation received
-while a thread is already waiting.
+Ready threads and semaphore waiters are appended at the tail. We scan
+each list and select the first thread with the highest current effective
+priority. This keeps equal-priority threads in FIFO order and accounts
+for donations received while waiting.
 
 sema_up() selects, removes, and unblocks the highest-priority waiter, then
 increments the semaphore before allowing preemption. Locks use this same semaphore
@@ -204,9 +204,10 @@ waiter becomes ready. cond_wait() reacquires the monitor lock on return.
 A higher-priority ready thread triggers a yield after the caller finishes
 its state changes. thread_create() performs the same check for a new
 thread. Idle gives way to any ready thread, including priority zero.
-thread_unblock() keeps its atomic contract in thread context, so its
-caller checks preemption after finishing. Interrupt handlers request
-intr_yield_on_return() instead of switching inside the handler.
+thread_unblock() does not yield when called from thread context. Its
+caller checks whether to yield after completing its state changes.
+Interrupt handlers request intr_yield_on_return() instead of switching
+inside the handler.
 
 >> B4: Describe the sequence of events when a call to lock_acquire()
 >> causes a priority donation.  How is nested donation handled?
@@ -220,8 +221,8 @@ until it can take the semaphore.
 After success, the caller removes its contender entry if it registered
 one, clears waiting_lock, and becomes the holder. The lock is added to
 held_locks, and the new holder's priority is recomputed from its base
-priority and contenders for all its held locks. Ownership bookkeeping
-also applies to an uncontended acquire and a successful lock_try_acquire().
+priority and contenders for all its held locks. The same ownership updates
+apply when acquiring an uncontended lock and when lock_try_acquire() succeeds.
 A failed try registers no wait or
 donation. The list and priority changes occur within the synchronization
 primitives' short atomic sections.
@@ -249,11 +250,12 @@ Suppose thread_set_priority() reads the donation state and is preempted
 before writing its result. Another thread adds a higher donation. When
 the setter resumes, its stale result could overwrite the new priority.
 
-The base-priority change, donation scan, effective-priority write, and
-ready-priority comparison belong in one short atomic update. An active
-donation can keep the effective priority above the new base value. Any
-yield follows the completed update; thread_get_priority() returns the
-effective value.
+thread_set_priority() disables interrupts, changes base_priority,
+recomputes the effective priority, and checks whether a higher-priority
+thread is ready. If so, it yields after the new priority has been stored.
+The function restores the previous interrupt level before returning.
+An active donation can keep the effective priority above the new base
+value. thread_get_priority() returns the effective value.
 
 A sleeping lock would create another scheduling and donation dependency
 inside the mechanism being updated, and an interrupt handler cannot
@@ -272,9 +274,10 @@ ready or waiting queue.
 
 An ordered queue would make selection cheaper, but every priority change
 would require fixing the thread's position, even when it is blocked on
-another semaphore. Our list-based design has fewer update paths. Its
-cost is linear selection, scans of held locks and contenders, and a few
-extra list links per thread and lock.
+another semaphore. With our unsorted lists, a priority change does not
+require moving the thread. Selection still takes a linear scan, donation
+updates scan held locks and contenders, and each thread and lock stores
+a few extra list links.
 
               ADVANCED SCHEDULER
               ==================
@@ -354,10 +357,10 @@ A, B, and C start ready in that order and remain runnable. Each row
 shows values after the listed tick's accounting and priority update.
 The final column gives the thread selected for the next four-tick slice.
 
-At slice expiry, the running thread joins the ready-list tail. The first
-maximum priority wins. Thus B precedes A at tick 8, and C precedes both
-at tick 24. A is selected again at tick 4 because its priority is still
-higher. These conventions are also the rules for the scheduler.
+At slice expiry, the running thread joins the ready-list tail. The
+scheduler scans the list and selects the first thread with the highest
+priority. Thus B precedes A at tick 8, and C precedes both at tick 24.
+A is selected again at tick 4 because its priority is still higher.
 With TIMER_FREQ=100, no one-second update occurs in this table.
 
 >> C4: How is the way you divided the cost of scheduling between code
@@ -404,8 +407,7 @@ being moved between queues.
 The main costs are O(r) dispatch and O(n) periodic scans. With more time,
 we would consider 64 FIFO ready queues to reduce dispatch cost. That
 would require moving ready threads after priority changes and preserving
-the same tie order. For this project, the single list is the simpler
-starting point.
+the same tie order.
 
 >> C6: The assignment explains arithmetic for fixed-point math in
 >> detail, but it leaves it open to you to implement it.  Why did you
@@ -414,14 +416,14 @@ starting point.
 >> type and/or a set of functions or macros to manipulate fixed-point
 >> numbers, why did you do so?  If not, why not?
 
-We use small inline helpers in threads/fixed-point.h using
-signed 17.14 values and F = 1 << 14. Naming the operations keeps the
-scale conversions in one place and makes the scheduler formulas easier
-to check.
+The inline helpers in threads/fixed-point.h operate on signed 17.14
+values, with F = 1 << 14. They keep the scale conversions in one place
+and make the scheduler formulas easier to check.
 
 An integer n becomes n * F, and adding it to x uses x + n * F. Two
 fixed-point values multiply as ((int64_t) x * y) / F and divide as
-((int64_t) x * F) / y. The wide intermediate prevents scaling overflow.
+((int64_t) x * F) / y. Casting to int64_t avoids overflow in a 32-bit
+intermediate product; the final scaled result must still fit in fixed_t.
 Multiplication and division by F also handle negative operands without
 relying on signed shifts.
 
