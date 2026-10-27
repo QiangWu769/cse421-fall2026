@@ -1,0 +1,39 @@
+squish-pty bochs -q
+========================================================================
+                       Bochs x86 Emulator 2.6.11
+              Built from SVN snapshot on January 5, 2020
+                Timestamp: Sun Jan  5 08:36:00 CET 2020========================================================================
+
+00000000000i[      ] BXSHARE is set to '/usr/local/share/bochs'
+00000000000i[      ] reading configuration from bochsrc.txt
+00000000000i[      ] installing nogui module as the Bochs GUI
+00000000000i[      ] using log file bochsout.txt
+PiLo hda1
+Loading.............
+Kernel command line: -mlfqs -q run mlfqs-edge-cases
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  160,400 loops/s.
+Boot complete.
+Executing 'mlfqs-edge-cases':
+(mlfqs-edge-cases) begin
+(mlfqs-edge-cases) nice bounds, ignored manual priorities, and signed rounding passed
+(mlfqs-edge-cases) child nice and recent_cpu inherited before first run passed
+(mlfqs-edge-cases) equal computed priorities preserve ready FIFO passed
+(mlfqs-edge-cases) lock priority donation remains disabled in MLFQS passed
+(mlfqs-edge-cases) priority recalculation uses fourth global tick passed
+(mlfqs-edge-cases) priority-zero wakeup and idle CPU exclusion passed
+(mlfqs-edge-cases) second-boundary wakeups counted before load update passed
+(mlfqs-edge-cases) PASS
+(mlfqs-edge-cases) end
+Execution of 'mlfqs-edge-cases' complete.
+Timer: 323 ticks
+Thread: 201 idle ticks, 125 kernel ticks, 0 user ticks
+Console: 960 characters output
+Keyboard: 0 keys pressed
+Powering off...========================================================================
+Bochs is exiting with the following message:
+[ACPI  ] ACPI control: soft power off
+========================================================================
+Supplemental Phase 3 validation: all seven edge cases passed.

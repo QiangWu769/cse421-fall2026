@@ -216,6 +216,7 @@ timer_interrupt (struct intr_frame *args UNUSED)
       list_pop_front (&sleepers);
       sema_up (&waiter->wake);
     }
+  thread_tick_end (ticks);
 }
 
 /* Orders pending sleeps by deadline, preserving insertion order

@@ -1,6 +1,6 @@
 # Deadlines and Submission Checklists
 
-Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission instructions. Last updated: **2026-10-09**.
+Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission instructions. Last updated: **2026-10-27**.
 
 **Time zone:** the Phase 1 Autolab screenshot confirms EDT (UTC-04:00). Remaining deadlines use Buffalo's **America/New_York** local time. Every deadline below is in 2026 at **23:59**. Official course announcements and platform instructions take precedence; update this file and [deadlines.json](deadlines.json) if the course publishes changes.
 
@@ -10,8 +10,8 @@ Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission 
 |---|---|---:|---|---|
 | Phase 1: Alarm Clock | 2026-09-30 23:59 | 14 | Complete source tree in `.tar.gz`, Autolab | Submitted and graded: 100/100 |
 | Formal Design Document | 2026-10-08 23:59 | 12 | PDF, UBLearns; retain `src/threads/DESIGNDOC` in the source tree | PDF prepared; submission unconfirmed |
-| Phase 2: Priority Scheduler | 2026-10-14 23:59 | 42 | Complete source tree in `.tar.gz`, Autolab | Implemented; locally verified; not submitted |
-| Phase 3: MLFQ Scheduler | 2026-10-27 23:59 | 37 | Complete source tree in `.tar.gz`, Autolab | Not started |
+| Phase 2: Priority Scheduler | 2026-10-14 23:59 | 42 | Complete source tree in `.tar.gz`, Autolab | Submitted October 14, user confirmed; grade unconfirmed |
+| Phase 3: MLFQ Scheduler | 2026-10-27 23:59 | 37 | Complete source tree in `.tar.gz`, Autolab | Implemented; 27/27 local tests passed; submission pending |
 
 Implementation: 14 + 42 + 37 = **93 points**. Formal design document: **12 points**. Total: **105 points**.
 
@@ -76,7 +76,7 @@ Prepare the formal document using the course `threads.tmpl` template and retain 
 
 This deadline precedes the Phase 2 and Phase 3 implementation deadlines. The formal document must therefore describe the planned designs for components whose code is not yet complete; it cannot wait until all later implementations are finished.
 
-The [complete English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf) covers all 19 required questions. It is the earlier proposal, prepared before the Phase 2 code was implemented, and has not been regenerated for the October 9 changes. The Alarm Clock answers, nested donation diagram, and C2 scheduling table were reviewed. The source `DESIGNDOC` and [implementation plan](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) track the current implementation and remaining Phase 3 plan.
+The [complete English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf) covers all 19 required questions. It is the earlier proposal, prepared before the Phase 2 and Phase 3 code was implemented, and is retained unchanged. The Alarm Clock answers, nested donation diagram, and C2 scheduling table were reviewed. The source `DESIGNDOC` and [implementation notes](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) now describe all three implemented components separately from that historical PDF.
 
 - [x] Begin the formal draft and enter every group member's name and UB email address.
 - [x] Review the Alarm Clock design against the completed implementation.
@@ -93,7 +93,7 @@ Saving source notes on GitHub or including `DESIGNDOC` in a source archive does 
 
 **Due October 14 at 23:59 | 42 points | Autolab**
 
-**Status: Implemented and locally verified on October 9. All 13 Phase 2 tests, five Phase 1 regressions, and six supplemental edge cases passed. Not submitted to or graded by Autolab.**
+**Status: Implemented and locally verified on October 9. The user confirmed Autolab submission on October 14; the grade is unconfirmed. All 13 Phase 2 tests, five Phase 1 regressions, and six supplemental edge cases passed locally.**
 
 Track: [Milestone 3](https://github.com/QiangWu769/cse421-fall2026/milestone/3) | [Issue #3](https://github.com/QiangWu769/cse421-fall2026/issues/3).
 
@@ -128,7 +128,8 @@ Requirements:
 - [x] Pass six supplemental cases in a disposable source copy: early condition signal, runnable lock contender/retake, semaphore FIFO, condition waiter donation after enqueue, direct interrupt-queue wakeup, and priority-zero wakeup from idle.
 - [x] Keep the source `DESIGNDOC` consistent with the final Phase 2 implementation.
 - [x] Clean and archive the complete source tree, verify all 625 source files against the working tree, rebuild from the extracted archive, and pass all 18 course and regression tests again.
-- [ ] Confirm group membership for the corresponding Autolab phase, upload, and review grading feedback.
+- [x] Submit to Autolab; user confirmed submission on October 14.
+- [ ] Record the Phase 2 Autolab grading result.
 
 See [PHASE2-REPORT.md](assignments/pa1/reports/PHASE2-REPORT.md) for the individual local results. Local success covers the 42-point Phase 2 rubric; it does not establish an Autolab grade. The verified [Phase 2 archive](assignments/pa1/submissions/phase2/pa1-phase2.tar.gz) has a separate [SHA256SUMS](assignments/pa1/submissions/phase2/SHA256SUMS). The original Phase 1 archive is retained unchanged.
 
@@ -136,7 +137,7 @@ See [PHASE2-REPORT.md](assignments/pa1/reports/PHASE2-REPORT.md) for the individ
 
 **Due October 27 at 23:59 | 37 points | Autolab**
 
-**Status: Not started.**
+**Status: Implemented and verified on October 27. All nine MLFQS tests and 18 earlier-phase regressions passed, including an independent rebuild and full-suite rerun from the actual submission archive. Autolab submission is pending; no Phase 3 platform grade is claimed.**
 
 Track: [Milestone 4](https://github.com/QiangWu769/cse421-fall2026/milestone/4) | [Issue #4](https://github.com/QiangWu769/cse421-fall2026/issues/4).
 
@@ -162,12 +163,17 @@ Requirements:
 | `mlfqs-nice-10` | 2 |
 | `mlfqs-block` | 5 |
 
-- [ ] Read Appendix B and design the fixed-point operations and scheduler state.
-- [ ] Implement MLFQS calculations, update timing, and selection through the kernel option.
-- [ ] Pass all nine tests above and run regression tests for the earlier phases.
-- [ ] Keep the source `DESIGNDOC` consistent with the final implementation.
-- [ ] Clean build outputs, archive the complete source tree, and verify that the archive builds.
+- [x] Read Appendix B and design the fixed-point operations and scheduler state.
+- [x] Implement MLFQS calculations, update timing, and selection through the kernel option.
+- [x] Pass all nine tests above and all 18 earlier-phase regression tests on real Bochs.
+- [x] Complete independent arithmetic validation: 31 targeted assertions, 53,930 helper comparisons against a rational oracle, and 70,050 scheduler-method comparisons.
+- [x] Pass seven supplemental MLFQS groups in a disposable source copy, covering interfaces, inheritance, FIFO, disabled donation, global-tick updates, idle behavior, and second-boundary wakeups.
+- [x] Keep the source `DESIGNDOC` consistent with all implemented components, including final timer-update order and integer arithmetic.
+- [x] Clean and archive the complete source tree; verify all 626 regular files against the working source and record the checksum.
+- [x] Rebuild from the actual extracted archive in an isolated course-image container and pass all 27 tests again with GCC 7.5.0 and Bochs 2.6.11.
 - [ ] Confirm group membership for the corresponding Autolab phase, upload, and review grading feedback.
+
+See [PHASE3-REPORT.md](assignments/pa1/reports/PHASE3-REPORT.md) for individual local results. The nine Phase 3 tests cover 37 rubric points locally, not an Autolab grade. Supplemental checks are not additional rubric tests. The [Phase 3 archive](assignments/pa1/submissions/phase3/pa1-phase3.tar.gz) and [SHA256SUMS](assignments/pa1/submissions/phase3/SHA256SUMS) are verified. Earlier phase archives are retained unchanged.
 
 ## Check every source submission
 

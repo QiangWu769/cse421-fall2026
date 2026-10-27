@@ -2,7 +2,7 @@
 
 Course assignments, source code, submission archives, and deadlines. This repository currently contains **Project 1: Pintos Threads**.
 
-**Phase 1 is graded: 100/100 on Autolab (14/14 rubric points). Phase 2 is implemented and locally verified: all 13 Phase 2 tests, five Phase 1 regression tests, and six supplemental edge cases passed on October 9. Phase 2 has not been submitted to or graded by Autolab. Phase 3 is not started.**
+**All three Project 1 components are implemented. Phase 3 passed all 27 official tests locally on October 27: nine MLFQS tests and 18 earlier-phase regressions. Phase 1 has confirmed full credit. The user confirmed Phase 2 submission on October 14; its grade is unconfirmed. Phase 3 submission is pending.**
 
 ## Deadlines and status
 
@@ -12,8 +12,8 @@ All deadlines below are in **2026 at 23:59**. The Phase 1 Autolab screenshot con
 |---|---|---:|---|---|
 | Phase 1: Alarm Clock | September 30, 23:59 | 14 | [Autolab](https://autolab.cse.buffalo.edu/) | Submitted and graded: 100/100 |
 | Formal Design Document | October 8, 23:59 | 12 | UBLearns, PDF | PDF prepared; submission unconfirmed |
-| Phase 2: Priority Scheduler | October 14, 23:59 | 42 | [Autolab](https://autolab.cse.buffalo.edu/) | Implemented; locally verified; not submitted |
-| Phase 3: MLFQ Scheduler | October 27, 23:59 | 37 | [Autolab](https://autolab.cse.buffalo.edu/) | Not started |
+| Phase 2: Priority Scheduler | October 14, 23:59 | 42 | [Autolab](https://autolab.cse.buffalo.edu/) | Submitted October 14, user confirmed; grade unconfirmed |
+| Phase 3: MLFQ Scheduler | October 27, 23:59 | 37 | [Autolab](https://autolab.cse.buffalo.edu/) | Implemented; 27/27 local tests passed; submission pending |
 
 Implementation is worth **93 points**, plus **12 points** for the formal design document, for a total of **105 points**. The 4-point `alarm-priority` test belongs to Phase 2, giving phase totals of 14, 42, and 37.
 
@@ -34,13 +34,19 @@ The following work was completed and locally verified on **2026-09-25**:
 
 Priority scheduling, immediate preemption, priority-aware synchronization, and multiple/nested lock donation are implemented. The final clean build passed all **18 course tests** covering Phase 2 and Phase 1, using the course image and **Bochs 2.6.11**. Six supplemental edge cases passed in a disposable source copy; course tests were not modified.
 
-The 13 Phase 2 tests cover its **42-point rubric locally**. This is not an Autolab score. The [Phase 2 archive](assignments/pa1/submissions/phase2/pa1-phase2.tar.gz) was extracted into an isolated container, rebuilt, and passed all 18 course and regression tests again. Its 625 source files match the current source tree byte-for-byte. See the [Phase 2 report](assignments/pa1/reports/PHASE2-REPORT.md) for individual results and the checksum.
+The 13 Phase 2 tests cover its **42-point rubric locally**. This is not an Autolab score. The [Phase 2 archive](assignments/pa1/submissions/phase2/pa1-phase2.tar.gz) was extracted into an isolated container, rebuilt, and passed all 18 course and regression tests again. Its 625 source files matched the October 9 source snapshot byte-for-byte. See the dated [Phase 2 report](assignments/pa1/reports/PHASE2-REPORT.md) for individual results and the checksum. The user subsequently confirmed submission on **October 14**; the platform grade has not been supplied.
+
+## Phase 3 progress
+
+The 4.4BSD-style scheduler is implemented with signed 17.14 fixed-point arithmetic, inherited `nice`/`recent_cpu` state, periodic load and priority updates, idle exclusion, and the `-mlfqs` startup option. The final clean build passed **all 27 official tests** on Bochs 2.6.11. Each test uses the scheduler mode selected by the course Makefile.
+
+The nine MLFQS tests cover **37 rubric points locally**; this is not an Autolab grade. Seven supplemental scheduler groups passed, as did 31 targeted arithmetic assertions, 53,930 helper comparisons against a rational-arithmetic oracle, and 70,050 scheduler-method comparisons. These are supplemental checks, not additional course tests. The verified [Phase 3 archive](assignments/pa1/submissions/phase3/pa1-phase3.tar.gz) contains 626 regular files matching the cleaned source tree. It was independently extracted and rebuilt, and all **27 official tests passed again**. See [PHASE3-REPORT.md](assignments/pa1/reports/PHASE3-REPORT.md).
 
 ## Start here
 
 1. **Develop and test:** read the [PA1 guide](assignments/pa1/README.md). Course environment files are in [environment/](assignments/pa1/environment/).
-2. **Review the design:** read the current source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC) and [implementation notes and plan](assignments/pa1/design/IMPLEMENTATION-PLAN.txt). The [eight-page English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf) is the earlier proposal, prepared before Phase 2 implementation; it has not been regenerated for these code changes. Its UBLearns submission status is unconfirmed.
-3. **Finish the Phase 2 submission:** upload the verified archive to the corresponding Autolab phase and retain the grading result. Use [DEADLINES.md](DEADLINES.md) and the GitHub tracking links below. Phase 3 implementation is still **Not started**.
+2. **Review the design:** read the current source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC) and [implementation notes](assignments/pa1/design/IMPLEMENTATION-PLAN.txt), which describe all three implemented components. The [eight-page English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf) remains the historical proposal prepared before Phase 2 and Phase 3 implementation. Its UBLearns submission status is unconfirmed.
+3. **Finish the Phase 3 submission:** confirm the Phase 3 group, upload the verified archive to Autolab by **October 27 at 23:59**, and retain the grading result. Implementation and local/archive verification are complete. Record the Phase 2 grade and design-PDF submission confirmation when available.
 
 ## GitHub tracking
 
@@ -61,10 +67,11 @@ assignments/pa1/
 ├── pintos/                           # Complete Pintos project
 ├── environment/                      # Course Dockerfile and setup guide
 ├── design/                           # Earlier design PDF and current implementation plan
-├── reports/                          # Phase 1 and Phase 2 verification records
+├── reports/                          # Verification records for all three phases
 └── submissions/
     ├── phase1/pa1-phase1.tar.gz       # Retained Phase 1 source archive
-    └── phase2/pa1-phase2.tar.gz       # Verified Phase 2 source archive
+    ├── phase2/pa1-phase2.tar.gz       # Retained Phase 2 source archive
+    └── phase3/pa1-phase3.tar.gz       # Verified complete Project 1 source archive
 scripts/                              # Repository helper scripts
 deadlines.json                        # Structured deadlines
 DEADLINES.md                          # Requirements and checklists

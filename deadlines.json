@@ -38,7 +38,7 @@
       "prepared_date": "2026-10-05",
       "pages": 8,
       "figures": 3,
-      "document_note": "The retained eight-page PDF is the proposal prepared before Phase 2 implementation; it has not been regenerated for the October 9 code changes. UBLearns submission confirmation has not been supplied."
+      "document_note": "The retained eight-page PDF is the historical proposal prepared before Phase 2 and Phase 3 implementation. It has not been regenerated for the completed code. UBLearns submission confirmation has not been supplied."
     },
     {
       "id": "pa1-phase2",
@@ -47,11 +47,11 @@
       "due_utc": "2026-10-15T03:59:00Z",
       "points": 42,
       "platform": "Autolab",
-      "status": "implemented_locally_verified",
+      "status": "submitted_grade_unconfirmed",
       "milestone_url": "https://github.com/QiangWu769/cse421-fall2026/milestone/3",
       "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/3",
-      "submission_status": "not_submitted",
-      "completion_scope": "Implementation and local verification only; no Autolab submission or grade.",
+      "submission_status": "submitted_user_confirmed",
+      "completion_scope": "Implementation and local verification completed October 9; submission user-confirmed October 14; no Autolab grade claimed.",
       "local_verification": {
         "date": "2026-10-09",
         "simulator": "Bochs 2.6.11",
@@ -77,7 +77,10 @@
         "course_and_regression_tests_total": 18,
         "compiler": "GCC 7.5.0",
         "simulator": "Bochs 2.6.11"
-      }
+      },
+      "submission_date": "2026-10-14",
+      "submission_evidence": "The user confirmed submission in the conversation on October 14; the platform grade has not been supplied.",
+      "grading_status": "unconfirmed"
     },
     {
       "id": "pa1-phase3",
@@ -86,10 +89,47 @@
       "due_utc": "2026-10-28T03:59:00Z",
       "points": 37,
       "platform": "Autolab",
-      "status": "not_started",
+      "status": "implemented_locally_verified",
       "milestone_url": "https://github.com/QiangWu769/cse421-fall2026/milestone/4",
       "issue_url": "https://github.com/QiangWu769/cse421-fall2026/issues/4",
-      "submission_status": "not_submitted"
+      "submission_status": "not_submitted",
+      "completion_scope": "All three components implemented; all 27 official tests passed locally and again after isolated extraction/rebuild of the actual archive. Phase 3 submission and grading remain pending.",
+      "local_verification": {
+        "date": "2026-10-27",
+        "simulator": "Bochs 2.6.11",
+        "phase3_tests_passed": 9,
+        "phase3_tests_total": 9,
+        "phase3_rubric_points_covered": 37,
+        "earlier_phase_regression_tests_passed": 18,
+        "earlier_phase_regression_tests_total": 18,
+        "official_tests_passed": 27,
+        "official_tests_total": 27,
+        "report_path": "assignments/pa1/reports/PHASE3-REPORT.md",
+        "compiler": "GCC 7.5.0",
+        "supplemental_scheduler_groups_passed": 7,
+        "supplemental_scheduler_groups_total": 7
+      },
+      "independent_arithmetic_checks": {
+        "targeted_assertions_passed": 31,
+        "rational_oracle_helper_comparisons_passed": 53930,
+        "scheduler_method_comparisons_passed": 70050,
+        "counts_as_official_rubric_tests": false
+      },
+      "archive_path": "assignments/pa1/submissions/phase3/pa1-phase3.tar.gz",
+      "archive_status": "verified",
+      "archive_verification": {
+        "date": "2026-10-27",
+        "size_bytes": 5496294,
+        "regular_files": 626,
+        "sha256": "283560a63b1a8080bd2b5a80f45b75ddcf92a671c4d988d04dff9a45b7ef7b57",
+        "source_files_match": true,
+        "extracted_rebuild": "passed",
+        "course_and_regression_tests_total": 27,
+        "course_and_regression_tests_passed": 27,
+        "compiler": "GCC 7.5.0",
+        "simulator": "Bochs 2.6.11"
+      },
+      "grading_status": "unconfirmed"
     }
   ]
 }

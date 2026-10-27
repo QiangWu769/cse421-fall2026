@@ -1,5 +1,5 @@
-CSE 421/521 - PROJECT 1 IMPLEMENTATION NOTES AND DESIGN PLAN
-Prepared October 5, 2026; implementation status updated October 9, 2026
+CSE 421/521 - PROJECT 1 IMPLEMENTATION NOTES
+Prepared October 5, 2026; implementation status updated October 27, 2026
 
 Group
 Qiang Wu <qwu26@buffalo.edu>
@@ -8,20 +8,25 @@ Siraat Mustafa <siraatmu@buffalo.edu>
 
 CURRENT WORK
 
-Alarm Clock is implemented. The user-provided Autolab result shows
-five tests passed, 14/14 rubric points, and a normalized score of 100/100.
-Priority Scheduling is now implemented. A clean build passed all 13 Phase 2
-tests and five Phase 1 regressions, and six supplemental cases passed in a
-disposable source copy. Phase 2 is not submitted to or graded by Autolab.
-Its archive was extracted and rebuilt in an isolated container; all 18
-course and regression tests passed again. Its 625 source files match the
-working tree byte-for-byte, without build output or the temporary harness.
-MLFQS is still planned and not implemented.
+All three Project 1 components are implemented. The user-provided Phase 1
+Autolab result confirms five tests passed, 14/14 rubric points, and 100/100.
+The user confirmed Phase 2 submission on October 14; its grade is unconfirmed.
+The Phase 2 archive retains the source snapshot verified on October 9.
 
-The existing eight-page English PDF contains all 19 required answers but
-remains the proposal prepared before the Phase 2 code was completed. It
-has not been regenerated for these changes. Its actual UBLearns submission
-status is unconfirmed. The editable DESIGNDOC tracks the current source.
+Phase 3 passed all 27 official tests locally on October 27: nine MLFQS tests
+and 18 earlier-phase regressions, using their required scheduler modes.
+Independent arithmetic checks also passed: 31 targeted assertions, 53,930
+helper comparisons against a rational-arithmetic oracle, and 70,050
+scheduler-method comparisons. These do not count as official rubric tests.
+Seven supplemental scheduler groups passed in a disposable source copy.
+The verified Phase 3 archive contains 626 regular files matching the cleaned
+source. An isolated extraction and rebuild passed all 27 official tests again
+using GCC 7.5.0 and Bochs 2.6.11. Phase 3 is not submitted.
+
+The eight-page English PDF remains the historical proposal prepared before
+Phase 2 and Phase 3 implementation. It has not been regenerated for the
+completed code. UBLearns submission status is unconfirmed. The current
+source DESIGNDOC describes all three implemented components.
 
 OCTOBER 5 REVIEW OF ALARM CLOCK (A1-A6)
 
@@ -46,7 +51,8 @@ The original Phase 1 archive remains retained as the earlier submission.
 PHASE 2 IMPLEMENTED DESIGN
 
 The following design is implemented in thread.c/h, synch.c/h, and intq.c.
-The course tests and the Phase 1 timer.c implementation were not changed.
+The Phase 2 change did not modify the course tests or Phase 1 timer.c.
+Phase 3 subsequently integrated timer.c with the new end-of-tick updates.
 
 1. Thread and lock state
 
@@ -176,94 +182,109 @@ Six supplemental cases passed in a temporary source copy:
 The supplemental harness was not added to the production source or the
 official course tests. See ../reports/PHASE2-REPORT.md for the full record.
 
-PHASE 3 DESIGN DECISIONS - NOT YET IMPLEMENTED
+PHASE 3 IMPLEMENTED DESIGN
 
 1. State and arithmetic
 
-Add nice and recent_cpu to each thread. Keep load_avg global. Reuse
-all_list to visit running, ready, and blocked threads. Reuse the Phase 2
-ready_list selection rule; the official FAQ permits a single queue when
-its scheduling behavior matches the specified priority queues.
+Each thread has nice and recent_cpu. load_avg is global. The existing
+all_list covers running, ready, and blocked threads. The ready_list still
+selects the first highest-priority entry, preserving equal-priority FIFO.
 
-Use signed 17.14 fixed-point values stored in int32_t, with scale 1<<14.
-Put named arithmetic helpers in threads/fixed-point.h. Use int64_t for
-intermediate fixed-point multiplication and division. Keep fractional
-values until the required conversion; do not use floating point.
+threads/fixed-point.h implements signed 17.14 values in int32_t, with
+F = 1 << 14. Multiplication, division, scaling, and rounding intermediates
+use int64_t; no floating-point instructions are used.
 
-The initial thread starts with nice=0 and recent_cpu=0. Later ordinary
-threads inherit both values from their creator. Initialize their computed
-priority before they become ready. Handle idle explicitly: keep its
-priority at PRI_MIN and exclude it from CPU and ready-thread accounting.
-Identify idle before unblocking it during startup. Initialize main without
-calling thread_current() before its thread state is ready. Take the parent
-state snapshot and initialize a new thread before publishing it to all_list.
+The initial thread starts with nice=0 and recent_cpu=0. Ordinary threads
+created in MLFQS mode inherit both from their creator and receive their
+computed priority before being published. Idle is identified explicitly,
+kept at PRI_MIN, and excluded from recent_cpu and ready-thread accounting.
+Initialization avoids calling thread_current() on the unfinished bootstrap
+thread. Parent-state reads and publication to all_list are atomic.
 
-2. Formulas and tick order
+2. Formulas and rounding
+
+The required mathematical formulas are:
 
     priority = PRI_MAX - recent_cpu / 4 - 2 * nice
     load_avg = (59/60) * load_avg + (1/60) * ready_threads
     recent_cpu = (2 * load_avg) / (2 * load_avg + 1) * recent_cpu + nice
 
-Evaluate priority in fixed point, convert the complete result toward
-zero, and clamp it to PRI_MIN..PRI_MAX. For results in the valid positive
-range, truncation is the required downward rounding. Do not truncate
-recent_cpu/4 before subtracting it. Keep negative recent_cpu values.
-Compute the recent_cpu coefficient before multiplying by recent_cpu.
+For stored integer values R = recent_cpu and L = load_avg, the code uses:
 
-Plan this order inside each timer interrupt:
+    priority = ((PRI_MAX - 2 * nice) * 4 * F - R) / (4 * F)
+    L = (59 * L + ready_threads * F) / 60
+    coefficient = (2 * L * F) / (2 * L + F)
+    R = (coefficient * R) / F + nice * F
+
+Use int64_t intermediates in these expressions. Priority converts the
+complete expression toward zero and is then clamped to PRI_MIN..PRI_MAX.
+For positive in-range results this is the required downward rounding.
+The load-average update combines its numerator before a single division,
+avoiding separate early truncation of its two terms. recent_cpu may be
+negative and is not clamped. Compute coefficient before multiplying by R.
+
+The load-average and recent_cpu getters return their value times 100,
+rounded to nearest, with exact halves away from zero. Scale in 64 bits
+before adding or subtracting F/2 and dividing by F.
+
+3. Timer interrupt order
+
+thread_tick() begins accounting; timer_interrupt() wakes expired alarms;
+thread_tick_end(ticks) performs periodic updates and the final yield check.
+The ordering is:
+
 - Increment the global tick count.
-- Account one recent_cpu unit to the running non-idle thread.
-- Wake alarm requests due at this tick; complete their queue operations.
-- On a TIMER_FREQ boundary, count ready threads (ready_list plus the
-  running non-idle thread), update load_avg, then recompute recent_cpu
-  for every non-idle thread, including blocked threads.
-- On a four-tick boundary, recompute every non-idle thread's priority.
-- Apply the time-slice/preemption check and defer any context switch
-  until interrupt return.
+- Mark tick_in_progress, clear ready_changed, and account one recent_cpu
+  unit to the running non-idle thread.
+- Wake every alarm request whose deadline has arrived.
+- On each TIMER_FREQ boundary, count ready threads after those wakeups,
+  update load_avg, then recompute recent_cpu for every non-idle thread,
+  including blocked threads.
+- Every fourth global tick, recompute every non-idle thread's priority.
+- Check preemption using the completed state and apply the time-slice
+  check. Any context switch occurs only after interrupt return.
 
-At ticks divisible by both intervals, the priority calculation therefore
-uses the new load_avg and recent_cpu. Counting after wakeups includes
-threads whose alarm expires at that boundary. Split accounting from
-periodic updates so the existing thread_tick-before-wakeup ordering does
-not accidentally count sleepers as still blocked. Kernel threads cannot
-run between these updates.
+During an MLFQS timer tick, thread_unblock marks ready_changed instead of
+requesting preemption from stale priorities. thread_tick_end decides after
+the periodic calculations. Other interrupt wakeups retain the normal
+interrupt-return preemption path. tick_in_progress is cleared at the end.
+Kernel threads cannot observe partly updated state between these steps.
 
-3. Interfaces and equal-priority order
+4. Interfaces, mode selection, and cost
 
-In MLFQS mode, ignore thread_create's explicit priority and calls to
-thread_set_priority. thread_get_priority returns the computed priority.
-Bypass donation while retaining ordinary lock and semaphore behavior.
+The -mlfqs startup option selects this scheduler. In that mode, thread_create
+ignores its explicit priority, thread_set_priority does not change priority,
+and thread_get_priority returns the computed value. Lock donation is
+bypassed while ordinary semaphore and lock behavior remains available.
 
-thread_set_nice updates nice, immediately recalculates priority, and
-checks preemption. thread_get_nice returns the stored value.
-thread_get_recent_cpu and thread_get_load_avg return their value times
-100, rounded to the nearest integer with correct handling of negatives.
-Read shared values atomically against the timer's updates.
+thread_set_nice stores a value in -20..20, recomputes the MLFQS priority,
+and checks preemption. thread_get_nice returns the stored value. Getters
+for shared recent_cpu/load_avg values are atomic against timer updates.
+The default mode retains Phase 2 priority scheduling and lock donation.
 
-Append to the ready list on unblock/yield and pick its first current
-maximum. With equal priorities, an expired four-tick time slice moves
-the current thread behind existing peers. Use this same convention in
-the C2 table: rows describe values AFTER the listed tick's accounting
-and priority update, immediately before dispatching the next thread.
-Assume A, B, C are initially ready in that order. Document this choice
-in C3 rather than leaving tie decisions implicit.
+Append to the ready list on unblock/yield and choose the first current
+maximum. The four-tick quantum preserves round-robin order among peers.
+The source DESIGNDOC's C2 table uses values after the tick's accounting
+and priority updates, before dispatch, with A, B, C initially in that order.
 
-4. Cost and later checks
+Per-tick accounting is O(1). Alarm wakeups cost O(k+1); periodic updates
+visit O(n) threads. Ready-thread selection and relevant preemption checks
+scan O(r) entries. An ordinary MLFQS tick with no wakeup and no priority
+update avoids that ready-list scan. The complete interrupt is not claimed
+to be O(1) on periodic-update or wakeup ticks.
 
-An ordinary tick does constant-time CPU accounting plus dispatch/wakeup
-checks. A four-tick update visits all threads; a one-second update does
-so once more. Ready selection is O(r) for r ready threads. Wakeups add
-the Alarm Clock's O(k+1) work. Do not describe the complete interrupt
-as O(1) while these scans remain.
+5. Verification completed October 27
 
-The single list avoids moving threads between buckets after every
-priority change, at the cost of linear dispatch. Sixty-four FIFO queues
-are a possible later optimization if scan cost matters.
-
-After implementation, run the nine MLFQS tests and rerun earlier tests
-in their appropriate scheduler mode. Check inherited state, idle
-exclusion, blocked-thread updates, boundary ticks, and signed arithmetic.
-No Phase 3 results are claimed today.
+All nine MLFQS tests and 18 earlier-phase regressions passed on real Bochs.
+The official Makefile supplies -mlfqs only for the advanced-scheduler tests.
+The nine tests cover 37 rubric points locally; no Autolab grade is claimed.
+The independent arithmetic checks listed above are supplemental validation.
+Seven disposable-harness groups also passed: interface bounds/rounding,
+inheritance before first run, FIFO, disabled donation, fourth-global-tick
+updates, idle/priority-zero behavior, and second-boundary alarm counting.
+The final harness run followed corrections to setup priority and stdin
+isolation; no production code changed for that rerun.
+See ../reports/PHASE3-REPORT.md for individual results and archive status.
 
 FILES CHANGED FOR PHASE 2
 
@@ -273,12 +294,12 @@ threads/synch.h: lock contender/ownership links.
 threads/synch.c: donation bookkeeping and priority-aware wakeups.
 devices/intq.c: direct unblock/preemption after waiter cleanup.
 
-FILES EXPECTED TO CHANGE FOR PHASE 3
+FILES CHANGED FOR PHASE 3
 
 threads/thread.h and threads/thread.c: scheduler state, initialization,
 tick accounting, periodic calculations, MLFQS APIs, and inherited values.
 devices/timer.c: ordered accounting, alarm wakeups, and periodic updates.
-threads/fixed-point.h: planned arithmetic helper header.
+threads/fixed-point.h: signed 17.14 arithmetic helpers with 64-bit intermediates.
 
 DOCUMENT STATUS AND NEXT STEPS
 
@@ -292,9 +313,17 @@ October 9: Phase 2 implemented; all 18 course tests and six supplemental
            has not been supplied; the PDF deadline was October 8 at 23:59 EDT.
            The extracted Phase 2 archive was rebuilt and passed all 18
            course and regression tests again, using GCC 7.5.0 and Bochs 2.6.11.
-Remaining: submit the verified Phase 2 archive to Autolab by October 14 at
-           23:59 EDT and record the grade.
-Implementation: Phase 3 remains planned; no Phase 3 test results are claimed.
+October 14: The user confirmed Phase 2 submission. Its grade remains
+            unconfirmed; the earlier verification report is a dated record.
+October 27: Phase 3 implemented; all 27 official tests and the independent
+            arithmetic checks passed. Source DESIGNDOC now describes all
+            implemented components. The historical PDF remains unchanged.
+            The actual submission archive was independently extracted and
+            rebuilt; all 27 official tests passed again. Full implementation
+            and local/archive verification are complete.
+Remaining: confirm the Phase 3 group, submit the verified archive to Autolab
+           by October 27 at 23:59 EDT, and retain the grade.
+           Record the Phase 2 grade and UBLearns confirmation when available.
 
 REFERENCES CHECKED
 

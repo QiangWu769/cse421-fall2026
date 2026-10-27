@@ -17,8 +17,7 @@ Siraat Mustafa <siraatmu@buffalo.edu>
 >> If you have any preliminary comments on your submission, notes for the
 >> TAs, or extra credit, please give them here.
 
-Alarm Clock and Priority Scheduling are implemented. Advanced Scheduler
-is a planned design.
+Alarm Clock, Priority Scheduling, and Advanced Scheduler are implemented.
 
 >> Please cite any offline or online sources you consulted while
 >> preparing your submission, other than the Pintos documentation, course
@@ -55,7 +54,7 @@ wake: A semaphore that blocks the thread until the timer wakes it.
 elem: Connects the request to the sleep list.
 sleepers: The pending requests, sorted by wake_tick.
 
-struct thread is unchanged.
+The alarm-clock implementation adds no fields to struct thread.
 
 ---- ALGORITHMS ----
 
@@ -221,8 +220,9 @@ until it can take the semaphore.
 After success, the caller removes its contender entry if it registered
 one, clears waiting_lock, and becomes the holder. The lock is added to
 held_locks, and the new holder's priority is recomputed from its base
-priority and contenders for all its held locks. Ownership bookkeeping also applies to an uncontended acquire
-and a successful lock_try_acquire(). A failed try registers no wait or
+priority and contenders for all its held locks. Ownership bookkeeping
+also applies to an uncontended acquire and a successful lock_try_acquire().
+A failed try registers no wait or
 donation. The list and priority changes occur within the synchronization
 primitives' short atomic sections.
 
@@ -306,8 +306,12 @@ recent_cpu: Recent CPU usage, including the fractional part.
 In threads/thread.c:
 
 static fixed_t load_avg;
+static bool tick_in_progress;
+static bool ready_changed;
 
 load_avg: The moving average of runnable non-idle threads.
+tick_in_progress: Marks a timer interrupt whose scheduler updates are not finished.
+ready_changed: Records wakeups that need a priority comparison after timer updates.
 
 priority, ready_list, all_list, and thread_mlfqs are reused. Selection
 reads current priorities from the single ready list. Fixed-point
@@ -317,7 +321,9 @@ The initial thread starts with nice=0 and recent_cpu=0. New ordinary
 threads inherit both values before being added to all_list. Idle is
 identified before it becomes ready and excluded from CPU and load
 accounting. load_avg starts at zero, and idle keeps PRI_MIN priority.
-MLFQS ignores manually supplied priorities and bypasses donation. Changing nice recalculates priority and checks preemption.
+MLFQS ignores manually supplied priorities and bypasses donation.
+Changing nice recalculates priority and checks preemption. Nice values
+range from -20 to 20; thread_get_nice() returns the stored value.
 
 ---- ALGORITHMS ----
 
@@ -351,7 +357,7 @@ The final column gives the thread selected for the next four-tick slice.
 At slice expiry, the running thread joins the ready-list tail. The first
 maximum priority wins. Thus B precedes A at tick 8, and C precedes both
 at tick 24. A is selected again at tick 4 because its priority is still
-higher. These conventions are also the rules for the planned scheduler.
+higher. These conventions are also the rules for the scheduler.
 With TIMER_FREQ=100, no one-second update occurs in this table.
 
 >> C4: How is the way you divided the cost of scheduling between code
@@ -368,17 +374,20 @@ When both boundaries coincide, the priority formula uses the new values.
     recent_cpu = (2*load_avg)/(2*load_avg+1) * recent_cpu + nice
 
 ready_threads counts the ready list plus the running non-idle thread,
-after alarm wakeups. The updates finish before interrupt return. This
-requires splitting thread_tick() into accounting and periodic updates,
-with the latter called after the alarm wake loop. After the updates, the
-handler compares the current and ready priorities and requests
-intr_yield_on_return() when needed.
+after alarm wakeups. thread_tick() records CPU use and the time slice.
+thread_tick_end() runs after the alarm wake loop and performs the periodic
+updates. If priorities changed or a sleeper woke, it compares the current
+and ready priorities and requests intr_yield_on_return() when needed.
+Time-slice expiration also requests a switch. All updates finish before
+interrupt return; wakeups in the timer handler do not schedule using
+partially updated priorities.
 
 Periodic updates cost O(n) for n threads. Dispatch costs O(r) for r ready
 threads, and waking k sleepers adds O(k+1). All-thread scans occur only
 at the specified boundaries. Thread creation and thread_set_nice()
 calculate one thread's priority outside interrupt context, with short
-atomic sections for shared state.
+atomic sections for shared state. With more threads, the O(n) updates
+increase time spent handling timer interrupts.
 
 ---- RATIONALE ----
 
@@ -405,7 +414,7 @@ starting point.
 >> type and/or a set of functions or macros to manipulate fixed-point
 >> numbers, why did you do so?  If not, why not?
 
-We plan to put small inline helpers in threads/fixed-point.h using
+We use small inline helpers in threads/fixed-point.h using
 signed 17.14 values and F = 1 << 14. Naming the operations keeps the
 scale conversions in one place and makes the scheduler formulas easier
 to check.
@@ -417,10 +426,13 @@ Multiplication and division by F also handle negative operands without
 relying on signed shifts.
 
 Stored values keep their fractions, including negative recent_cpu.
-Priority is calculated in fixed point, then converted toward zero and
-clamped to 0..63. For a valid positive priority, this rounds down. The
-recent_cpu/4 term is not truncated early. In the one-second update, the
-coefficient is calculated before multiplying it by recent_cpu.
+The priority formula uses the combined 64-bit numerator
+((PRI_MAX - 2 * nice) * FP_SCALE * 4 - recent_cpu), divided by
+4 * FP_SCALE once, then clamped to 0..63. This keeps all fractional
+bits until the final truncation. For a valid positive priority, this
+rounds down. load_avg similarly combines its weighted numerator before
+division by 60. The recent_cpu coefficient is calculated before it is
+multiplied by the stored CPU value.
 
 The load and recent CPU getters multiply by 100 in a wide intermediate
 and round to nearest. For scaled x, use (x + F/2)/F when x is nonnegative

@@ -4,6 +4,7 @@
 #include <debug.h>
 #include <list.h>
 #include <stdint.h>
+#include "threads/fixed-point.h"
 
 /* States in a thread's life cycle. */
 enum thread_status
@@ -98,6 +99,8 @@ struct thread
     struct lock *waiting_lock;          /* Pending lock acquisition. */
     struct list held_locks;             /* Locks owned by this thread. */
     struct list_elem lock_wait_elem;    /* Link in a lock's contenders. */
+    int nice;                          /* MLFQS niceness. */
+    fixed_t recent_cpu;                /* Recent CPU usage in 17.14 format. */
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
@@ -117,6 +120,7 @@ void thread_init (void);
 void thread_start (void);
 
 void thread_tick (void);
+void thread_tick_end (int64_t);
 void thread_print_stats (void);
 
 typedef void thread_func (void *aux);
