@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the course DESIGNDOC into a readable PDF; requires reportlab."""
+"""Render the current DESIGNDOC into the final PDF; requires reportlab."""
 from pathlib import Path
 import re
 from html import escape
@@ -16,7 +16,7 @@ from design_figures import build_figures
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'assignments/pa1/pintos/src/threads/DESIGNDOC'
-OUTPUT = ROOT / 'assignments/pa1/design/PA1-DESIGNDOC.pdf'
+OUTPUT = ROOT / 'assignments/pa1/design/PA1-DESIGNDOC-FINAL.pdf'
 TEXT = SOURCE.read_text()
 FIGURES = build_figures(ROOT / 'assignments/pa1/design/figures')
 NAVY = colors.HexColor('#25384b')
@@ -139,8 +139,8 @@ def answer_flow(text, omit_diagram=False):
 
 sections = [
     ('ALARM CLOCK', 'Alarm Clock', ['A' + str(i) for i in range(1, 7)]),
-    ('PRIORITY SCHEDULING', 'Priority Scheduling - Proposed Design', ['B' + str(i) for i in range(1, 8)]),
-    ('ADVANCED SCHEDULER', 'Advanced Scheduler - Proposed Design', ['C' + str(i) for i in range(1, 7)]),
+    ('PRIORITY SCHEDULING', 'Priority Scheduling', ['B' + str(i) for i in range(1, 8)]),
+    ('ADVANCED SCHEDULER', 'Advanced Scheduler', ['C' + str(i) for i in range(1, 7)]),
 ]
 labels = {
     'A1': 'Data structures', 'A2': 'Sleep and wakeup', 'A3': 'Interrupt cost',
@@ -153,13 +153,16 @@ labels = {
     'C5': 'Design tradeoffs', 'C6': 'Fixed-point arithmetic',
 }
 
-story = [para('Project 1: Threads - Design Document', 'title'),
-         para('CSE 421/521 - Operating Systems | Fall 2026', 'course')]
+story = [para('Project 1: Threads - Final Design Document', 'title'),
+         para('CSE 421/521 - Operating Systems | Fall 2026 | October 27, 2026', 'course')]
 group = TEXT.split('---- GROUP ----', 1)[1].split('---- PRELIMINARIES ----', 1)[0]
 for line in group.splitlines():
     if line.strip() and not line.startswith('>>'):
         story.append(para(line.strip(), 'small'))
-story += [Spacer(1, 8), para('Alarm Clock is implemented. Priority Scheduling and Advanced Scheduler are planned designs.')]
+preliminaries = TEXT.split('---- PRELIMINARIES ----', 1)[1].split('>> Please cite', 1)[0]
+status = ' '.join(line.strip() for line in preliminaries.splitlines()
+                  if line.strip() and not line.startswith('>>'))
+story += [Spacer(1, 8), para(status)]
 story.append(Spacer(1, 13))
 
 core_count = 0
@@ -184,6 +187,11 @@ for index, (marker, title, keys) in enumerate(sections):
         answer = re.sub(r'^---- [A-Z ]+ ----[ \t]*$', '', answer, flags=re.M).strip()
         assert answer, key
         flows = answer_flow(answer, omit_diagram=(key == 'B2'))
+        if key == 'C6':
+            story.append(KeepTogether([para(f'{key}. {labels[key]}', 'label'),
+                                       para(question, 'question'), *flows]))
+            core_count += 1
+            continue
         story.append(KeepTogether([para(f'{key}. {labels[key]}', 'label'),
                                    para(question, 'question'), flows[0]]))
         story.extend(flows[1:])
@@ -204,9 +212,9 @@ assert core_count == 19
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 doc = SimpleDocTemplate(str(OUTPUT), pagesize=letter, rightMargin=49,
                         leftMargin=49, topMargin=42, bottomMargin=53,
-                        title='CSE 421/521 - Project 1 Design Document',
+                        title='CSE 421/521 - Project 1 Final Design Document',
                         author='Qiang Wu; Mohammad Sahir; Siraat Mustafa',
-                        subject='Alarm Clock implementation and planned priority and MLFQS designs',
+                        subject='Completed Alarm Clock, Priority Scheduling, and MLFQS implementation',
                         creator='CSE 421/521 Project 1')
 doc.build(story, canvasmaker=NumberedCanvas)
 print(f'Created {OUTPUT}')

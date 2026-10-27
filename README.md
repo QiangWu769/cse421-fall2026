@@ -11,7 +11,7 @@ All deadlines below are in **2026 at 23:59**. The Phase 1 Autolab screenshot con
 | Deliverable | Deadline | Points | Platform | Status |
 |---|---|---:|---|---|
 | Phase 1: Alarm Clock | September 30, 23:59 | 14 | [Autolab](https://autolab.cse.buffalo.edu/) | Submitted and graded: 100/100 |
-| Formal Design Document | October 8, 23:59 | 12 | UBLearns, PDF | PDF prepared; submission unconfirmed |
+| Formal Design Document | October 8, 23:59 | 12 | UBLearns, PDF | Final PDF prepared; earlier proposal retained; submission unconfirmed |
 | Phase 2: Priority Scheduler | October 14, 23:59 | 42 | [Autolab](https://autolab.cse.buffalo.edu/) | Submitted October 14, user confirmed; grade unconfirmed |
 | Phase 3: MLFQ Scheduler | October 27, 23:59 | 37 | [Autolab](https://autolab.cse.buffalo.edu/) | Implemented; 27/27 local tests passed; submission pending |
 
@@ -45,7 +45,7 @@ The nine MLFQS tests cover **37 rubric points locally**; this is not an Autolab 
 ## Start here
 
 1. **Develop and test:** read the [PA1 guide](assignments/pa1/README.md). Course environment files are in [environment/](assignments/pa1/environment/).
-2. **Review the design:** read the current source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC) and [implementation notes](assignments/pa1/design/IMPLEMENTATION-PLAN.txt), which describe all three implemented components. The [eight-page English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf) remains the historical proposal prepared before Phase 2 and Phase 3 implementation. Its UBLearns submission status is unconfirmed.
+2. **Review the final design:** read the new [nine-page final design PDF](assignments/pa1/design/PA1-DESIGNDOC-FINAL.pdf), prepared on October 27 from the completed source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC). It covers all three implemented components. The [earlier eight-page proposal](assignments/pa1/design/PA1-DESIGNDOC.pdf) is retained unchanged. See the [implementation notes](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) for development details; UBLearns submission remains unconfirmed.
 3. **Finish the Phase 3 submission:** confirm the Phase 3 group, upload the verified archive to Autolab by **October 27 at 23:59**, and retain the grading result. Implementation and local/archive verification are complete. Record the Phase 2 grade and design-PDF submission confirmation when available.
 
 ## GitHub tracking
@@ -66,7 +66,7 @@ assignments/pa1/
 ├── README.md                         # PA1 development and submission guide
 ├── pintos/                           # Complete Pintos project
 ├── environment/                      # Course Dockerfile and setup guide
-├── design/                           # Earlier design PDF and current implementation plan
+├── design/                           # Final design PDF, earlier proposal, implementation notes
 ├── reports/                          # Verification records for all three phases
 └── submissions/
     ├── phase1/pa1-phase1.tar.gz       # Retained Phase 1 source archive
@@ -77,4 +77,4 @@ deadlines.json                        # Structured deadlines
 DEADLINES.md                          # Requirements and checklists
 ```
 
-The source `DESIGNDOC` contains all 19 required answers. The retained eight-page English PDF includes three plain black-and-white vector figures for sleep/wakeup, nested donation, and MLFQS update order, plus the checked C2 scheduling table. Its later-phase wording describes the proposal as it stood before implementation. UBLearns submission confirmation has not been supplied. To regenerate the PDF after editing, run `python3 scripts/build-design-pdf.py` in an environment with ReportLab installed and review every rendered page.
+The [final design PDF](assignments/pa1/design/PA1-DESIGNDOC-FINAL.pdf) contains all 19 required answers from the completed source `DESIGNDOC`, three plain black-and-white figures, and the C2 scheduling table. The earlier eight-page PDF remains the historical proposal. The final PDF is a separate document; the verified Phase 3 source archive is unchanged. The documented design-PDF deadline remains October 8; no separate deadline for this revision has been supplied. UBLearns submission confirmation has not been supplied.

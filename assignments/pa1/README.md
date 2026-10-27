@@ -5,7 +5,7 @@ CSE 421/521 Operating Systems, Fall 2026. See [DEADLINES.md](../../DEADLINES.md)
 | Deliverable | Status |
 |---|---|
 | Phase 1: Alarm Clock | **Completed** - Autolab 100/100; 14/14 points |
-| Full Design Document PDF | **Prepared** - earlier eight-page proposal; UBLearns submission unconfirmed |
+| Full Design Document PDF | **Prepared** - new nine-page final version; earlier eight-page proposal retained; submission unconfirmed |
 | Phase 2: Priority Scheduler | **Submitted October 14, user confirmed** - grade unconfirmed |
 | Phase 3: MLFQ Scheduler | **Implemented and locally verified** - 27/27 official tests passed; submission pending |
 
@@ -82,6 +82,6 @@ The course Dockerfile is preserved unchanged. Building it for the first time req
 
 - **Phase 3 submission:** confirm the Phase 3 group and upload the verified archive to Autolab by October 27 at 23:59. Retain the grading result; implementation, local testing, and extracted-archive verification are complete.
 - **Phase 2 grade:** submission on October 14 is user-confirmed; record the platform grade when available.
-- **Design document submission confirmation:** the [eight-page English PDF](design/PA1-DESIGNDOC.pdf) was prepared before Phase 2 and Phase 3 implementation and remains unchanged. It includes every required answer, three diagrams, and the C2 table. Its deadline was October 8 at 23:59; actual UBLearns submission is unconfirmed. The current [DESIGNDOC](pintos/src/threads/DESIGNDOC) and [implementation notes](design/IMPLEMENTATION-PLAN.txt) describe the completed code separately from that historical PDF.
+- **Final design PDF and submission confirmation:** the new [nine-page final PDF](design/PA1-DESIGNDOC-FINAL.pdf), prepared October 27 from the completed [DESIGNDOC](pintos/src/threads/DESIGNDOC), contains all 19 required answers, three plain diagrams, and the C2 table. The [earlier eight-page proposal](design/PA1-DESIGNDOC.pdf) remains unchanged. The documented PDF deadline is October 8 at 23:59; no separate deadline for this revision has been supplied. Actual UBLearns submission is unconfirmed. This standalone PDF does not change the verified Phase 3 archive; [implementation notes](design/IMPLEMENTATION-PLAN.txt) provide the code and verification record.
 
 The original project license and author information are retained in `pintos/LICENSE` and `pintos/AUTHORS`.

@@ -9,7 +9,7 @@ Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission 
 | Deliverable | Deadline | Points | Format and platform | Status |
 |---|---|---:|---|---|
 | Phase 1: Alarm Clock | 2026-09-30 23:59 | 14 | Complete source tree in `.tar.gz`, Autolab | Submitted and graded: 100/100 |
-| Formal Design Document | 2026-10-08 23:59 | 12 | PDF, UBLearns; retain `src/threads/DESIGNDOC` in the source tree | PDF prepared; submission unconfirmed |
+| Formal Design Document | 2026-10-08 23:59 | 12 | PDF, UBLearns; retain `src/threads/DESIGNDOC` in the source tree | Final PDF prepared; earlier proposal retained; submission unconfirmed |
 | Phase 2: Priority Scheduler | 2026-10-14 23:59 | 42 | Complete source tree in `.tar.gz`, Autolab | Submitted October 14, user confirmed; grade unconfirmed |
 | Phase 3: MLFQ Scheduler | 2026-10-27 23:59 | 37 | Complete source tree in `.tar.gz`, Autolab | Implemented; 27/27 local tests passed; submission pending |
 
@@ -68,22 +68,25 @@ Archive: [pa1-phase1.tar.gz](assignments/pa1/submissions/phase1/pa1-phase1.tar.g
 
 **Due October 8 at 23:59 | 12 points | PDF submitted to UBLearns**
 
-**Status: Complete eight-page English PDF prepared. UBLearns submission is unconfirmed.**
+**Status: A nine-page final implementation PDF was prepared on October 27. The earlier eight-page proposal is retained unchanged. UBLearns submission is unconfirmed.**
 
 Track: [Milestone 2](https://github.com/QiangWu769/cse421-fall2026/milestone/2) | [Issue #2](https://github.com/QiangWu769/cse421-fall2026/issues/2).
 
 Prepare the formal document using the course `threads.tmpl` template and retain [src/threads/DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC) in the source tree. Cover the data structures, algorithms, synchronization, and design rationale for **all project components**, including completed and planned designs.
 
-This deadline precedes the Phase 2 and Phase 3 implementation deadlines. The formal document must therefore describe the planned designs for components whose code is not yet complete; it cannot wait until all later implementations are finished.
+The October 8 deadline preceded the Phase 2 and Phase 3 implementation deadlines. The earlier proposal therefore described those components before their code was complete. The final revision below now describes the completed implementation.
 
-The [complete English PDF](assignments/pa1/design/PA1-DESIGNDOC.pdf) covers all 19 required questions. It is the earlier proposal, prepared before the Phase 2 and Phase 3 code was implemented, and is retained unchanged. The Alarm Clock answers, nested donation diagram, and C2 scheduling table were reviewed. The source `DESIGNDOC` and [implementation notes](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) now describe all three implemented components separately from that historical PDF.
+The new [final design PDF](assignments/pa1/design/PA1-DESIGNDOC-FINAL.pdf) was generated from the completed source `DESIGNDOC` on October 27. Its nine pages cover all 19 required questions, three plain figures, and the C2 scheduling table, describing all three components as implemented. The [earlier eight-page proposal](assignments/pa1/design/PA1-DESIGNDOC.pdf) is retained unchanged as the document prepared for the original October 8 deadline. The [implementation notes](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) record the final code and verification.
+
+The supplied assignment gives October 8 as the design-PDF deadline. It does not give a separate deadline for this final revision; October 27 remains the Phase 3 source-code deadline.
 
 - [x] Begin the formal draft and enter every group member's name and UB email address.
 - [x] Review the Alarm Clock design against the completed implementation.
 - [x] Complete Priority Scheduling questions B1-B7, including multiple and nested priority donation.
 - [x] Complete Advanced Scheduler questions C1-C6, including the scheduling example table and fixed-point arithmetic design.
-- [x] Include checked technical references.
-- [x] Produce the complete eight-page PDF and inspect every rendered page.
+- [x] Check the technical content against the Pintos documentation.
+- [x] Retain the earlier eight-page proposal and its completed page inspection.
+- [x] Generate the separate final PDF from the completed implementation's `DESIGNDOC`.
 - [ ] Confirm group review of the document.
 - [ ] Record UBLearns submission confirmation; actual submission status is currently unknown.
 

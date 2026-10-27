@@ -117,5 +117,7 @@ Implementation and local/archive verification are complete. Confirm the Phase 3 
 
 - **Phase 1:** the user-provided Autolab result confirms 100/100 and 14/14 rubric points.
 - **Phase 2:** the user confirmed submission on October 14. Its platform grade is unconfirmed; the October 9 report remains the historical local-verification record.
-- **Design PDF:** the existing eight-page PDF remains the historical proposal from before Phase 2 and Phase 3 implementation. It has not been regenerated for the completed code. Its UBLearns submission status is unconfirmed.
+- **Final design PDF:** the new [nine-page final PDF](../design/PA1-DESIGNDOC-FINAL.pdf) was prepared on October 27 from the completed source `DESIGNDOC`. It contains all 19 required answers, three plain black-and-white figures, and the C2 table, describing all three implemented components. The [earlier eight-page proposal](../design/PA1-DESIGNDOC.pdf) is retained unchanged. UBLearns submission is unconfirmed; the supplied assignment's October 8 PDF deadline is unchanged, and no separate final-revision deadline has been supplied.
 - **Current source design document:** `src/threads/DESIGNDOC` describes all three implemented components, including the final timer-update order and full integer formulas.
+
+The final PDF is a standalone deliverable generated from the existing final source document. Creating it did not change the source `DESIGNDOC`, the earlier PDF, or the verified Phase 3 archive and checksum recorded above.
