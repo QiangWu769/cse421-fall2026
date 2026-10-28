@@ -5,7 +5,7 @@ CSE 421/521 Operating Systems, Fall 2026. See [DEADLINES.md](../../DEADLINES.md)
 | Deliverable | Status |
 |---|---|
 | Phase 1: Alarm Clock | **Completed** - Autolab 100/100; 14/14 points |
-| Full Design Document PDF | **Prepared** - new nine-page final version; earlier eight-page proposal retained; submission unconfirmed |
+| Full Design Document PDF | **Prepared** - eight-page template version selected as final; alternate and proposal retained; submission unconfirmed |
 | Phase 2: Priority Scheduler | **Submitted October 14, user confirmed** - grade unconfirmed |
 | Phase 3: MLFQ Scheduler | **Implemented and locally verified** - 27/27 official tests passed; submission pending |
 
@@ -39,7 +39,7 @@ See the dated [PHASE2-REPORT.md](reports/PHASE2-REPORT.md) for the October 9 ver
 - The `-mlfqs` option selects the advanced scheduler, bypasses lock donation, and ignores manually supplied thread priorities. Default-mode priority scheduling and the alarm clock remain covered by regression tests.
 - All **27 official tests** passed locally on October 27: nine Phase 3 tests and 18 earlier-phase regressions, using the course Makefile's per-test scheduler modes and Bochs 2.6.11.
 
-See [PHASE3-REPORT.md](reports/PHASE3-REPORT.md) for individual results, seven successful supplemental scheduler groups, and independent arithmetic checks. The nine MLFQS tests cover **37 rubric points locally**; no Autolab grade is claimed. The verified [Phase 3 archive](submissions/phase3/pa1-phase3.tar.gz) contains 626 regular files matching the cleaned source tree, with [SHA256SUMS](submissions/phase3/SHA256SUMS) recorded beside it. An isolated extraction and rebuild passed all **27 official tests again**.
+See [PHASE3-REPORT.md](reports/PHASE3-REPORT.md) for individual results, seven successful supplemental scheduler groups, and independent arithmetic checks. The nine MLFQS tests cover **37 rubric points locally**; no Autolab grade is claimed. The verified [Phase 3 archive](submissions/phase3/pa1-phase3.tar.gz) contains 626 regular files that matched the cleaned source tree at packaging time, with [SHA256SUMS](submissions/phase3/SHA256SUMS) recorded beside it. An isolated extraction and rebuild passed all **27 official tests again**.
 
 ## Develop from a new clone
 
@@ -82,6 +82,6 @@ The course Dockerfile is preserved unchanged. Building it for the first time req
 
 - **Phase 3 submission:** confirm the Phase 3 group and upload the verified archive to Autolab by October 27 at 23:59. Retain the grading result; implementation, local testing, and extracted-archive verification are complete.
 - **Phase 2 grade:** submission on October 14 is user-confirmed; record the platform grade when available.
-- **Final design PDF and submission confirmation:** the new [nine-page final PDF](design/PA1-DESIGNDOC-FINAL.pdf), prepared October 27 from the completed [DESIGNDOC](pintos/src/threads/DESIGNDOC), contains all 19 required answers, three plain diagrams, and the C2 table. The [earlier eight-page proposal](design/PA1-DESIGNDOC.pdf) remains unchanged. The documented PDF deadline is October 8 at 23:59; no separate deadline for this revision has been supplied. Actual UBLearns submission is unconfirmed. This standalone PDF does not change the verified Phase 3 archive; [implementation notes](design/IMPLEMENTATION-PLAN.txt) provide the code and verification record.
+- **Final design PDF and submission confirmation:** use the [eight-page template PDF](design/PA1-DESIGNDOC-TEMPLATE.pdf), selected as the final submission version. Prepared October 27 from the updated [DESIGNDOC](pintos/src/threads/DESIGNDOC), it contains all 19 answers, the ASCII nested-donation diagram, and the C2 text table. This follows the instructor's [Piazza @135 reply](https://piazza.com/class/mr5d91n9mi73f/post/135): "Use the same template with your updated implementation." The [nine-page formatted alternate](design/PA1-DESIGNDOC-FINAL.pdf) and [earlier proposal](design/PA1-DESIGNDOC.pdf) remain separate. The original PDF deadline was October 8 at 23:59; no separate revision deadline has been supplied. Actual UBLearns submission is unconfirmed. The verified Phase 3 archive is unchanged; [implementation notes](design/IMPLEMENTATION-PLAN.txt) provide the code and verification record.
 
 The original project license and author information are retained in `pintos/LICENSE` and `pintos/AUTHORS`.

@@ -23,15 +23,20 @@ At packaging time, all 626 regular files in the verified Phase 3 archive
 matched the cleaned source. An isolated extraction and rebuild passed all 27
 official tests again using GCC 7.5.0 and Bochs 2.6.11. Phase 3 is not submitted.
 
-The new PA1-DESIGNDOC-FINAL.pdf was prepared on October 27 from the final
-source DESIGNDOC. Its nine pages contain all 19 required answers, three
-plain black-and-white figures, and the C2 table; all components are described
-as implemented. The earlier eight-page PA1-DESIGNDOC.pdf is retained
-unchanged as the historical proposal prepared for the October 8 deadline.
-UBLearns submission is unconfirmed. No separate final-revision PDF deadline
-has been supplied. The current DESIGNDOC and final PDF received wording-only
-clarifications after archive verification. The tested archive retains its earlier
-document wording; the implementation, archive, and recorded checksum are unchanged.
+PA1-DESIGNDOC-TEMPLATE.pdf is the selected final submission version. Prepared
+on October 27 from the updated DESIGNDOC, its eight pages retain the original
+monospaced template, all 19 questions and answers, the ASCII nested-donation
+diagram, and the C2 text table. The instructor confirmed in Piazza @135:
+"Use the same template with your updated implementation."
+https://piazza.com/class/mr5d91n9mi73f/post/135
+
+PA1-DESIGNDOC-FINAL.pdf remains the nine-page formatted alternate with three
+figures. The earlier eight-page PA1-DESIGNDOC.pdf is the historical proposal
+for the original October 8 deadline. No separate revision deadline or UBLearns
+submission confirmation has been supplied. The current DESIGNDOC received
+wording-only clarifications after archive verification; both updated PDFs use
+those answers. The tested archive retains its earlier document wording.
+Selecting the template PDF changes no source code, archive, or checksum.
 
 OCTOBER 5 REVIEW OF ALARM CLOCK (A1-A6)
 
@@ -324,9 +329,12 @@ October 27: Phase 3 implemented; all 27 official tests and the independent
             arithmetic checks passed. Source DESIGNDOC now describes all
             implemented components. A separate nine-page final design PDF
             was generated from that final DESIGNDOC. Later wording-only edits
-            were applied to the current DESIGNDOC and final PDF. The historical
-            eight-page proposal, implementation, and verified archive remain
-            unchanged; the archive retains the earlier document wording.
+            were applied to the current DESIGNDOC and formatted PDF. An
+            eight-page original-template PDF was then selected as the final
+            submission version, following the instructor's Piazza @135 reply.
+            The historical proposal, nine-page formatted alternate, implementation,
+            and verified archive are retained; the archive keeps its earlier
+            document wording.
             The actual submission archive was independently extracted and
             rebuilt; all 27 official tests passed again. Full implementation
             and local/archive verification are complete.

@@ -11,7 +11,7 @@ All deadlines below are in **2026 at 23:59**. The Phase 1 Autolab screenshot con
 | Deliverable | Deadline | Points | Platform | Status |
 |---|---|---:|---|---|
 | Phase 1: Alarm Clock | September 30, 23:59 | 14 | [Autolab](https://autolab.cse.buffalo.edu/) | Submitted and graded: 100/100 |
-| Formal Design Document | October 8, 23:59 | 12 | UBLearns, PDF | Final PDF prepared; earlier proposal retained; submission unconfirmed |
+| Formal Design Document | October 8, 23:59 | 12 | UBLearns, PDF | Eight-page template PDF selected as final; submission unconfirmed |
 | Phase 2: Priority Scheduler | October 14, 23:59 | 42 | [Autolab](https://autolab.cse.buffalo.edu/) | Submitted October 14, user confirmed; grade unconfirmed |
 | Phase 3: MLFQ Scheduler | October 27, 23:59 | 37 | [Autolab](https://autolab.cse.buffalo.edu/) | Implemented; 27/27 local tests passed; submission pending |
 
@@ -40,12 +40,12 @@ The 13 Phase 2 tests cover its **42-point rubric locally**. This is not an Autol
 
 The 4.4BSD-style scheduler is implemented with signed 17.14 fixed-point arithmetic, inherited `nice`/`recent_cpu` state, periodic load and priority updates, idle exclusion, and the `-mlfqs` startup option. The final clean build passed **all 27 official tests** on Bochs 2.6.11. Each test uses the scheduler mode selected by the course Makefile.
 
-The nine MLFQS tests cover **37 rubric points locally**; this is not an Autolab grade. Seven supplemental scheduler groups passed, as did 31 targeted arithmetic assertions, 53,930 helper comparisons against a rational-arithmetic oracle, and 70,050 scheduler-method comparisons. These are supplemental checks, not additional course tests. The verified [Phase 3 archive](assignments/pa1/submissions/phase3/pa1-phase3.tar.gz) contains 626 regular files matching the cleaned source tree. It was independently extracted and rebuilt, and all **27 official tests passed again**. See [PHASE3-REPORT.md](assignments/pa1/reports/PHASE3-REPORT.md).
+The nine MLFQS tests cover **37 rubric points locally**; this is not an Autolab grade. Seven supplemental scheduler groups passed, as did 31 targeted arithmetic assertions, 53,930 helper comparisons against a rational-arithmetic oracle, and 70,050 scheduler-method comparisons. These are supplemental checks, not additional course tests. The verified [Phase 3 archive](assignments/pa1/submissions/phase3/pa1-phase3.tar.gz) contains 626 regular files that matched the cleaned source tree at packaging time. It was independently extracted and rebuilt, and all **27 official tests passed again**. See [PHASE3-REPORT.md](assignments/pa1/reports/PHASE3-REPORT.md).
 
 ## Start here
 
 1. **Develop and test:** read the [PA1 guide](assignments/pa1/README.md). Course environment files are in [environment/](assignments/pa1/environment/).
-2. **Review the final design:** read the new [nine-page final design PDF](assignments/pa1/design/PA1-DESIGNDOC-FINAL.pdf), prepared on October 27 from the completed source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC). It covers all three implemented components. The [earlier eight-page proposal](assignments/pa1/design/PA1-DESIGNDOC.pdf) is retained unchanged. See the [implementation notes](assignments/pa1/design/IMPLEMENTATION-PLAN.txt) for development details; UBLearns submission remains unconfirmed.
+2. **Use the final design submission:** the [eight-page template PDF](assignments/pa1/design/PA1-DESIGNDOC-TEMPLATE.pdf) is the selected final submission version. It contains all 19 answers from the completed source [DESIGNDOC](assignments/pa1/pintos/src/threads/DESIGNDOC), covering all three implemented components. The instructor confirmed on [Piazza @135](https://piazza.com/class/mr5d91n9mi73f/post/135): "Use the same template with your updated implementation." The [nine-page formatted version](assignments/pa1/design/PA1-DESIGNDOC-FINAL.pdf) is an alternate, and the [earlier proposal](assignments/pa1/design/PA1-DESIGNDOC.pdf) remains historical. UBLearns submission is unconfirmed.
 3. **Finish the Phase 3 submission:** confirm the Phase 3 group, upload the verified archive to Autolab by **October 27 at 23:59**, and retain the grading result. Implementation and local/archive verification are complete. Record the Phase 2 grade and design-PDF submission confirmation when available.
 
 ## GitHub tracking
@@ -77,4 +77,6 @@ deadlines.json                        # Structured deadlines
 DEADLINES.md                          # Requirements and checklists
 ```
 
-The [final design PDF](assignments/pa1/design/PA1-DESIGNDOC-FINAL.pdf) contains all 19 required answers from the completed source `DESIGNDOC`, three plain black-and-white figures, and the C2 scheduling table. The earlier eight-page PDF remains the historical proposal. The final PDF is a separate document; the verified Phase 3 source archive is unchanged. The documented design-PDF deadline remains October 8; no separate deadline for this revision has been supplied. UBLearns submission confirmation has not been supplied.
+The [selected final PDF](assignments/pa1/design/PA1-DESIGNDOC-TEMPLATE.pdf) follows the original text-template format: monospaced text, `>>` question labels, section dividers, an ASCII nested-donation diagram, and the C2 text table. It was prepared on October 27 from the updated `DESIGNDOC`. The nine-page formatted PDF and original proposal are retained as separate versions. This selection does not change the verified Phase 3 source archive. The original design-PDF deadline was October 8; no separate revision deadline or UBLearns submission confirmation has been supplied.
+
+To regenerate the selected template PDF, run `python3 scripts/build-template-design-pdf.py` with ReportLab installed, then render and inspect every page before submission.

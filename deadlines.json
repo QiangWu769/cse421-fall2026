@@ -3,7 +3,7 @@
   "term": "Fall 2026",
   "timezone": "America/New_York",
   "timezone_note": "The Phase 1 Autolab screenshot confirms EDT (UTC-04:00). Remaining deadlines are recorded in Buffalo local time; course announcements take precedence.",
-  "source": "User-provided Project 1 assignment and submission screenshots",
+  "source": "User-provided Project 1 assignment, submission, and Piazza @135 screenshots",
   "deadlines": [
     {
       "id": "pa1-phase1",
@@ -38,11 +38,17 @@
       "prepared_date": "2026-10-05",
       "pages": 8,
       "figures": 3,
-      "document_note": "The earlier eight-page PDF remains unchanged as the historical proposal for the October 8 deadline. A separate nine-page final PDF was prepared on October 27 from the completed source DESIGNDOC, covering all 19 required answers and all three implemented components. The current DESIGNDOC and final PDF received wording-only clarifications after archive verification; the tested Phase 3 archive retains its earlier document wording. The implementation, archive, and recorded checksum are unchanged. No separate deadline for this final revision has been supplied. UBLearns submission remains unconfirmed.",
-      "final_pdf_path": "assignments/pa1/design/PA1-DESIGNDOC-FINAL.pdf",
+      "document_note": "The original eight-page PDF remains the historical proposal for the October 8 deadline. The eight-page original-template PDF prepared October 27 is selected as the final submission version, following the instructor's Piazza @135 reply. It contains all 19 answers, the ASCII nested-donation diagram, and the C2 text table for the completed implementation. The nine-page formatted PDF remains an alternate. The current DESIGNDOC received wording-only clarifications after archive verification; the tested Phase 3 archive retains its earlier wording. Source code, archives, and checksums are unchanged. No separate revision deadline or UBLearns submission confirmation has been supplied.",
+      "final_pdf_path": "assignments/pa1/design/PA1-DESIGNDOC-TEMPLATE.pdf",
       "final_pdf_prepared_date": "2026-10-27",
-      "final_pdf_pages": 9,
-      "final_pdf_figures": 3
+      "final_pdf_pages": 8,
+      "final_pdf_figures": 1,
+      "formatted_pdf_path": "assignments/pa1/design/PA1-DESIGNDOC-FINAL.pdf",
+      "formatted_pdf_pages": 9,
+      "formatted_pdf_figures": 3,
+      "final_pdf_format": "original_template",
+      "final_pdf_role": "selected_final_submission",
+      "template_instruction_url": "https://piazza.com/class/mr5d91n9mi73f/post/135"
     },
     {
       "id": "pa1-phase2",
