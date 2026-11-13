@@ -1,6 +1,6 @@
 # CSE 421/521 - Fall 2026
 
-Course assignments, source code, submission archives, and deadlines. This repository currently contains **Project 1: Pintos Threads**.
+Course assignments, source code, submission archives, and deadlines. This repository contains **Project 1: Pintos Threads** and **Project 2: User Programs**.
 
 **All three Project 1 components are implemented. Phase 3 passed all 27 official tests locally on October 27: nine MLFQS tests and 18 earlier-phase regressions. Phase 1 has confirmed full credit. The user confirmed Phase 2 submission on October 14; its grade is unconfirmed. Phase 3 submission is pending.**
 
@@ -17,7 +17,18 @@ All deadlines below are in **2026 at 23:59**. The Phase 1 Autolab screenshot con
 
 Implementation is worth **93 points**, plus **12 points** for the formal design document, for a total of **105 points**. The 4-point `alarm-priority` test belongs to Phase 2, giving phase totals of 14, 42, and 37.
 
-See [DEADLINES.md](DEADLINES.md) for requirements and checklists, and [deadlines.json](deadlines.json) for structured dates. Dates for other semester projects and exams have not been provided.
+See [DEADLINES.md](DEADLINES.md) for requirements and checklists, and [deadlines.json](deadlines.json) for structured dates. Dates beyond Project 2 and for exams have not been provided.
+
+## Project 2: User Programs
+
+Project 2 is independent of Project 1 and uses a separate source tree under `assignments/pa2/pintos/`. Its design proposal was prepared on **November 13, 2026** in the original `userprog.tmpl` format, with **15 required answers: A1-A4 and B1-B11**. Implementation has not started and no Project 2 test results are claimed. See the [PA2 guide](assignments/pa2/README.md) and [design proposal PDF](assignments/pa2/design/PA2-DESIGNDOC.pdf).
+
+| Deliverable | Deadline in America/New_York | Weight within Project 2 | Platform | Status |
+|---|---|---:|---|---|
+| PA2 design document | November 23, 2026 at 23:59 EST | 10% | UBLearns, PDF | Nine-page proposal prepared November 13; submission unconfirmed |
+| PA2 complete source tree | December 11, 2026 at 23:59 EST | 90% | Course Autolab | Implementation not started; tests not run |
+
+The assignment explicitly gives November 23 for the design PDF, although it also calls that deadline "three weeks before" the source deadline. The schedule follows the explicit date. The implementation requires argument passing, safe user-memory access, 13 system calls, parent/child synchronization and cleanup, file-system synchronization, and executable write denial. Its **76 official tests** comprise 28 functionality, 34 robustness, one no-VM, and 13 base-file-system tests.
 
 ## Phase 1 progress
 
@@ -73,6 +84,7 @@ assignments/pa1/
     ├── phase2/pa1-phase2.tar.gz       # Retained Phase 2 source archive
     └── phase3/pa1-phase3.tar.gz       # Verified complete Project 1 source archive
 scripts/                              # Repository helper scripts
+assignments/pa2/                      # Independent PA2 source and design proposal
 deadlines.json                        # Structured deadlines
 DEADLINES.md                          # Requirements and checklists
 ```

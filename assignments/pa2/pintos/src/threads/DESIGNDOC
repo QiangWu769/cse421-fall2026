@@ -1,0 +1,426 @@
+             +--------------------------+
+             |       CSE 421/521        |
+             | PROJECT 2: USER PROGRAMS |
+             |     DESIGN DOCUMENT      |
+             +--------------------------+
+
+---- GROUP ----
+
+Qiang Wu <qwu26@buffalo.edu>
+Mohammad Sahir <msahir@buffalo.edu>
+Siraat Mustafa <siraatmu@buffalo.edu>
+
+---- PRELIMINARIES ----
+
+Design proposal prepared November 13, 2026.
+The following sections describe the planned implementation.
+
+               ARGUMENT PASSING
+               ================
+
+---- DATA STRUCTURES ----
+
+>> A1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+Planned argument-startup record in userprog/process.c:
+
+struct process_start
+  {
+    char *command_page;
+    struct child_status *status;
+  };
+
+command_page: Kernel-owned copy of the command line, limited to one page.
+status: Shared record used to report loading and process termination.
+
+The child will also allocate an argc-entry array of char pointers on the
+kernel heap. It first holds token pointers, then their user-stack
+addresses. The command page, array, and startup record are temporary;
+they will be freed before entering user mode or on loading failure.
+No argument strings or large arrays will be placed on the kernel stack.
+
+---- ALGORITHMS ----
+
+>> A2: Briefly describe how you implemented argument parsing.  How do
+>> you arrange for the elements of argv[] to be in the right order?
+>> How do you avoid overflowing the stack page?
+
+The command copy must contain a terminator within 4,096 bytes.
+An empty command or a command containing only spaces will fail. A first,
+non-destructive scan will count tokens and their string bytes, including
+one terminator per token. Repeated spaces will not create empty arguments.
+
+Let N be argc and S the total string bytes. Before allocating the argument
+array or writing the stack, the loader will check:
+
+    padding = (4 - S % 4) % 4
+    needed  = S + padding + 4 * (N + 1) + 12
+    needed <= PGSIZE
+
+This includes the strings, word alignment, N argument pointers, the NULL
+sentinel, argv, argc, and a fake return address. It bounds argc by the
+actual stack space rather than an arbitrary argument-count limit.
+
+The child will tokenize once with strtok_r(command_page, " ", &save_ptr).
+It will copy strings to the user stack in reverse argument order, recording
+each resulting user address in the array. After padding, it will push
+argv[N] = NULL, the addresses in reverse order, argv, argc, and zero as
+the return address. argv[0] will therefore identify the executable name.
+Every decrement of the stack pointer will also be checked against the
+bottom of the allocated stack page.
+
+---- RATIONALE ----
+
+>> A3: Why does Pintos implement strtok_r() but not strtok()?
+
+strtok() keeps its parsing position in shared static storage. Two
+threads parsing commands could overwrite each other's position after a
+context switch. strtok_r() instead stores the position through the
+caller's save_ptr. Each load can maintain its own parsing state.
+
+>> A4: In Pintos, the kernel separates commands into a executable name
+>> and arguments.  In Unix-like systems, the shell does this
+>> separation.  Identify at least two advantages of the Unix approach.
+
+A shell can handle quotes, escaping, variable expansion, and wildcards
+before starting a program. The kernel then receives the intended argument
+boundaries without needing to understand shell syntax.
+
+Different shells can also provide different command languages without
+changing the kernel. Programs started without a shell can supply an argv
+array directly. Keeping these policies outside the kernel reduces its
+parser complexity and the amount of privileged code.
+
+                 SYSTEM CALLS
+                 ============
+
+---- DATA STRUCTURES ----
+
+>> B1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+Planned records in userprog/process.h:
+
+struct child_status
+  {
+    tid_t pid;
+    bool load_ok;
+    bool load_reported;
+    int exit_status;
+    struct semaphore load_done;
+    struct semaphore exit_done;
+    struct lock ref_lock;
+    unsigned refs;
+    struct list_elem elem;
+  };
+
+pid: Child identifier, set by the child before reporting load completion.
+load_ok: Whether ELF loading and argument-stack construction succeeded.
+load_reported: Whether the child has already signaled load_done.
+exit_status: Result returned by wait; initially -1.
+load_done: Signals that the loader has reported its result.
+exit_done: Signals that process cleanup and exit-status publication finished.
+ref_lock: Protects the shared reference count.
+refs: Parent and child ownership references; initially two.
+elem: Links the record into its direct parent's child list.
+
+Planned descriptor record in userprog/syscall.c:
+
+struct fd_entry
+  {
+    int fd;
+    struct file *file;
+    struct list_elem elem;
+  };
+
+fd: Process-local descriptor number, starting at two.
+file: Independently opened file handle and current offset.
+elem: Links this entry into the process's descriptor list.
+
+Planned USERPROG members of struct thread:
+
+struct list children;
+struct child_status *own_status;
+struct list open_files;
+int64_t next_fd;
+struct file *executable;
+char *process_name;
+int exit_status;
+bool is_user_process;
+
+children: Records for direct children that have not been waited on.
+own_status: This process's shared child-status record, or NULL.
+open_files: Descriptor entries owned by this process.
+next_fd: Next descriptor candidate; a wide counter avoids signed overflow.
+executable: Open executable handle retained until cleanup.
+process_name: Full executable name without arguments, stored outside thread.name.
+exit_status: Process result; initialized to -1 for abnormal termination.
+is_user_process: Distinguishes user-process termination from kernel-thread exit.
+
+Planned global in userprog/syscall.c:
+
+struct lock filesys_lock;
+
+filesys_lock: Serializes filesystem operations, including executable loading.
+
+The startup record in A1 will pass the command and status to the child.
+All thread lists and defaults will be initialized before thread creation
+can publish the thread. Shared records and FD nodes will use heap storage.
+
+>> B2: Describe how file descriptors are associated with open files.
+>> Are file descriptors unique within the entire OS or just within a
+>> single process?
+
+Each process will own a list of fd_entry records. open() will create a
+new struct file, allocate an entry, and assign the next available number
+from two upward. Descriptors are unique only within their owning process.
+Zero and one remain reserved for keyboard input and console output.
+
+Children will begin with empty descriptor lists. Opening the same file
+again will create a different handle with an independent offset. close()
+will remove the matching entry, close that handle, and free the node.
+Process cleanup will close every remaining entry. Failed node allocation
+will close the newly opened handle before returning -1. Values beyond
+INT_MAX will be rejected before converting next_fd to an int.
+
+---- ALGORITHMS ----
+
+>> B3: Describe your code for reading and writing user data from the
+>> kernel.
+
+The syscall dispatcher will copy the call number and its exact number
+of 32-bit arguments from the user stack with a checked copy helper. It
+will not read f->esp through an unchecked kernel pointer. Unknown calls
+and invalid user addresses will terminate the process with status -1.
+
+The dispatcher will handle halt, exit, exec, wait, create, remove, open,
+filesize, read, write, seek, tell, and close. Each handler will use kernel
+copies of strings and return its result through the saved eax register.
+
+For a nonempty span starting at address U, the helpers will first require
+U != 0, U < PHYS_BASE, and size <= PHYS_BASE - U. Integer subtraction
+avoids computing a wrapped end address. They will then process one page
+fragment at a time.
+
+A planned pagedir_user_page() helper in pagedir.c will use lookup_page()
+once to check a present user PTE and return its mapped kernel alias. For
+a destination buffer it will also require PTE_W in that same inspection.
+The copy helper will memcpy through the alias, then advance to the next
+page. A writable kernel alias alone is not proof that the user mapping
+permits writes. Bounded string copying will likewise stop at a terminator
+or its length limit, checking each new user page before reading it.
+
+read() and write() will validate the complete user span before I/O. A
+page-sized heap bounce buffer will carry data between checked copies and
+file operations. The filesystem lock will cover only operations on kernel
+buffers; user copying and keyboard waits will occur outside that lock.
+Small console writes will be copied completely and passed to putbuf() in
+one call, including when the user source crosses a page boundary.
+Descriptor zero will read keyboard bytes with input_getc() outside the
+filesystem lock. Descriptor one will use the console path.
+
+A valid zero-byte read or write will return zero without dereferencing
+the buffer; invalid descriptors will still be rejected. Project 2 has one
+thread per process and no eviction or unmapping, so the process's mappings
+cannot disappear between validation and copying during a syscall.
+
+>> B4: Suppose a system call causes a full page (4,096 bytes) of data
+>> to be copied from user space into the kernel.  What is the least
+>> and the greatest possible number of inspections of the page table
+>> (e.g. calls to pagedir_get_page()) that might result?  What about
+>> for a system call that only copies 2 bytes of data?  Is there room
+>> for improvement in these numbers, and how much?
+
+Here one inspection means one call to the planned combined translation
+and permission helper. These counts cover the data buffer only, excluding
+the separate reads of the syscall number and arguments.
+
+A single page-by-page copy of 4,096 bytes touches one page when aligned
+and two when unaligned: one to two inspections. Two bytes likewise touch
+one page normally or two across a boundary: one to two inspections.
+
+The proposed read/write path first validates the entire buffer, then
+performs a checked copy. Those two passes therefore require two to four
+inspections for either size. The combined helper checks PTE_W without
+another page-table lookup. Zero bytes require no buffer inspection.
+
+Keeping validated translations for the copy could reduce two passes to
+one, giving one to two inspections. The initial design will instead
+repeat the bounded page checks, avoiding a potentially large allocation
+of cached translations. A naive single copy pass that checks each byte
+would cost 4,096 or two lookups respectively. Checking once per touched
+page is especially useful for large buffers.
+
+>> B5: Briefly describe your implementation of the "wait" system call
+>> and how it interacts with process termination.
+
+process_wait(pid) will search only the caller's children list. A missing
+record will return -1 immediately. On a match, it will remove the record
+before waiting; this claims the only permitted wait for that child.
+
+The caller will keep its ownership reference locally while it blocks on
+exit_done. After waking, it will read exit_status, drop that reference,
+and return the result. The user wait syscall will call process_wait().
+The initial kernel thread will use the same mechanism to keep Pintos
+alive until the initial user process finishes.
+
+The child will free its process resources before publishing its status
+and signaling exit_done. It will then release its own reference. If the
+child exited earlier, the semaphore's stored signal will make wait return
+without blocking. Only the small shared record survives until a parent
+waits or exits; the child's thread and address space are not retained.
+
+exit(status) will store the supplied result. User exceptions will retain
+the default -1. The exit path will print the full executable name without
+arguments once, as "%s: exit(%d)\n", before freeing that name. Kernel
+threads and halt() will not print a user-process termination message.
+
+>> B6: Any access to user program memory at a user-specified address
+>> can fail due to a bad pointer value.  Such accesses must cause the
+>> process to be terminated.  System calls are fraught with such
+>> accesses, e.g. a "write" system call requires reading the system
+>> call number from the user stack, then each of the call's three
+>> arguments, then an arbitrary amount of user memory, and any of
+>> these can fail at any point.  This poses a design and
+>> error-handling problem: how do you best avoid obscuring the primary
+>> function of code in a morass of error-handling?  Furthermore, when
+>> an error is detected, how do you ensure that all temporarily
+>> allocated resources (locks, buffers, etc.) are freed?  In a few
+>> paragraphs, describe the strategy or strategies you adopted for
+>> managing these issues.  Give an example.
+
+User-memory helpers will return a success flag instead of terminating
+the process themselves. Each syscall will first copy its arguments and
+any filename into kernel-owned storage. Buffer checks will happen before
+the filesystem lock is acquired. This keeps unchecked user accesses out
+of filesystem critical sections.
+
+Each operation will have one cleanup path for its temporary resources.
+It will release any held lock, free bounce or string buffers, and close
+any handle that has not been attached to an FD entry. Only then will it
+return an error or terminate for an invalid user address. The common exit
+path will close installed FDs and the executable, release child-record
+references, free the process name, and destroy the page directory.
+
+For example, read() will check its descriptor and destination span, then
+allocate a bounce page. It will lock the filesystem, read into that page,
+and unlock before copying to the user buffer. If copying fails, it will
+free the bounce page and exit(-1). No filesystem lock remains held and no
+temporary page is lost. Allocation failures and short reads will use the
+same cleanup path.
+
+Unsigned file sizes and seek positions above the supported signed off_t
+range will be rejected before conversion. Bad descriptors will return
+an error or make close() a no-op. These cases will not reach filesystem
+assertions or leave partially installed descriptor records.
+
+---- SYNCHRONIZATION ----
+
+>> B7: The "exec" system call returns -1 if loading the new executable
+>> fails, so it cannot return before the new executable has completed
+>> loading.  How does your code ensure this?  How is the load
+>> success/failure status passed back to the thread that calls "exec"?
+
+Before thread_create(), process_execute() will copy the command line,
+allocate a child_status and startup record, initialize both semaphores
+to zero, and give the parent and future child one reference each. The
+record will be linked into the parent's child list before creation.
+Creation failure will unlink and directly free the status record along
+with the command and startup allocations; no child owns that reference.
+
+The child will set the record's pid from thread_tid() before reporting
+loading. It will open and deny writes to the executable under the shared
+filesystem lock, load the ELF segments, and build the complete argument
+stack. Only after all of these succeed will it store load_ok = true and
+signal load_done. The parent will wait on that semaphore before deciding
+whether to return the pid.
+
+On failure, the child will clean up its partially loaded process before
+reporting load_ok = false. Both success and failure will set load_reported
+before signaling load_done. The parent will remove that failed child's
+record, release its reference, and return -1. Failed executions will not
+be waitable children. A child that has not yet reported loading will do
+so from its exit path, ensuring that the parent is always awakened.
+
+Neither the filesystem lock nor the record's reference lock will be held
+while the parent waits. Semaphore signaling follows the result write and
+keeps the record alive until the signaling operation has returned.
+
+>> B8: Consider parent process P with child process C.  How do you
+>> ensure proper synchronization and avoid race conditions when P
+>> calls wait(C) before C exits?  After C exits?  How do you ensure
+>> that all resources are freed in each case?  How about when P
+>> terminates without waiting, before C exits?  After C exits?  Are
+>> there any special cases?
+
+The shared record will start with two references: one owned by the
+parent and one by the child. ref_lock will protect reference-count
+changes; the last owner will release the lock before freeing the record.
+Neither owner will access the record after dropping its reference.
+
+    P waits first:  P keeps its reference and sleeps on exit_done.
+                    C cleans up, stores its status, and signals P.
+    C exits first: C cleans up and signals exit_done without waiting.
+                    P later consumes the stored signal and status.
+    P exits first: P detaches the record and drops its reference.
+                    C later cleans up and frees the last reference.
+    C then P exit: C leaves only the parent's small record reference.
+                    P releases it during its own cleanup.
+
+Children will not keep pointers to a parent's struct thread and will not
+be adopted by grandparents. Removing a record when wait begins prevents
+a second wait. Failed loads and failed thread creation will use the
+special cleanup paths described in B7.
+
+The child will publish exit_status and signal exit_done only after closing
+files, releasing its own child references, and destroying its user address
+space. It will preserve the existing destruction order: clear pagedir,
+activate the kernel page directory, then destroy the old directory.
+The child's reference will remain held through its final semaphore calls.
+
+Reference locks will cover only short ownership updates. They will not
+be held during filesystem operations, either completion wait, or free().
+The filesystem lock will never be held across an exec or wait semaphore.
+This permits children to load or exit while a parent is blocked.
+
+---- RATIONALE ----
+
+>> B9: Why did you choose to implement access to user memory from the
+>> kernel in the way that you did?
+
+Checking user mappings before copying gives the code an ordinary
+failure path. It avoids relying on a kernel page-fault recovery protocol
+to discover a bad syscall argument while a lock or allocation is live.
+Combining translation and permission checks also prevents writes through
+a kernel alias from bypassing a read-only user mapping.
+
+The cost is explicit page checks and a second pass for read/write buffer
+validation. That is acceptable for this project, where mappings remain
+stable. A later virtual-memory implementation would need to add frame
+pinning or an equivalent mechanism before performing blocking I/O.
+
+>> B10: What advantages or disadvantages can you see to your design
+>> for file descriptors?
+
+A list allocates descriptor storage only for open files and has no
+small fixed table limit. Each entry is easy to remove and close during
+normal close() or process cleanup. Separate file handles provide
+the independent offsets required by the interface.
+
+Lookup is linear in the number of descriptors. A table would make lookup
+faster, but would need a chosen capacity or resizing logic. Monotonic
+numbers also eventually exhaust the int range; the wide counter will
+detect that condition and make open() fail rather than wrap. Closed
+numbers will not be reused in this initial design.
+
+>> B11: The default tid_t to pid_t mapping is the identity mapping.
+>> If you changed it, what advantages are there to your approach?
+
+The design will retain the identity mapping: the pid is the tid of
+the user process's thread. Each process has exactly one thread, so a
+separate PID allocator would add state without helping this assignment.
+The parent-child record, not the number alone, determines whether a
+process is eligible for wait().

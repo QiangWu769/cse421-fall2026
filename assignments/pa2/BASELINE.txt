@@ -1,0 +1,27 @@
+PROJECT 2 SOURCE BASELINE
+Exported November 13, 2026
+
+Required course revision:
+9f013d0930202eea99c21083b71098a0df64be0d
+
+Git tree:
+b48d2931e05e69f2e933ae8ce059538773b7ecd2
+
+Course source from the supplied Dockerfile:
+git://pintos-os.org/pintos-anon
+
+Mirror used to retrieve the same Git commit:
+https://github.com/fghanei/pintos.git
+
+The course Git endpoint refused the connection. The mirror contains the
+exact required commit, which was exported with git archive. All 778 original
+files were checked against their Git blob IDs; no original file was changed.
+
+Added course deliverable:
+pintos/src/threads/DESIGNDOC
+
+The supplied Project 2 handout names this path for the completed userprog
+template. The Project 1 source tree and design document are separate.
+
+Implementation status:
+Starter kernel. Project 2 functionality has not been implemented or tested.

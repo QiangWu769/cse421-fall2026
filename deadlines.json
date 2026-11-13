@@ -3,7 +3,7 @@
   "term": "Fall 2026",
   "timezone": "America/New_York",
   "timezone_note": "The Phase 1 Autolab screenshot confirms EDT (UTC-04:00). Remaining deadlines are recorded in Buffalo local time; course announcements take precedence.",
-  "source": "User-provided Project 1 assignment, submission, and Piazza @135 screenshots",
+  "source": "User-provided Project 1 assignment, submission and Piazza @135 screenshots, and Project 2 assignment text",
   "deadlines": [
     {
       "id": "pa1-phase1",
@@ -141,6 +141,56 @@
         "simulator": "Bochs 2.6.11"
       },
       "grading_status": "unconfirmed"
+    },
+    {
+      "id": "pa2-design",
+      "project": "pa2",
+      "title": "PA2 - User Programs Design Document",
+      "due_local": "2026-11-23T23:59:00-05:00",
+      "due_utc": "2026-11-24T04:59:00Z",
+      "project_weight_percent": 10,
+      "platform": "UBLearns",
+      "status": "proposal_prepared",
+      "submission_status": "unconfirmed",
+      "pdf_path": "assignments/pa2/design/PA2-DESIGNDOC.pdf",
+      "source_document_path": "assignments/pa2/pintos/src/threads/DESIGNDOC",
+      "template": "userprog.tmpl",
+      "required_questions": 15,
+      "question_groups": [
+        "A1-A4",
+        "B1-B11"
+      ],
+      "document_note": "The nine-page original-template design proposal was prepared November 13, with all 15 answers for the planned Project 2 implementation. It is not a record of completed code or passing tests. The assignment explicitly gives November 23; the separate phrase three weeks before does not match the December 11 source deadline. Actual UBLearns submission remains unconfirmed.",
+      "prepared_date": "2026-11-13",
+      "pages": 9,
+      "pdf_format": "original_template",
+      "document_role": "preimplementation_design_proposal"
+    },
+    {
+      "id": "pa2-source",
+      "project": "pa2",
+      "title": "PA2 - User Programs Complete Source Tree",
+      "due_local": "2026-12-11T23:59:00-05:00",
+      "due_utc": "2026-12-12T04:59:00Z",
+      "project_weight_percent": 90,
+      "platform": "Course Autolab",
+      "status": "not_implemented",
+      "source_setup_status": "clean_baseline_prepared",
+      "submission_status": "unconfirmed",
+      "source_path": "assignments/pa2/pintos/src",
+      "compile_directory": "userprog",
+      "required_syscalls": 13,
+      "tests_run": false,
+      "official_tests": {
+        "functionality": 28,
+        "robustness": 34,
+        "no_vm": 1,
+        "base_file_system": 13,
+        "total": 76
+      },
+      "completion_scope": "Clean independent Project 2 source baseline and complete design proposal only. Kernel implementation has not started; no build, test-pass, archive-verification, or platform-grade claim is made.",
+      "source_revision": "9f013d0930202eea99c21083b71098a0df64be0d",
+      "baseline_original_files_verified": 778
     }
   ]
 }

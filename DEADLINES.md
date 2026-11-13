@@ -1,6 +1,6 @@
 # Deadlines and Submission Checklists
 
-Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission instructions. Last updated: **2026-10-27**.
+Based on the supplied CSE 421/521 Fall 2026 Project 1 and Project 2 assignment and submission instructions. Last updated: **2026-11-13**.
 
 **Time zone:** the Phase 1 Autolab screenshot confirms EDT (UTC-04:00). Remaining deadlines use Buffalo's **America/New_York** local time. Every deadline below is in 2026 at **23:59**. Official course announcements and platform instructions take precedence; update this file and [deadlines.json](deadlines.json) if the course publishes changes.
 
@@ -16,6 +16,13 @@ Based on the supplied CSE 421/521 Fall 2026 Project 1 assignment and submission 
 Implementation: 14 + 42 + 37 = **93 points**. Formal design document: **12 points**. Total: **105 points**.
 
 The assignment also lists component totals of 18 points for Alarm Clock and 38 for Priority Scheduler. The phase totals differ because the **4-point `alarm-priority` test is submitted with Phase 2**.
+
+Project 2 has a separate grading scale: **10% design document and 90% implementation**.
+
+| Project 2 deliverable | Deadline in America/New_York | Weight within Project 2 | Format and platform | Status |
+|---|---|---:|---|---|
+| Design document | 2026-11-23 23:59 EST | 10% | PDF, UBLearns | Nine-page proposal prepared November 13; submission unconfirmed |
+| Complete source tree | 2026-12-11 23:59 EST | 90% | Complete source tree, course Autolab | Implementation not started; tests not run |
 
 ## Phase 1: Alarm Clock
 
@@ -178,6 +185,35 @@ Requirements:
 
 See [PHASE3-REPORT.md](assignments/pa1/reports/PHASE3-REPORT.md) for individual local results. The nine Phase 3 tests cover 37 rubric points locally, not an Autolab grade. Supplemental checks are not additional rubric tests. The [Phase 3 archive](assignments/pa1/submissions/phase3/pa1-phase3.tar.gz) and [SHA256SUMS](assignments/pa1/submissions/phase3/SHA256SUMS) are verified. Earlier phase archives are retained unchanged.
 
+## Project 2: User Programs
+
+**Design PDF due November 23 at 23:59 EST | 10% | UBLearns**
+
+**Complete source due December 11 at 23:59 EST | 90% | Course Autolab**
+
+Project 2 is independent of Project 1. Work is kept in the separate [PA2 directory](assignments/pa2/README.md). The nine-page [design proposal PDF](assignments/pa2/design/PA2-DESIGNDOC.pdf) was prepared on November 13 from `userprog.tmpl`, covering A1-A4 and B1-B11. The assignment requests the editable document at `assignments/pa2/pintos/src/threads/DESIGNDOC`, even though compilation and most implementation work belong in `userprog/`.
+
+The assignment's explicit design deadline is November 23; its less specific "three weeks before" wording does not match the December 11 source deadline. No replacement date has been supplied. Both deadlines use EST (UTC-05:00): November 24 at 04:59 UTC for the PDF and December 12 at 04:59 UTC for source.
+
+Required implementation:
+
+- Parse command-line arguments and construct a checked, single-page user stack.
+- Validate user addresses and safely copy strings, syscall arguments, and buffers across page boundaries.
+- Implement `halt`, `exit`, `exec`, `wait`, `create`, `remove`, `open`, `filesize`, `read`, `write`, `seek`, `tell`, and `close`.
+- Synchronize executable loading and process waiting; support direct-child checks, one wait per child, and cleanup when either parent or child exits first.
+- Give each process independent file descriptors, synchronize every file-system access, and deny writes to an executable while its process runs.
+- Pass all 76 official tests: 28 syscall-functionality, 34 syscall-robustness, one no-VM, and 13 base-file-system tests. Run `make check` and `make grade` from the `userprog/build` directory once implementation is ready.
+
+Preparation and submission checklist:
+
+- [x] Prepare and review the 15-answer design proposal in the original template format.
+- [ ] Confirm the design PDF submission through UBLearns before November 23 at 23:59 EST.
+- [ ] Implement all required components and record actual test results.
+- [ ] Clean and package the complete source tree, extract it, and verify it compiles.
+- [ ] Submit through the course's Project 2 Autolab assessment and retain the grading result before December 11 at 23:59 EST.
+
+Implementation has not started. The design and source submission statuses are unconfirmed; no Project 2 test passes or platform grades are recorded.
+
 ## Check every source submission
 
 1. Submit the complete `src/` tree, not only changed files. It must compile with `make` after cleaning.
@@ -189,4 +225,4 @@ Tracking: [milestones](https://github.com/QiangWu769/cse421-fall2026/milestones)
 
 ## Dates not yet provided
 
-Dates for other semester projects, quizzes, midterms, and final exams have not been supplied. Add them only after the official course schedule is available.
+Dates beyond Project 2 and for quizzes, midterms, and final exams have not been supplied. Add them only after the official course schedule is available.
