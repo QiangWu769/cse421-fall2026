@@ -1,6 +1,6 @@
 # Deadlines and Submission Checklists
 
-Based on the supplied CSE 421/521 Fall 2026 Project 1 and Project 2 assignment and submission instructions. Last updated: **2026-11-13**.
+Based on the supplied CSE 421/521 Fall 2026 Project 1 and Project 2 assignment and submission instructions. Last updated: **2026-11-21**.
 
 **Time zone:** the Phase 1 Autolab screenshot confirms EDT (UTC-04:00). Remaining deadlines use Buffalo's **America/New_York** local time. Every deadline below is in 2026 at **23:59**. Official course announcements and platform instructions take precedence; update this file and [deadlines.json](deadlines.json) if the course publishes changes.
 
@@ -21,7 +21,7 @@ Project 2 has a separate grading scale: **10% design document and 90% implementa
 
 | Project 2 deliverable | Deadline in America/New_York | Weight within Project 2 | Format and platform | Status |
 |---|---|---:|---|---|
-| Design document | 2026-11-23 23:59 EST | 10% | PDF, UBLearns | Nine-page proposal prepared November 13; submission unconfirmed |
+| Design document | 2026-11-23 23:59 EST | 10% | PDF, UBLearns | Eight-page proposal; wording revised November 21; submission unconfirmed |
 | Complete source tree | 2026-12-11 23:59 EST | 90% | Complete source tree, course Autolab | Implementation not started; tests not run |
 
 ## Phase 1: Alarm Clock
@@ -191,7 +191,7 @@ See [PHASE3-REPORT.md](assignments/pa1/reports/PHASE3-REPORT.md) for individual 
 
 **Complete source due December 11 at 23:59 EST | 90% | Course Autolab**
 
-Project 2 is independent of Project 1. Work is kept in the separate [PA2 directory](assignments/pa2/README.md). The nine-page [design proposal PDF](assignments/pa2/design/PA2-DESIGNDOC.pdf) was prepared on November 13 from `userprog.tmpl`, covering A1-A4 and B1-B11. The assignment requests the editable document at `assignments/pa2/pintos/src/threads/DESIGNDOC`, even though compilation and most implementation work belong in `userprog/`.
+Project 2 is independent of Project 1. Work is kept in the separate [PA2 directory](assignments/pa2/README.md). The eight-page [design proposal PDF](assignments/pa2/design/PA2-DESIGNDOC.pdf) was prepared on November 13 and revised for shorter, clearer wording on November 21. It retains the `userprog.tmpl` format and all questions A1-A4 and B1-B11. The assignment requests the editable document at `assignments/pa2/pintos/src/threads/DESIGNDOC`, even though compilation and most implementation work belong in `userprog/`.
 
 The assignment's explicit design deadline is November 23; its less specific "three weeks before" wording does not match the December 11 source deadline. No replacement date has been supplied. Both deadlines use EST (UTC-05:00): November 24 at 04:59 UTC for the PDF and December 12 at 04:59 UTC for source.
 

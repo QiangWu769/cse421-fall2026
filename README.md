@@ -21,11 +21,11 @@ See [DEADLINES.md](DEADLINES.md) for requirements and checklists, and [deadlines
 
 ## Project 2: User Programs
 
-Project 2 is independent of Project 1 and uses a separate source tree under `assignments/pa2/pintos/`. Its design proposal was prepared on **November 13, 2026** in the original `userprog.tmpl` format, with **15 required answers: A1-A4 and B1-B11**. Implementation has not started and no Project 2 test results are claimed. See the [PA2 guide](assignments/pa2/README.md) and [design proposal PDF](assignments/pa2/design/PA2-DESIGNDOC.pdf).
+Project 2 is independent of Project 1 and uses a separate source tree under `assignments/pa2/pintos/`. Its design proposal was prepared on **November 13, 2026** and revised for shorter, clearer wording on **November 21**. It keeps the original `userprog.tmpl` format and **15 required answers: A1-A4 and B1-B11**. Implementation has not started and no Project 2 test results are claimed. See the [PA2 guide](assignments/pa2/README.md) and [design proposal PDF](assignments/pa2/design/PA2-DESIGNDOC.pdf).
 
 | Deliverable | Deadline in America/New_York | Weight within Project 2 | Platform | Status |
 |---|---|---:|---|---|
-| PA2 design document | November 23, 2026 at 23:59 EST | 10% | UBLearns, PDF | Nine-page proposal prepared November 13; submission unconfirmed |
+| PA2 design document | November 23, 2026 at 23:59 EST | 10% | UBLearns, PDF | Eight-page proposal; wording revised November 21; submission unconfirmed |
 | PA2 complete source tree | December 11, 2026 at 23:59 EST | 90% | Course Autolab | Implementation not started; tests not run |
 
 The assignment explicitly gives November 23 for the design PDF, although it also calls that deadline "three weeks before" the source deadline. The schedule follows the explicit date. The implementation requires argument passing, safe user-memory access, 13 system calls, parent/child synchronization and cleanup, file-system synchronization, and executable write denial. Its **76 official tests** comprise 28 functionality, 34 robustness, one no-VM, and 13 base-file-system tests.

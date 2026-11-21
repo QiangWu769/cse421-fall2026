@@ -160,9 +160,10 @@
         "A1-A4",
         "B1-B11"
       ],
-      "document_note": "The nine-page original-template design proposal was prepared November 13, with all 15 answers for the planned Project 2 implementation. It is not a record of completed code or passing tests. The assignment explicitly gives November 23; the separate phrase three weeks before does not match the December 11 source deadline. Actual UBLearns submission remains unconfirmed.",
+      "document_note": "The eight-page original-template design proposal was prepared November 13 and revised for shorter, clearer wording on November 21. All 15 questions and the proposed architecture are retained. It is not a record of completed code or passing tests. The assignment explicitly gives November 23; the separate phrase three weeks before does not match the December 11 source deadline. Actual UBLearns submission remains unconfirmed.",
       "prepared_date": "2026-11-13",
-      "pages": 9,
+      "revised_date": "2026-11-21",
+      "pages": 8,
       "pdf_format": "original_template",
       "document_role": "preimplementation_design_proposal"
     },

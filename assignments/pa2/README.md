@@ -13,8 +13,9 @@ inconsistent. No revised deadline or submission confirmation has been supplied.
 
 ## Design proposal
 
-Use the [original-template PDF](design/PA2-DESIGNDOC.pdf), prepared November 13.
-It answers all **15 required questions**, A1-A4 and B1-B11. The editable
+Use the [original-template PDF](design/PA2-DESIGNDOC.pdf), prepared November 13
+and revised for shorter, clearer wording on November 21.
+The eight-page PDF answers all **15 required questions**, A1-A4 and B1-B11. The editable
 [DESIGNDOC](pintos/src/threads/DESIGNDOC) is in the location specified by the
 course assignment. The original [userprog.tmpl](pintos/doc/userprog.tmpl)
 remains available for comparison.

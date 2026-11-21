@@ -1,11 +1,11 @@
 # Project 2 design proposal review
 
-Prepared November 13, 2026. This is a review of the planned design, not an
-implementation test report.
+Prepared November 13, 2026; wording revised November 21, 2026. This is a review
+of the planned design, not an implementation test report.
 
 - All 15 original questions from `doc/userprog.tmpl` are preserved in full and
   answered in the course-path `src/threads/DESIGNDOC`.
-- The nine-page PDF uses the original monospaced template layout. Every source
+- The eight-page PDF uses the original monospaced template layout. Every source
   line is included, and all rendered pages were inspected for clipping and
   incomplete question headings.
 - The stack-size formula includes all argument strings, padding, argument
@@ -18,6 +18,8 @@ implementation test report.
   prevalidation-plus-copy path and counts their page inspections separately.
 - File-descriptor ownership, signed `off_t` limits, read-only user mappings,
   executable write denial, and temporary-buffer cleanup are included.
+- The November 21 revision shortens the answers and clarifies syscall return
+  values and status-record ownership. The proposed architecture is unchanged.
 
 The clean baseline's 778 original files match the course commit's Git blob IDs.
 Only `src/threads/DESIGNDOC` was added inside that source export. No Project 2
